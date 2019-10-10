@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Member">
+<insert id="addMember" parameterType="com.petmeeting.joy.login.model.MemberDto">
+INSERT INTO PM_MEMBER(EMAIL, PWD, NICKNAME, NAME, POSTCODE, ADDRESS, ADDRESS_DETAIL, ADDRESS_REFER, PHONE, TOTALPOINT, POINT, S_POINT, REPORTCOUNT, AUTH)
+VALUES(#{email}, #{pwd}, #{nickname}, #{name}, #{postcode}, #{address}, #{address_detail}, #{address_refer}, #{phone}, 0, 0, 0, 0, 1)
+</insert>
+ 
+<select id="loginCheck" parameterType="com.petmeeting.joy.login.model.MemberDto" resultType="com.petmeeting.joy.login.model.MemberDto">
+SELECT EMAIL, PWD, NICKNAME, NAME, POSTCODE, ADDRESS, ADDRESS_DETAIL, ADDRESS_REFER, PHONE, TOTALPOINT, POINT, S_POINT, REPORTCOUNT, AUTH 
+FROM PM_MEMBER
+WHERE EMAIL=#{email} AND PWD=#{pwd}
+</select>
+
+</mapper>
