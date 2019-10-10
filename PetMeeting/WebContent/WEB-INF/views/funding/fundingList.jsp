@@ -18,16 +18,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
-	<jsp:include page="/WEB-INF/views/funding/fundingNavbar.jsp" flush="false"/>
+	
     <link rel="stylesheet" href="${pageContext.request.contextPath}/fundingboard_resources/css/fundingboard.css">
     <!-- 슬라이드 화살표 -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
 
-
-
+ <!--::header part start::-->
+ <header class="header_area">
+ 	<jsp:include page="/common/navbar/templates/header.jsp" flush="false"/>
+ </header>
+ <!-- Header part end-->
+ 
+ 
 <div class="container">
 
 <div id="wrapper">

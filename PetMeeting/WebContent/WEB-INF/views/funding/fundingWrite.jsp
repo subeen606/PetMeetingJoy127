@@ -12,7 +12,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	
-    <jsp:include page="/WEB-INF/views/funding/fundingNavbar.jsp"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/fundingboard_resources/css/fundingboard.css">
      
     <!-- include libraries(jQuery, bootstrap) summernote -->
@@ -30,7 +29,14 @@
 	<script src="${pageContext.request.contextPath}/fundingboard_resources/datepicker/datepicker.js"></script>  
 </head>
 <body>
-			
+ <!--::header part start::-->
+ <header class="header_area">
+ 	<jsp:include page="/common/navbar/templates/header.jsp" flush="false"/>
+ </header>
+ <!-- Header part end-->		
+ 
+ 
+ 	
 	<div class="container">
 		<form method="post" id="frm" enctype="multipart/form-data">
 			<div class="writetitle">

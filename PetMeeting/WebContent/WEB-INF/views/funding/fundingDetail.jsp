@@ -13,10 +13,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	
-    <jsp:include page="/WEB-INF/views/funding/fundingNavbar.jsp"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/fundingboard_resources/css/fundingboard.css">
 </head>
 <body>
+
+ <!--::header part start::-->
+ <header class="header_area">
+ 	<jsp:include page="/common/navbar/templates/header.jsp" flush="false"/>
+ </header>
+ <!-- Header part end-->
 
 <jsp:useBean id="dates" class="com.petmeeting.joy.funding.util.DateUtil"/>
 
