@@ -1,0 +1,74 @@
+@charset "UTF-8";
+@font-face { font-family: 'Handon3gyeopsal300g'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal300g.woff') format('woff'); font-weight: normal; font-style: normal; }
+body{
+	font-family: 'Handon3gyeopsal300g';
+}
+.conteiner{
+	/* border: 2px solid lime; */
+	width: 500px;
+	height: 500px;
+}
+
+.row{
+	width: 100%;
+	/* border: 1px solid aqua; */
+	display: flex;
+}
+
+.title{
+	width: 20%;
+	/* border: 1px solid black; */
+	padding-left: 10px;	
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-weight: bold;
+}
+
+.content{
+	font-size: 16px;
+	width: 80%;
+	/* border: 1px solid black; */
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.content-reason{
+	font-size: 16px;
+	width: 80%;
+	line-height: 2;
+}
+
+.line{
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+
+#_reasonTxt{
+	
+	margin-left: 18px;
+	 width: 90%;
+	 resize: none; 
+	 display: none;
+}
+
+#reportBtn{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	width: 150px;
+	height: 40px;
+	font-size: 17px;
+	font-family: 'Handon3gyeopsal300g';
+	font-weight: bold;
+	color: #fff;
+	background-color: #B8413D;
+	border: none;
+	outline: none;
+	border-radius: 30px;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+#reportBtn:hover{
+	background-color: #D17875;
+}

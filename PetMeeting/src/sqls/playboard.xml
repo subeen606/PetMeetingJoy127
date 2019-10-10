@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Playboard">
+	
+	<!-- 글쓰기 -->
+	<insert id="insertPlayboard" parameterType="com.petmeeting.joy.playboard.model.PlayboardDto">
+		INSERT INTO PM_PLAYBOARD(SEQ, BOARD_CODE, EMAIL, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
+				PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL)
+		VALUES(PM_PLAYBOARD_SEQ.NEXTVAL, 'PLAY', #{email}, #{title}, #{content}, #{filename}, #{location}, #{location_detail}, #{category}, 
+				#{price}, #{people}, #{personcount}, 0, 0, 0, #{pdate}, #{edate}, SYSDATE, 0)
+	</insert>
+	
+	<!-- 해쉬태그 입력 -->
+	<insert id="insertHashTag" parameterType="com.petmeeting.joy.playboard.model.PlayboardHashTagDto">
+		INSERT INTO PM_TAG(SEQ, BOARD_CODE, BOARD_SEQ, HASH1, HASH2, HASH3, HASH4, HASH5)
+		VALUES(PM_TAG_SEQ.NEXTVAL, 'PLAY', (SELECT NVL(MAX(SEQ), 0) FROM PM_PLAYBOARD), #{hash1}, #{hash2}, #{hash3}, #{hash4}, #{hash5})
+	</insert>
+	
+	<!-- 글 작성시 포인트 증가 -->
+	<insert id="insertPoint" parameterType="com.petmeeting.joy.playboard.model.PlayboardDto">
+		INSERT INTO PM_CHECK_BOARD(SEQ, BOARD_CODE, EMAIL, WDATE)
+		VALUES(PM_CHECK_BOARD_SEQ.NEXTVAL, 'PLAY', #{email}, SYSDATE)
+	</insert>
+	<!-- 멤버테이블 포인트 갱신 -->
+	<update id="plusPoint" parameterType="com.petmeeting.joy.playboard.model.PlayboardDto">			
+		UPDATE PM_MEMBER
+		SET TOTALPOINT=TOTALPOINT+50, POINT=POINT+50
+		WHERE EMAIL=#{email}
+	</update>
+	
+	<!-- 포인트 증가여부 판단 -->
+	<select id="checkPoint" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM PM_CHECK_BOARD
+		WHERE TO_CHAR(WDATE,'YYYYMMDD')=TO_CHAR(SYSDATE,'YYYYMMDD')
+	</select>
+	
+	<!-- 소모임 목록 -->
+	<select id="getPlayboardList" parameterType="com.petmeeting.joy.playboard.model.PlayboardSearchBean" resultType="com.petmeeting.joy.playboard.model.PlayboardDto">
+		SELECT SEQ, BOARD_CODE, EMAIL, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
+			   PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL
+		FROM (SELECT ROW_NUMBER()OVER(
+				<if test="sortingType == '선택'">
+						ORDER BY REGDATE DESC)
+				</if>
+				<if test="sortingType == '모임일'">
+						ORDER BY SYSDATE-PDATE DESC, REGDATE DESC)
+				</if>
+				<if test="sortingType == '좋아요'">
+						ORDER BY LIKECOUNT DESC, REGDATE DESC)
+				</if>
+				<if test="sortingType == '마감일'">
+						ORDER BY SYSDATE-EDATE DESC, REGDATE DESC)
+				</if>		
+				 AS RNUM, SEQ, BOARD_CODE, EMAIL, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
+			   PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL
+			   FROM PM_PLAYBOARD
+			   WHERE 1=1 AND CATEGORY LIKE '%'||#{playCategory}||'%' AND DEL=0 AND PDATE <![CDATA[>=]]> SYSDATE
+			<if test="searchCategory == '선택'">
+				)
+			</if>					
+			<if test="searchCategory == '제목'">
+				AND TITLE LIKE '%'||#{searchText}||'%')
+			</if>			
+			<if test="searchCategory == '장소'">
+				AND LOCATION LIKE '%'||#{searchText}||'%')
+			</if>						
+			<if test="searchCategory == '내용'">
+				AND CONTENT LIKE '%'||#{searchText}||'%')
+			</if>		
+			WHERE RNUM <![CDATA[>=]]> #{startRow} AND RNUM <![CDATA[<=]]> #{endRow}
+	</select>
+	<!-- 총 글의 개수(row count) -->
+	<select id="getTotalRowCount" parameterType="com.petmeeting.joy.playboard.model.PlayboardSearchBean" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM (SELECT ROW_NUMBER()OVER(
+				<if test="sortingType == '선택'">
+						ORDER BY REGDATE DESC)
+				</if>
+				<if test="sortingType == '모임일'">
+						ORDER BY SYSDATE-PDATE DESC, REGDATE DESC)
+				</if>
+				<if test="sortingType == '좋아요'">
+						ORDER BY LIKECOUNT DESC, REGDATE DESC)
+				</if>
+				<if test="sortingType == '마감일'">
+						ORDER BY SYSDATE-EDATE DESC, REGDATE DESC)
+				</if>		
+				 AS RNUM, SEQ, BOARD_CODE, EMAIL, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
+			   PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL
+			   FROM PM_PLAYBOARD
+			   WHERE 1=1 AND CATEGORY LIKE '%'||#{playCategory}||'%' AND DEL=0 AND PDATE <![CDATA[>=]]> SYSDATE  	
+			<if test="searchCategory == '선택'">
+				)
+			</if>					
+			<if test="searchCategory == '제목'">
+				AND TITLE LIKE '%'||#{searchText}||'%')
+			</if>			
+			<if test="searchCategory == '장소'">
+				AND LOCATION LIKE '%'||#{searchText}||'%')
+			</if>						
+			<if test="searchCategory == '내용'">
+				AND CONTENT LIKE '%'||#{searchText}||'%')
+			</if>	
+	</select>
+	
+	<!-- 해쉬태그 포함한 List -->
+	<!-- SEQ, BOARD_CODE, EMAIL, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
+			   PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL -->
+	<resultMap type="com.petmeeting.joy.playboard.model.PlayboardHashTagDto" id="HashTag">
+		<result column="SEQ" property="seq"/>
+		<result column="BOARD_CODE" property="board_code"/>
+		<result column="BOARD_SEQ" property="board_seq"/>
+		<result column="HASH1" property="hash1"/>
+		<result column="HASH2" property="hash2"/>
+		<result column="HASH3" property="hash3"/>
+		<result column="HASH4" property="hash4"/>
+		<result column="HASH5" property="hash5"/>
+	</resultMap>
+	<resultMap type="com.petmeeting.joy.playboard.model.PlayboardDto" id="Playboard">
+		<result column="SEQ" property="seq"/>
+		<result column="BOARD_SEQ" property="board_seq"/>
+		<result column="EMAIL" property="email"/>
+		<result column="TITLE" property="title"/>
+		<result column="CONTENT" property="content"/>
+		<result column="FILENAME" property="filename"/>
+		<result column="LOCATION" property="location"/>
+		<result column="LOCATION_DETAIL" property="location_detail"/>
+		<result column="CATEGORY" property="category"/>
+		<result column="PRICE" property="price"/>
+		<result column="PEOPLE" property="people"/>
+		<result column="PERSONCOUNT" property="personcount"/>
+		<result column="READCOUNT" property="readcount"/>
+		<result column="LIKECOUNT" property="likecount"/>
+		<result column="REPORTCOUNT" property="reportcount"/>
+		<result column="PDATE" property="pdate"/>
+		<result column="EDATE" property="edate"/>
+		<result column="REGDATE" property="regdate"/>
+		<result column="DEL" property="del"/>
+		<collection property="hashs" resultMap="HashTag"/>		
+	</resultMap>
+	<select id="getHashTagList" resultMap="Playboard" parameterType="com.petmeeting.joy.playboard.model.PlayboardSearchBean">
+		WITH HASHLIST AS (
+		SELECT ROW_NUMBER()OVER(
+				<if test="sortingType == '선택'">
+						ORDER BY REGDATE DESC)
+				</if>
+				<if test="sortingType == '좋아요'">
+						ORDER BY LIKECOUNT DESC, REGDATE DESC)
+				</if>
+				 AS RNUM, P.SEQ, P.BOARD_CODE, P.EMAIL, P.TITLE, P.CONTENT, P.FILENAME, P.LOCATION, P.LOCATION_DETAIL, P.CATEGORY, 
+	   			P.PRICE, P.PEOPLE, P.PERSONCOUNT, P.READCOUNT, P.LIKECOUNT, P.REPORTCOUNT, P.PDATE, P.EDATE, P.REGDATE, P.DEL,
+	   			T.HASH1, T.HASH2, T.HASH3, T.HASH4, T.HASH5
+		FROM (SELECT SEQ, BOARD_CODE, EMAIL, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
+					PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL
+	  				FROM PM_PLAYBOARD WHERE DEL=0 AND PDATE <![CDATA[>=]]> SYSDATE AND REPORTCOUNT <![CDATA[<]]> 3) P JOIN 
+	 		 (SELECT BOARD_SEQ, HASH1, HASH2, HASH3, HASH4, HASH5 
+	  		  FROM PM_TAG WHERE BOARD_CODE='PLAY' AND HASH1 LIKE #{searchText} OR HASH2 LIKE #{searchText} OR HASH3 LIKE #{searchText} OR HASH4 LIKE #{searchText} OR HASH5 LIKE #{searchText}) T 
+	 	ON P.SEQ=T.BOARD_SEQ
+		)
+		SELECT * FROM HASHLIST WHERE RNUM <![CDATA[>=]]> #{startRow} AND RNUM <![CDATA[<=]]> #{endRow}
+	</select>
+	
+	<!-- 해당 해쉬태그 글 개수(row count) -->
+	<select id="getHashTagRowCount" parameterType="com.petmeeting.joy.playboard.model.PlayboardSearchBean" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM (SELECT SEQ, BOARD_CODE, EMAIL, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
+			  PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL FROM PM_PLAYBOARD WHERE DEL=0 AND PDATE <![CDATA[>=]]> SYSDATE AND REPORTCOUNT <![CDATA[<]]> 3) P JOIN PM_TAG T ON P.SEQ=T.BOARD_SEQ
+		WHERE T.BOARD_CODE='PLAY' AND T.HASH1 LIKE #{searchText} OR T.HASH2 LIKE #{searchText} OR T.HASH3 LIKE #{searchText} OR T.HASH4 LIKE #{searchText} OR T.HASH5 LIKE #{searchText}
+	</select>
+		
+	<!-- 디테일  -->
+	<select id="getPlayboardDetail" parameterType="java.lang.Integer" resultType="com.petmeeting.joy.playboard.model.PlayboardDto">
+		SELECT SEQ, BOARD_CODE, EMAIL, NICKNAME, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
+				PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL
+		FROM PM_PLAYBOARD, (SELECT NICKNAME FROM PM_MEMBER WHERE EMAIL=(SELECT EMAIL FROM PM_PLAYBOARD WHERE SEQ=#{seq}))
+		WHERE SEQ=#{seq}
+	</select>
+	
+	<!-- 소모임 주최자 프로필 -->
+	<select id="getMakerProfile" parameterType="java.lang.String" resultType="com.petmeeting.joy.playboard.model.MyProfileDto">
+		SELECT EMAIL, MYPROFILE_IMG, MYAGE, MYSEX, MYINTRO
+		FROM PM_MYPROFILE
+		WHERE EMAIL=#{email}
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="plusReadCount" parameterType="java.lang.Integer">
+		UPDATE PM_PLAYBOARD
+		SET READCOUNT=READCOUNT+1
+		WHERE SEQ=#{seq}
+	</update>
+	
+	<!-- 좋아요를 누른 모임인지 판단 -->
+	<select id="likeCheck" parameterType="com.petmeeting.joy.playboard.model.PlayboardDto" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM PM_BOARD_LIKE
+		WHERE BOARD_CODE='PLAY' AND BOARD_SEQ=#{seq} AND EMAIL=#{email}
+	</select>
+	
+	<!-- 참여중인 모임인지 판단 -->
+	<select id="partCheck" parameterType="com.petmeeting.joy.playboard.model.PlayboardDto" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM PM_PLAYMEM
+		WHERE PLAY_SEQ=#{seq} AND EMAIL=#{email}
+	</select>
+	
+	<!-- 신고했었는지 판단 -->
+	<select id="reportCheck" parameterType="com.petmeeting.joy.playboard.model.PlayboardDto" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM PM_BOARD_REPORT
+		WHERE BOARD_SEQ=#{seq} AND EMAIL=#{email}
+	</select>
+	
+	<!-- 모임 참여자 등록 -->
+	<insert id="insertPlayMem" parameterType="com.petmeeting.joy.playboard.model.PlayboardDto" >
+		INSERT INTO PM_PLAYMEM(SEQ, PLAY_SEQ, EMAIL)
+		VALUES(PM_PLAYMEM_SEQ.NEXTVAL, #{seq}, #{email})
+	</insert>
+	<!-- 모임 참여인원 증가 -->
+	<update id="plusPersonCount" parameterType="java.lang.Integer">
+		UPDATE PM_PLAYBOARD
+		SET PERSONCOUNT = PERSONCOUNT+1
+		WHERE SEQ=#{seq}
+	</update>	
+	
+	<!-- 모임 참여자 삭제 -->
+	<delete id="deletePlayMem" parameterType="com.petmeeting.joy.playboard.model.PlayboardDto">
+		DELETE
+		FROM PM_PLAYMEM
+		WHERE PLAY_SEQ=#{seq} AND EMAIL=#{email}
+	</delete>
+	<!-- 모임 참여인원 감소 -->
+	<update id="minusPersonCount" parameterType="java.lang.Integer">
+		UPDATE PM_PLAYBOARD
+		SET PERSONCOUNT = PERSONCOUNT+-1
+		WHERE SEQ=#{seq}
+	</update>	
+	
+	<!-- 모임 좋아요 -->
+	<insert id="insertPlayLike" parameterType="com.petmeeting.joy.playboard.model.PlayboardDto">
+		INSERT INTO PM_BOARD_LIKE(SEQ, BOARD_CODE, BOARD_SEQ, EMAIL)
+		VALUES(PM_BOARD_LIKE_SEQ.NEXTVAL, 'PLAY', #{seq}, #{email})
+	</insert>
+	<!-- 모임 좋아요 증가 -->
+	<update id="plusLikeCount" parameterType="java.lang.Integer">
+		UPDATE PM_PLAYBOARD
+		SET LIKECOUNT = LIKECOUNT+1
+		WHERE SEQ=#{seq}
+	</update>
+	
+	<!-- 모임 좋아요 취소 -->
+	<delete id="deletePlayLike" parameterType="com.petmeeting.joy.playboard.model.PlayboardDto">
+		DELETE 
+		FROM PM_BOARD_LIKE
+		WHERE BOARD_CODE='PLAY' AND BOARD_SEQ=#{seq} AND EMAIL=#{email}
+	</delete>
+	<!-- 모임 좋아요 감소 -->
+	<update id="minusLikeCount" parameterType="java.lang.Integer">
+		UPDATE PM_PLAYBOARD
+		SET LIKECOUNT = LIKECOUNT-1
+		WHERE SEQ=#{seq}
+	</update>
+	
+	<!-- 모임 신고  -->
+	<insert id="insertPlayReport" parameterType="com.petmeeting.joy.playboard.model.ReportDto">
+		INSERT INTO PM_BOARD_REPORT(SEQ, BOARD_CODE, BOARD_SEQ, EMAIL, REASON)
+		VALUES(PM_BOARD_REPORT_SEQ.NEXTVAL, 'PLAY', #{board_seq}, #{email}, #{reason})
+	</insert>
+	<!-- 신고 수 증가 -->
+	<update id="plusReportCount" parameterType="com.petmeeting.joy.playboard.model.ReportDto">
+		UPDATE PM_PLAYBOARD
+		SET REPORTCOUNT = REPORTCOUNT+1
+		WHERE SEQ=#{board_seq}
+	</update>
+	
+	<!-- 해쉬태그 받아오기 -->
+	<select id="getHashTags" parameterType="java.lang.Integer" resultType="com.petmeeting.joy.playboard.model.PlayboardHashTagDto">
+		SELECT SEQ, BOARD_CODE, BOARD_SEQ, HASH1, HASH2, HASH3, HASH4, HASH5
+		FROM PM_TAG
+		WHERE BOARD_CODE='PLAY' AND BOARD_SEQ=#{seq}
+	</select>
+	
+	<!-- 글 수정 -->
+	<update id="updatePlayboard" parameterType="com.petmeeting.joy.playboard.model.PlayboardDto">
+	 	UPDATE PM_PLAYBOARD
+	 	SET TITLE=#{title}, CONTENT=#{content}, FILENAME=#{filename}, LOCATION=#{location}, LOCATION_DETAIL=#{location_detail}, CATEGORY=#{category}, 
+				PRICE=#{price}, PEOPLE=#{people}, PDATE=#{pdate}, EDATE=#{edate}
+		WHERE SEQ=#{seq}
+	</update>
+	<!-- 해쉬태그 수정 -->
+	<update id="updateHashTag" parameterType="com.petmeeting.joy.playboard.model.PlayboardHashTagDto">
+		UPDATE PM_TAG
+		SET	HASH1=#{hash1}, HASH2=#{hash2}, HASH3=#{hash3}, HASH4=#{hash4}, HASH5=#{hash5}
+		WHERE BOARD_CODE='PLAY' AND BOARD_SEQ=#{board_seq}
+	</update>
+	
+	<!-- 글 삭제 -->
+	<update id="deletePlayboard" parameterType="com.petmeeting.joy.playboard.model.PlayboardDto">
+	 	UPDATE PM_PLAYBOARD
+	 	SET DEL=1
+		WHERE SEQ=#{seq}
+	</update>
+	
+	<!-- 모임에 참여중인 멤버들 -->
+	<resultMap type="com.petmeeting.joy.playboard.model.MyProfileDto" id="memberProfile">
+		<result column="EMAIL" property="email"/>
+		<result column="MYPROFILE_IMG" property="myprofile_img"/>
+		<result column="MYAGE" property="myage"/>
+		<result column="MYSEX" property="mysex"/>
+		<result column="MYINTRO" property="myintro"/>
+	</resultMap>
+	<resultMap type="com.petmeeting.joy.playboard.model.PlayMemDto" id="playMems">
+		<result column="SEQ" property="seq"/>
+		<result column="PLAY_SEQ" property="play_seq"/>
+		<result column="EMAIL" property="email"/>
+		<result column="NICKNAME" property="nickname"/>
+		<collection property="memProfile" resultMap="memberProfile"/>	
+	</resultMap>
+	<select id="getPlayMems" parameterType="java.lang.Integer" resultMap="playMems">
+		SELECT P.SEQ, P.PLAY_SEQ, P.EMAIL, M.NICKNAME, F.MYPROFILE_IMG, F.MYAGE, F.MYSEX, F.MYINTRO 
+		FROM  PM_PLAYMEM P JOIN PM_MEMBER M	ON P.EMAIL = M.EMAIL FULL OUTER JOIN PM_MYPROFILE F ON P.EMAIL = F.EMAIL
+		WHERE P.PLAY_SEQ=#{seq}
+	</select>
+	
+	<!-- 주최자가 글 수정/삭제 시 참여자들에게 쪽지 전송 -->
+	<insert id="sendMsgPlayMem" parameterType="java.util.List">	
+		INSERT INTO PM_SENDMSG(SEQ, TO_EMAIL, FROM_EMAIL, CONTENT, SENDDATE, READDATE, IMPORTANT, READCHECK)	
+		SELECT PM_SENDMSG_SEQ.NEXTVAL, A.*
+		FROM(
+		<foreach collection="list" item="msgList" separator="UNION ALL ">
+		SELECT
+		#{msgList.to_email}, #{msgList.from_email}, #{msgList.content}, SYSDATE, NULL, 1, 0
+		FROM DUAL
+		</foreach>
+		) A
+	</insert>
+	<!-- 쪽지 받기 -->
+	<insert id="revMsgPlayMem" parameterType="java.util.List">	
+		INSERT INTO PM_REVMSG(SEQ, TO_EMAIL, FROM_EMAIL, CONTENT, SENDDATE, READDATE, IMPORTANT, READCHECK)	
+		SELECT PM_REVMSG_SEQ.NEXTVAL, A.*
+		FROM(
+		<foreach collection="list" item="msgList" separator="UNION ALL ">
+		SELECT
+		#{msgList.to_email}, #{msgList.from_email}, #{msgList.content}, SYSDATE, NULL, 1, 0
+		FROM DUAL
+		</foreach>
+		) A
+	</insert>
+	
+	<!-- 모임 참가인원 증가/감소 시 주최자에게 쪽지 전송 -->
+	<insert id="sendMsgPlayMaker" parameterType="com.petmeeting.joy.playboard.model.MsgDto">
+		INSERT INTO PM_SENDMSG(SEQ, TO_EMAIL, FROM_EMAIL, CONTENT, SENDDATE, READDATE, IMPORTANT, READCHECK)
+		VALUES(PM_SENDMSG_SEQ.NEXTVAL, #{to_email}, 'admin', #{content}, SYSDATE, NULL, 1, 0)
+	</insert>
+	<!-- 쪽지 받기 -->
+	<insert id="revMsgPlayMaker" parameterType="com.petmeeting.joy.playboard.model.MsgDto">
+		INSERT INTO PM_REVMSG(SEQ, TO_EMAIL, FROM_EMAIL, CONTENT, SENDDATE, READDATE, IMPORTANT, READCHECK)
+		VALUES(PM_REVMSG_SEQ.NEXTVAL, #{to_email}, 'admin', #{content}, SYSDATE, NULL, 1, 0)
+	</insert>
+		
+	<!-- Q&A 글 작성 -->
+	<insert id="insertPlayboardQnA" parameterType="com.petmeeting.joy.playboard.model.PlayboardQnADto">
+		INSERT INTO PM_PLAYBOARDQNA(SEQ, BOARD_SEQ, EMAIL, REF, PARENT, CONTENT, REGDATE, SECRET, DEL)
+		VALUES(PM_PLAYBOARDQNA_SEQ.NEXTVAL, #{board_seq}, #{email}, (SELECT NVL(MAX(REF), 0)+1 FROM PM_PLAYBOARDQNA), 0, #{content}, SYSDATE, #{secret}, 0)
+	</insert>
+	
+	<!-- Q&A 불러오기 -->
+	<resultMap type="com.petmeeting.joy.playboard.model.MyProfileDto" id="QnAProfile">
+		<result column="EMAIL" property="email"/>
+		<result column="MYPROFILE_IMG" property="myprofile_img"/>
+		<result column="MYAGE" property="myage"/>
+		<result column="MYSEX" property="mysex"/>
+		<result column="MYINTRO" property="myintro"/>
+	</resultMap>
+	<resultMap type="com.petmeeting.joy.playboard.model.PlayboardQnADto" id="QnAList">
+		<result column="SEQ" property="seq"/>
+		<result column="BOARD_SEQ" property="board_seq"/>
+		<result column="EMAIL" property="email"/>
+		<result column="NICKNAME" property="nickname"/>
+		<result column="PARENT" property="parent"/>
+		<result column="CONTENT" property="content"/>
+		<result column="REGDATE" property="regdate"/>
+		<result column="SECRET" property="secret"/>
+		<result column="DEL" property="del"/>
+		<collection property="memProfile" resultMap="QnAProfile"/>
+	</resultMap>
+	<select id="getPlayboardQnAList" parameterType="com.petmeeting.joy.playboard.model.PlayboardQnADto" resultMap="QnAList">	
+ 		WITH QNALIST AS (
+		SELECT Q.SEQ, Q.BOARD_SEQ, Q.EMAIL, Q.REF, M.NICKNAME, Q.PARENT, Q.CONTENT, Q.REGDATE, Q.SECRET, Q.DEL,
+				F.MYPROFILE_IMG, F.MYAGE, F.MYSEX, F.MYINTRO, ROW_NUMBER()OVER(ORDER BY Q.REF DESC, Q.PARENT ASC) AS RNUM
+		FROM PM_PLAYBOARDQNA Q JOIN PM_MEMBER M ON Q.EMAIL=M.EMAIL FULL OUTER JOIN PM_MYPROFILE F ON Q.EMAIL=F.EMAIL
+		WHERE Q.BOARD_SEQ=#{board_seq}	
+		)
+		SELECT * 
+		FROM QNALIST
+		WHERE RNUM <![CDATA[>=]]> #{start} AND RNUM <![CDATA[<=]]> #{end}
+	</select>
+	
+	<!-- Q&A 총 개수 -->
+	<select id="getTotalQnACount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM PM_PLAYBOARDQNA Q JOIN PM_MEMBER M ON Q.EMAIL=M.EMAIL FULL OUTER JOIN PM_MYPROFILE F ON Q.EMAIL=F.EMAIL
+		WHERE Q.BOARD_SEQ=#{board_seq}	
+	</select>
+	
+	<!-- Q&A 답변 작성 -->
+	<insert id="insertPlayboardQnAReply" parameterType="com.petmeeting.joy.playboard.model.PlayboardQnADto">
+		INSERT INTO PM_PLAYBOARDQNA(SEQ, BOARD_SEQ, EMAIL, REF, PARENT, CONTENT, REGDATE, SECRET, DEL)
+		VALUES(PM_PLAYBOARDQNA_SEQ.NEXTVAL, #{board_seq}, #{email}, (SELECT REF FROM PM_PLAYBOARDQNA WHERE SEQ=${parent}),#{parent}, #{content}, SYSDATE, (SELECT SECRET FROM PM_PLAYBOARDQNA WHERE SEQ=${parent}), 0)
+	</insert>
+	
+	<!-- 답변 유무 체크 -->
+	<select id="QnAreplyCheck" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM PM_PLAYBOARDQNA
+		WHERE PARENT=#{seq}
+	</select>
+	
+</mapper>

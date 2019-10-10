@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Admin">
+	<!-- 소모임 목록 -->
+	<select id="getPlayboardList" parameterType="com.petmeeting.joy.playboard.model.PlayboardSearchBean" resultType="com.petmeeting.joy.playboard.model.PlayboardDto">
+		SELECT SEQ, BOARD_CODE, EMAIL, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
+			   PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL
+		FROM (SELECT ROW_NUMBER()OVER(ORDER BY SEQ DESC)AS RNUM, SEQ, BOARD_CODE, EMAIL, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
+			   PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL
+			   FROM PM_PLAYBOARD
+			   WHERE 1=1 AND CATEGORY LIKE '%'||#{playCategory}||'%'  
+			<if test="searchCategory == '선택'">
+				)
+			</if>					
+			<if test="searchCategory == '삭제'">
+				AND DEL=1)
+			</if>			
+			<if test="searchCategory == '마감'">
+				AND PDATE <![CDATA[<=]]> SYSDATE)
+			</if>								
+			WHERE RNUM <![CDATA[>=]]> #{startRow} AND RNUM <![CDATA[<=]]> #{endRow}
+	</select>
+	<!-- 총 글의 개수(row count) -->
+	<select id="getTotalRowCount" parameterType="com.petmeeting.joy.playboard.model.PlayboardSearchBean" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM (SELECT ROW_NUMBER()OVER(ORDER BY SEQ DESC) AS RNUM, SEQ, BOARD_CODE, EMAIL, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
+			   PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL
+			   FROM PM_PLAYBOARD
+			   WHERE 1=1 AND CATEGORY LIKE '%'||#{playCategory}||'%'  
+			<if test="searchCategory == '선택'">
+				)
+			</if>					
+			<if test="searchCategory == '삭제'">
+				AND DEL=1)
+			</if>			
+			<if test="searchCategory == '마감'">
+				AND PDATE <![CDATA[<=]]> SYSDATE)
+			</if>								
+	</select>
+	
+	<!-- 소모임 글 삭제 -->
+	<delete id="deletePlayboard" parameterType="java.lang.Integer">
+		DELETE 
+		FROM PM_PLAYBOARD
+		WHERE SEQ=#{seq}
+	</delete>
+	<!-- 삭제된 모임의 참여자 목록 삭제 -->
+	<delete id="deletePlayMem" parameterType="java.lang.Integer">
+		DELETE
+		FROM PM_PLAYMEM
+		WHERE PLAY_SEQ=#{seq}
+	</delete>
+	<!-- 삭제된 모임의 Q&A 삭제 -->
+	<delete id="deletePlayboardQnA" parameterType="java.lang.Integer">
+		DELETE
+		FROM PM_PLAYBOARDQNA
+		WHERE BOARD_SEQ=#{seq}
+	</delete>
+
+</mapper>

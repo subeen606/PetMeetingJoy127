@@ -45,6 +45,10 @@ public class loginController {
 		
 		System.out.println("로그인 성공");
 		req.getSession().setAttribute("login", user);
+		
+		if(user.getEmail().equals("admin")) {
+			return "admin/adminMain";
+		}
 		System.out.println("세션생성");
 		return "main";
 	}
