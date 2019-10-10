@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="funding">
+
+<!-- fundingList 추가 -->
+<insert id="addFunding" parameterType="com.petmeeting.joy.funding.model.FundingDto">
+INSERT INTO PM_FUNDINGBOARD(SEQ, BOARD_CODE, EMAIL, TITLE, INTRO, CONTENT, THUMBNAIL, MAX_PRICE, CURRENT_PRICE, PERSONCOUNT, LIKECOUNT, READCOUNT,SDATE, EDATE, REGDATE)
+VALUES(PM_FUNDINGBOARD_SEQ.NEXTVAL, 'FUND', #{email}, #{title}, #{intro}, #{content}, #{thumbnail}, #{max_price}, 0, 0, 0, 0, #{sdate}, #{edate}, SYSDATE)
+</insert>
+
+
+<!-- fundingList 보기 -->
+<select id="fundingList" resultType="com.petmeeting.joy.funding.model.FundingDto" parameterType="com.petmeeting.joy.funding.model.FundingParam">
+SELECT * FROM(SELECT ROW_NUMBER()OVER(ORDER BY REGDATE DESC)AS RNUM,
+				SEQ, BOARD_CODE, EMAIL, TITLE, INTRO, CONTENT, THUMBNAIL, MAX_PRICE, CURRENT_PRICE,
+				PERSONCOUNT, LIKECOUNT, READCOUNT, SDATE, EDATE, REGDATE
+				FROM PM_FUNDINGBOARD
+			WHERE 1=1	
+
+<if test="categorys != null and categorys !=''">
+
+	<if test="categorys == '_update' ">
+	AND TITLE LIKE '%'||#{keyword}||'%'
+	ORDER BY REGDATE DESC
+	</if>
+	
+	<if test="categorys == '_like' ">
+	AND TITLE LIKE '%'||#{keyword}||'%'
+	ORDER BY LIKECOUNT DESC
+	</if>
+	
+	<if test="categorys == '_join' ">
+	AND TITLE LIKE '%'||#{keyword}||'%'
+	ORDER BY PERSONCOUNT DESC
+	</if>
+</if>
+)A
+</select>
+
+<!-- fundingDetail 보기  -->
+<select id="fundingDetail" parameterType="java.lang.Integer" resultType="com.petmeeting.joy.funding.model.FundingDto">
+SELECT SEQ, BOARD_CODE, EMAIL, TITLE, INTRO, CONTENT, THUMBNAIL, MAX_PRICE, CURRENT_PRICE, PERSONCOUNT, LIKECOUNT, READCOUNT, SDATE, EDATE, REGDATE
+FROM PM_FUNDINGBOARD
+WHERE SEQ=#{seq}
+</select>
+
+<!-- funding 수정 -->
+<update id="fundingUpdate" parameterType="com.petmeeting.joy.funding.model.FundingDto">
+UPDATE PM_FUNDINGBOARD
+SET TITLE=#{title},INTRO=#{intro},CONTENT=#{content},MAX_PRICE=#{max_price},SDATE=#{sdate},EDATE=#{edate}
+<if test="thumbnail != null and thumbnail != ''">
+,THUMBNAIL=#{thumbnail}
+</if>
+WHERE SEQ=#{seq}
+</update>
+
+<!-- funding 삭제 -->
+<delete id="fundingDelete" parameterType="com.petmeeting.joy.funding.model.FundingDto">
+DELETE FROM PM_FUNDINGBOARD
+WHERE SEQ=#{seq}
+</delete>
+
+<!-- 후원할때 회원정보 뿌리기 -->
+<select id="fundingmem" parameterType="java.lang.String" resultType="com.petmeeting.joy.login.model.MemberDto">
+SELECT EMAIL,PWD,NAME,NICKNAME,POSTCODE,ADDRESS,ADDRESS_DETAIL,ADDRESS_REFER,PHONE,TOTALPOINT,POINT,S_POINT,REPORTCOUNT,AUTH
+FROM PM_MEMBER
+WHERE EMAIL = #{email}
+</select>
+
+
+<!-- 조회수 -->
+<update id="readcount" parameterType="java.lang.Integer">
+UPDATE PM_FUNDINGBOARD
+SET READCOUNT = READCOUNT+1
+WHERE SEQ=#{seq}
+</update>
+
+<!-- 좋아요 관련 -->
+<!-- 좋아요 check -->
+<select id="isFundlike" parameterType="com.petmeeting.joy.funding.model.FundinglikeBean" resultType="java.lang.Integer">
+SELECT COUNT(*) FROM PM_BOARD_LIKE 
+WHERE BOARD_CODE='FUND' AND BOARD_SEQ=#{board_seq} AND EMAIL=#{email}
+</select>
+
+<!-- 좋아요 -->
+<insert id="Fundlike" parameterType="com.petmeeting.joy.funding.model.FundingDto">
+INSERT INTO PM_BOARD_LIKE(SEQ, BOARD_CODE, BOARD_SEQ, EMAIL)
+VALUES(PM_BOARD_LIKE_SEQ.NEXTVAL,'FUND', #{seq}, #{email})
+</insert>
+
+<update id="likeCountUp" parameterType="java.lang.Integer">
+UPDATE PM_FUNDINGBOARD
+SET LIKECOUNT = LIKECOUNT+1
+WHERE SEQ=#{seq}
+</update>
+
+<!-- 좋아요 취소 -->
+<delete id="FundNO" parameterType="com.petmeeting.joy.funding.model.FundingDto">
+DELETE PM_BOARD_LIKE
+WHERE BOARD_CODE='FUND' AND BOARD_SEQ=#{seq} AND EMAIL=#{email}
+</delete>
+
+<update id="likeCountDown" parameterType="java.lang.Integer">
+UPDATE PM_FUNDINGBOARD
+SET LIKECOUNT = LIKECOUNT-1
+WHERE SEQ=#{seq}
+</update>
+
+
+
+<!-- 후원하는 사람 관련 -->
+<!-- personCount -->
+<update id="personCount" parameterType="java.lang.Integer">
+UPDATE PM_FUNDINGBOARD
+SET PERSONCOUNT = PERSONCOUNT+1
+WHERE SEQ=#{seq}
+</update>
+
+<!-- 후원한 회원 -->
+<insert id="addFundMem" parameterType="com.petmeeting.joy.funding.model.FundingmemDto">
+INSERT INTO PM_FUNDINGMEM(SEQ, FUNDING_SEQ , EMAIL, DONATION)
+VALUES(PM_FUNDINGMEM_SEQ.NEXTVAL, #{funding_seq}, #{email}, #{donation})
+</insert>
+
+<!-- 중복후원 막기 -->
+<select id="isfunding" parameterType="com.petmeeting.joy.funding.model.FundingmemDto" resultType="java.lang.Integer">
+SELECT COUNT(*)
+FROM PM_FUNDINGMEM
+WHERE FUNDING_SEQ=#{funding_seq} AND EMAIL=#{email}
+</select>
+
+<!-- 현재금액 합계 -->
+<select id="sumfund" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+SELECT SUM(DONATION) FROM PM_FUNDINGMEM 
+WHERE FUNDING_SEQ=#{funding_seq}
+</select>
+
+<!-- 후원할시에 현재금액 update -->
+<update id="cPrice" parameterType="com.petmeeting.joy.funding.model.FundingmemDto">
+UPDATE PM_FUNDINGBOARD
+SET CURRENT_PRICE = CURRENT_PRICE + #{donation}
+WHERE SEQ= #{funding_seq}
+</update>
+
+<!-- 내역서 저장 -->
+<insert id="addfundingSta" parameterType="com.petmeeting.joy.funding.model.FundingStaDto">
+INSERT INTO PM_FUNDING_STA(SEQ,EMAIL,CONTENT)
+VALUES(#{seq},#{email},#{content})
+</insert>
+
+<!-- 내역서 보기 -->
+<select id="fundingStaDetail" parameterType="java.lang.Integer" resultType="com.petmeeting.joy.funding.model.FundingStaDto">
+SELECT * FROM PM_FUNDING_STA
+WHERE SEQ=#{seq}
+</select>
+
+<!-- 내역서 썼는지 check -->
+<select id="fundingStacheck" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+SELECT COUNT(*) FROM PM_FUNDING_STA
+WHERE SEQ=#{seq}
+</select>
+
+
+</mapper>
