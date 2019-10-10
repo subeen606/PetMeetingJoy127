@@ -64,11 +64,7 @@
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
-<<<<<<< HEAD
-               port="8090" protocol="HTTP/1.1"
-=======
                port="8080" protocol="HTTP/1.1"
->>>>>>> 547435fe7db65df54604a09c3c5ef2de1eec5ab1
                connectionTimeout="20000"
                redirectPort="8443" />
     -->

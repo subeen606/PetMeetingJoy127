@@ -93,7 +93,7 @@
                                         <a href="playboard.do" class="nav-link">소모임</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="" class="nav-link">후원</a>
+                                        <a href="funding.do" class="nav-link">후원</a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="" class="nav-link">스토어</a>
