@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.petmeeting.joy.admin.service.AdminService;
+import com.petmeeting.joy.playboard.model.MyProfileDto;
+import com.petmeeting.joy.playboard.model.PlayMemDto;
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
 import com.petmeeting.joy.playboard.service.PlayboardService;
@@ -71,7 +73,14 @@ public class AdminCotroller {
 	@RequestMapping(value = "adminPlayboardDetail.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public String adminPlayboardDetail(int seq, Model model) {
 		PlayboardDto pDto = adminService.getPlayboardDetail(seq);
+		
+		List<PlayMemDto> partList = playboardService.getPlayMems(seq);
+		
+		MyProfileDto profile = playboardService.getMakerProfile(pDto.getEmail());
+		
 		model.addAttribute("detail", pDto);
+		model.addAttribute("profile", profile);
+		model.addAttribute("partList", partList);
 		return "admin/playboard/playboardDetail";
 	}
 }
