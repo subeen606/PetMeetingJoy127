@@ -36,6 +36,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+
 	public List<FundingDto> getFundingList(fundingBean fbean) {
 		return adminDao.getFundingList(fbean);
 	}
@@ -43,6 +44,10 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int getFundingCount(fundingBean fbean) {
 		return adminDao.getFundingCount(fbean);
+
+	public PlayboardDto getPlayboardDetail(int seq) {
+		return adminDao.getPlayboardDetail(seq);
+
 	}
 
 }

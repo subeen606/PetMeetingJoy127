@@ -16,12 +16,16 @@ import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.fundingBean;
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
+import com.petmeeting.joy.playboard.service.PlayboardService;
 
 @Controller
 public class AdminCotroller {
 	
 	@Autowired
 	AdminService adminService;
+	
+	@Autowired
+	PlayboardService playboardService;
 
 	@RequestMapping(value = "adminPlayboardList.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public String adminPlayboardList(PlayboardSearchBean search, Model model) {
@@ -66,6 +70,7 @@ public class AdminCotroller {
 		return "redirect:adminPlayboardList.do";
 	}
 	
+
 	
 	
 	@RequestMapping(value = "adminFundingList.do",method = {RequestMethod.GET,RequestMethod.POST})
@@ -92,5 +97,12 @@ public class AdminCotroller {
 		model.addAttribute("totalRecordCount", totalfundingCount);
 		
 		return "admin/fundingboard/fundingboardAdmin";
+
+	@RequestMapping(value = "adminPlayboardDetail.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String adminPlayboardDetail(int seq, Model model) {
+		PlayboardDto pDto = adminService.getPlayboardDetail(seq);
+		model.addAttribute("detail", pDto);
+		return "admin/playboard/playboardDetail";
+
 	}
 }

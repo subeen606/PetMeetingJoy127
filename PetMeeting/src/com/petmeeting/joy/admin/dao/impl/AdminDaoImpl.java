@@ -57,4 +57,9 @@ public class AdminDaoImpl implements AdminDao {
 		return sqlSession.selectOne(namespace + "getFundingCount", fbean);
 	}
 
+	@Override
+	public PlayboardDto getPlayboardDetail(int seq) {
+		return sqlSession.selectOne(namespace+"getPlayboardDetail", seq);
+	}
+
 }

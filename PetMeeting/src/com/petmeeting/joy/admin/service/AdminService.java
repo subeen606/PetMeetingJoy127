@@ -13,6 +13,10 @@ public interface AdminService {
 	
 	public void deletePlayboard(int seq);
 	
+
 	public List<FundingDto> getFundingList(fundingBean fbean);
 	public int getFundingCount(fundingBean fbean);
+
+	public PlayboardDto getPlayboardDetail(int seq);
+
 }
