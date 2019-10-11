@@ -59,5 +59,13 @@
 		FROM PM_PLAYBOARDQNA
 		WHERE BOARD_SEQ=#{seq}
 	</delete>
+	
+	<!-- 소모임 디테일 -->
+	<select id="getPlayboardDetail" parameterType="java.lang.Integer" resultType="com.petmeeting.joy.playboard.model.PlayboardDto">
+		SELECT SEQ, BOARD_CODE, EMAIL, NICKNAME, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
+				PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL
+		FROM PM_PLAYBOARD, (SELECT NICKNAME FROM PM_MEMBER WHERE EMAIL=(SELECT EMAIL FROM PM_PLAYBOARD WHERE SEQ=#{seq}))
+		WHERE SEQ=#{seq}
+	</select>
 
 </mapper>

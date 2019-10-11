@@ -10,4 +10,6 @@ public interface AdminService {
 	public int getPlayboardTotalRowCount(PlayboardSearchBean search);
 	
 	public void deletePlayboard(int seq);
+	
+	public PlayboardDto getPlayboardDetail(int seq);
 }

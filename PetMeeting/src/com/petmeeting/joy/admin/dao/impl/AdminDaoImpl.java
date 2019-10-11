@@ -43,4 +43,9 @@ public class AdminDaoImpl implements AdminDao {
 		sqlSession.delete(namespace+"deletePlayboardQnA", seq);
 	}
 
+	@Override
+	public PlayboardDto getPlayboardDetail(int seq) {
+		return sqlSession.selectOne(namespace+"getPlayboardDetail", seq);
+	}
+
 }

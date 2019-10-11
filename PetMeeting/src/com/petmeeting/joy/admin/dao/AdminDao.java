@@ -13,5 +13,6 @@ public interface AdminDao {
 	public void deletePlayboard(int seq);
 	public void deletePlayMem(int seq);
 	public void deletePlayboardQnA(int seq);
-
+	
+	public PlayboardDto getPlayboardDetail(int seq);
 }

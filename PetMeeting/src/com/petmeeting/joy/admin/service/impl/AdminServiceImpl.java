@@ -33,4 +33,9 @@ public class AdminServiceImpl implements AdminService {
 		adminDao.deletePlayboardQnA(seq);
 	}
 
+	@Override
+	public PlayboardDto getPlayboardDetail(int seq) {
+		return adminDao.getPlayboardDetail(seq);
+	}
+
 }
