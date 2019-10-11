@@ -59,5 +59,41 @@
 		FROM PM_PLAYBOARDQNA
 		WHERE BOARD_SEQ=#{seq}
 	</delete>
-
+	
+	
+	<!-- funding 리스트목록 -->
+	<select id="getFundingList" parameterType="com.petmeeting.joy.funding.model.fundingBean" resultType="com.petmeeting.joy.funding.model.FundingDto">
+		SELECT * FROM(SELECT ROW_NUMBER()OVER(ORDER BY REGDATE DESC)AS RNUM,
+				SEQ, BOARD_CODE, EMAIL, TITLE, INTRO, CONTENT, THUMBNAIL, MAX_PRICE, CURRENT_PRICE,
+				PERSONCOUNT, LIKECOUNT, READCOUNT, SDATE, EDATE, REGDATE
+				FROM PM_FUNDINGBOARD
+		WHERE 1=1
+		
+		<if test="f_categorys == '진행중'">
+		AND EDATE <![CDATA[>=]]> SYSDATE)	
+		</if>
+		<if test="f_categorys == '마감'">
+		AND EDATE <![CDATA[<=]]> SYSDATE)		
+		</if>
+		)A
+	<!-- 페이징 번호 붙이기 -->
+	WHERE RNUM BETWEEN ${start} AND ${end}			
+	</select>
+	
+	<!-- 리스트 수 가지고오기 -->
+	<select id="getFundingCount" parameterType="com.petmeeting.joy.funding.model.fundingBean" resultType="java.lang.Integer">
+	SELECT NVL(COUNT(*),0) AS CNT
+	FROM PM_FUNDINGBOARD
+	
+	WHERE 1=1
+	
+	<if test="f_categorys == '진행중'">
+		AND EDATE <![CDATA[>=]]> SYSDATE)	
+	</if>
+	<if test="f_categorys == '마감'">
+		AND EDATE <![CDATA[<=]]> SYSDATE)		
+	</if>
+	</select>
+	
+	
 </mapper>
