@@ -16,5 +16,7 @@
 
 <a href="adminPlayboardList.do">소모임 목록</a>
 
+<a href="adminFundingList.do">funding List</a>
+
 </body>
 </html>
