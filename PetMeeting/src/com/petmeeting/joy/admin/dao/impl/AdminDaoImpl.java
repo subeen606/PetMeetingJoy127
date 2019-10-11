@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.petmeeting.joy.admin.dao.AdminDao;
+import com.petmeeting.joy.funding.model.FundingDto;
+import com.petmeeting.joy.funding.model.fundingBean;
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
 
@@ -41,6 +43,18 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public void deletePlayboardQnA(int seq) {
 		sqlSession.delete(namespace+"deletePlayboardQnA", seq);
+	}
+	
+	/*funding*/
+	
+	@Override
+	public List<FundingDto> getFundingList(fundingBean fbean) {	
+		return sqlSession.selectList(namespace + "getFundingList", fbean);
+	}
+
+	@Override
+	public int getFundingCount(fundingBean fbean) {
+		return sqlSession.selectOne(namespace + "getFundingCount", fbean);
 	}
 
 }
