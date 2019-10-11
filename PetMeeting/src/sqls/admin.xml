@@ -76,6 +76,7 @@
 		<if test="f_categorys == '마감'">
 		AND EDATE <![CDATA[<=]]> SYSDATE)		
 		</if>
+		
 		)A
 	<!-- 페이징 번호 붙이기 -->
 	WHERE RNUM BETWEEN ${start} AND ${end}			

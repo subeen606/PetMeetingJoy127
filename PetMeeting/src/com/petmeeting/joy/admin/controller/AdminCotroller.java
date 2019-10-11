@@ -98,6 +98,8 @@ public class AdminCotroller {
 		
 		return "admin/fundingboard/fundingboardAdmin";
 
+	}
+	
 	@RequestMapping(value = "adminPlayboardDetail.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public String adminPlayboardDetail(int seq, Model model) {
 		PlayboardDto pDto = adminService.getPlayboardDetail(seq);
