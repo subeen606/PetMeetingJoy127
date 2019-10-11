@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.petmeeting.joy.admin.dao.AdminDao;
 import com.petmeeting.joy.admin.service.AdminService;
+import com.petmeeting.joy.funding.model.FundingDto;
+import com.petmeeting.joy.funding.model.fundingBean;
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
 
@@ -34,8 +36,18 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+
+	public List<FundingDto> getFundingList(fundingBean fbean) {
+		return adminDao.getFundingList(fbean);
+	}
+
+	@Override
+	public int getFundingCount(fundingBean fbean) {
+		return adminDao.getFundingCount(fbean);
+
 	public PlayboardDto getPlayboardDetail(int seq) {
 		return adminDao.getPlayboardDetail(seq);
+
 	}
 
 }

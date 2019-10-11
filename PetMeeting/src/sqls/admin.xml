@@ -60,6 +60,44 @@
 		WHERE BOARD_SEQ=#{seq}
 	</delete>
 	
+
+	
+	<!-- funding 리스트목록 -->
+	<select id="getFundingList" parameterType="com.petmeeting.joy.funding.model.fundingBean" resultType="com.petmeeting.joy.funding.model.FundingDto">
+		SELECT * FROM(SELECT ROW_NUMBER()OVER(ORDER BY REGDATE DESC)AS RNUM,
+				SEQ, BOARD_CODE, EMAIL, TITLE, INTRO, CONTENT, THUMBNAIL, MAX_PRICE, CURRENT_PRICE,
+				PERSONCOUNT, LIKECOUNT, READCOUNT, SDATE, EDATE, REGDATE
+				FROM PM_FUNDINGBOARD
+		WHERE 1=1
+		
+		<if test="f_categorys == '진행중'">
+		AND EDATE <![CDATA[>=]]> SYSDATE)	
+		</if>
+		<if test="f_categorys == '마감'">
+		AND EDATE <![CDATA[<=]]> SYSDATE)		
+		</if>
+		)A
+	<!-- 페이징 번호 붙이기 -->
+	WHERE RNUM BETWEEN ${start} AND ${end}			
+	</select>
+	
+	<!-- 리스트 수 가지고오기 -->
+	<select id="getFundingCount" parameterType="com.petmeeting.joy.funding.model.fundingBean" resultType="java.lang.Integer">
+	SELECT NVL(COUNT(*),0) AS CNT
+	FROM PM_FUNDINGBOARD
+	
+	WHERE 1=1
+	
+	<if test="f_categorys == '진행중'">
+		AND EDATE <![CDATA[>=]]> SYSDATE)	
+	</if>
+	<if test="f_categorys == '마감'">
+		AND EDATE <![CDATA[<=]]> SYSDATE)		
+	</if>
+	</select>
+	
+	
+
 	<!-- 소모임 디테일 -->
 	<select id="getPlayboardDetail" parameterType="java.lang.Integer" resultType="com.petmeeting.joy.playboard.model.PlayboardDto">
 		SELECT SEQ, BOARD_CODE, EMAIL, NICKNAME, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
@@ -67,5 +105,6 @@
 		FROM PM_PLAYBOARD, (SELECT NICKNAME FROM PM_MEMBER WHERE EMAIL=(SELECT EMAIL FROM PM_PLAYBOARD WHERE SEQ=#{seq}))
 		WHERE SEQ=#{seq}
 	</select>
+
 
 </mapper>
