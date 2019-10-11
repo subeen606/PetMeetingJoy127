@@ -97,10 +97,6 @@ public class AdminCotroller {
 		model.addAttribute("totalRecordCount", totalfundingCount);
 		
 		return "admin/fundingboard/fundingboardAdmin";
-<<<<<<< HEAD
-=======
-
->>>>>>> 41cb3d594b64e43dae7e8d23ff2bdab5fbfa8773
 	}
 	
 	@RequestMapping(value = "adminPlayboardDetail.do", method= {RequestMethod.GET, RequestMethod.POST})

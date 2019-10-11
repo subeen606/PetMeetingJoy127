@@ -45,11 +45,6 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.getFundingCount(fbean);
 	}
 	
-<<<<<<< HEAD
-	
-=======
-	@Override
->>>>>>> 41cb3d594b64e43dae7e8d23ff2bdab5fbfa8773
 	public PlayboardDto getPlayboardDetail(int seq) {
 		return adminDao.getPlayboardDetail(seq);
 
