@@ -88,14 +88,10 @@ $(function () {
 		
 		var check = confirm("신고는 취소하실 수 없습니다. 신고하시겠습니까?\n(무분별한 신고는 운영자에 의해 제재될 수 있습니다.)");
 		if(check){
-			
-			
-			//alert(checked);			
-			
-				$("#reportFrm").attr("action", "reportAf.do").submit();	
-				window.opener.document.location.reload(true);
-				self.close();	
-				
+
+			$("#reportFrm").attr("action", "reportAf.do").submit();	
+			window.opener.document.location.reload(true);
+			self.close();				
 				 
 			 /*
 			 var formdata = $("#reportFrm").serialize();

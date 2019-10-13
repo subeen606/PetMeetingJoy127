@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.petmeeting.joy.admin.dao.AdminDao;
+import com.petmeeting.joy.admin.model.BoardReportDto;
 import com.petmeeting.joy.admin.service.AdminService;
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.fundingBean;
@@ -36,6 +37,17 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	public List<BoardReportDto> getBoardReportReason(BoardReportDto reportDto) {
+		return adminDao.getBoardReportReason(reportDto);
+	}
+
+	@Override
+	public void deleteBoardReport(BoardReportDto reportDto) {
+		adminDao.deleteBoardReport(reportDto);
+		adminDao.minusReportCount(reportDto);
+	}
+
+	@Override
 	public List<FundingDto> getFundingList(fundingBean fbean) {
 		return adminDao.getFundingList(fbean);
 	}
@@ -45,11 +57,8 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.getFundingCount(fbean);
 	}
 	
-<<<<<<< HEAD
-	
-=======
+
 	@Override
->>>>>>> 41cb3d594b64e43dae7e8d23ff2bdab5fbfa8773
 	public PlayboardDto getPlayboardDetail(int seq) {
 		return adminDao.getPlayboardDetail(seq);
 

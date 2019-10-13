@@ -2,6 +2,7 @@ package com.petmeeting.joy.admin.service;
 
 import java.util.List;
 
+import com.petmeeting.joy.admin.model.BoardReportDto;
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.fundingBean;
 import com.petmeeting.joy.playboard.model.PlayboardDto;
@@ -13,7 +14,11 @@ public interface AdminService {
 	
 	public void deletePlayboard(int seq);
 	
-
+	public List<BoardReportDto> getBoardReportReason(BoardReportDto reportDto);
+	
+	public void deleteBoardReport(BoardReportDto reportDto);
+	
+	
 	public List<FundingDto> getFundingList(fundingBean fbean);
 	public int getFundingCount(fundingBean fbean);
 

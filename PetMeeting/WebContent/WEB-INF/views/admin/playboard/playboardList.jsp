@@ -13,7 +13,7 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	
 	<link rel="icon" href="${pageContext.request.contextPath}/common/navbar/img/petmeetingicon.png">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/admin_resources/css/playboard.css?after">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/admin_resources/css/playboard.css">
 </head>
 <body>
 
@@ -46,7 +46,7 @@
 		
 			<thead>
 				<tr>
-					<th><input type="checkbox" name="alldel"></th><th>No.</th><th>모임 유형</th><th>제목</th><th>작성자</th><th>작성일</th>
+					<th><input type="checkbox" name="alldel"></th><th>No.</th><th>모임 유형</th><th>제목</th><th>작성자</th><th>신고 수</th><th>작성일</th>
 				</tr>
 			</thead>
 			
@@ -58,6 +58,7 @@
 						<td align="center">${pList.category }</td>
 						<td style="padding-left: 20px;"><a class="titleAnchor" seq="${pList.seq }">${pList.title }</a></td>
 						<td align="center">${pList.email }</td>
+						<td align="center">${pList.reportcount }</td>
 						<td align="center"><fmt:formatDate value="${pList.regdate }"  pattern="yyyy.MM.dd HH:mm"/></td>
 					</tr>
 				</c:forEach>
@@ -67,12 +68,14 @@
 	
 	<button type="button" id="deleteBtn" onclick="delCheck()">삭제</button>
 	
+	<div class="pagingWrap">
 	<jsp:include page="/WEB-INF/views/admin/playboard/paging.jsp" flush="false">													
 			<jsp:param name="pageNumber" value="${searchBean.currPage }" />
 			<jsp:param name="totalRecordCount" value="${totalRowCount }" />
 			<jsp:param name="pageCountPerScreen" value="10" />
 			<jsp:param name="recordCountPerPage" value="10" />
 	</jsp:include>
+	</div>
 </div>
 
 <script type="text/javascript">
@@ -127,7 +130,13 @@ $(function () {
 	
 	/* 선택삭제 */
 	$("#deleteBtn").click(function () {
-		$("#delFrm").submit();
+		var check = confirm("선택하신 글들을 삭제하시겠습니까?");
+		if(check){
+			$("#delFrm").submit();
+		}else{
+			return false;
+		}
+		
 	});
 	
 	$(".titleAnchor").click(function () {

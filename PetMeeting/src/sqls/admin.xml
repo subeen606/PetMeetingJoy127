@@ -60,7 +60,46 @@
 		WHERE BOARD_SEQ=#{seq}
 	</delete>
 	
+	<!-- 소모임 디테일 -->
+	<select id="getPlayboardDetail" parameterType="java.lang.Integer" resultType="com.petmeeting.joy.playboard.model.PlayboardDto">
+		SELECT SEQ, BOARD_CODE, EMAIL, NICKNAME, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
+				PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL
+		FROM PM_PLAYBOARD, (SELECT NICKNAME FROM PM_MEMBER WHERE EMAIL=(SELECT EMAIL FROM PM_PLAYBOARD WHERE SEQ=#{seq}))
+		WHERE SEQ=#{seq}
+	</select>
 
+	<!-- 신고 내용 불러오기 -->
+	<select id="getBoardReportReason" parameterType="com.petmeeting.joy.admin.model.BoardReportDto" resultType="com.petmeeting.joy.admin.model.BoardReportDto">
+		SELECT R.SEQ, R.BOARD_CODE, R.BOARD_SEQ, R.EMAIL, M.NICKNAME, R.REASON
+		FROM PM_BOARD_REPORT R JOIN PM_MEMBER M ON R.EMAIL = M.EMAIL
+		WHERE R.BOARD_CODE=#{board_code} AND R.BOARD_SEQ=#{board_seq}
+		ORDER BY R.SEQ ASC
+	</select>
+
+	<!-- 신고 삭제 -->
+	<delete id="deleteBoardReport" parameterType="com.petmeeting.joy.admin.model.BoardReportDto">
+		DELETE
+		FROM PM_BOARD_REPORT
+		WHERE SEQ=#{seq} AND BOARD_CODE=#{board_code} AND BOARD_SEQ=#{board_seq} 
+	</delete>
+	
+	<!-- 신고 카운트 감소 -->
+	<update id="minusReportCount" parameterType="com.petmeeting.joy.admin.model.BoardReportDto">
+		UPDATE 
+		<if test="board_code == 'PLAY'">
+			PM_PLAYBOARD
+		</if>
+		<if test="board_code != 'PLAY'">
+			PM_FREEBOARD
+		</if>
+		SET REPORTCOUNT = REPORTCOUNT-1
+		WHERE SEQ=#{board_seq}
+	</update>
+	
+	
+	
+	
+	
 	
 	<!-- funding 리스트목록 -->
 	<select id="getFundingList" parameterType="com.petmeeting.joy.funding.model.fundingBean" resultType="com.petmeeting.joy.funding.model.FundingDto">
@@ -99,13 +138,7 @@
 	
 	
 
-	<!-- 소모임 디테일 -->
-	<select id="getPlayboardDetail" parameterType="java.lang.Integer" resultType="com.petmeeting.joy.playboard.model.PlayboardDto">
-		SELECT SEQ, BOARD_CODE, EMAIL, NICKNAME, TITLE, CONTENT, FILENAME, LOCATION, LOCATION_DETAIL, CATEGORY, 
-				PRICE, PEOPLE, PERSONCOUNT, READCOUNT, LIKECOUNT, REPORTCOUNT, PDATE, EDATE, REGDATE, DEL
-		FROM PM_PLAYBOARD, (SELECT NICKNAME FROM PM_MEMBER WHERE EMAIL=(SELECT EMAIL FROM PM_PLAYBOARD WHERE SEQ=#{seq}))
-		WHERE SEQ=#{seq}
-	</select>
+	
 
 
 </mapper>

@@ -81,6 +81,9 @@ a{
 	font-size: 15px;
 	background-color: #AF4034;
 	color: #fff;
+	float: left;
+	margin-left: 10px;
+	cursor: pointer;
 }
 
 .titleAnchor{
@@ -90,3 +93,8 @@ a{
 	font-weight: bold;
 }
 
+.pagingWrap{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 50px;
+}

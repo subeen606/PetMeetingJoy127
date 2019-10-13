@@ -10,16 +10,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.petmeeting.joy.admin.model.BoardReportDto;
 import com.petmeeting.joy.admin.service.AdminService;
-<<<<<<< HEAD
+
 import com.petmeeting.joy.playboard.model.MyProfileDto;
 import com.petmeeting.joy.playboard.model.PlayMemDto;
-=======
+
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.fundingBean;
->>>>>>> master
+
 import com.petmeeting.joy.playboard.model.PlayboardDto;
+import com.petmeeting.joy.playboard.model.PlayboardHashTagDto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
 import com.petmeeting.joy.playboard.service.PlayboardService;
 
@@ -75,7 +79,45 @@ public class AdminCotroller {
 		return "redirect:adminPlayboardList.do";
 	}
 	
+	@RequestMapping(value = "adminPlayboardDetail.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String adminPlayboardDetail(int seq, Model model) {
+		PlayboardDto pDto = adminService.getPlayboardDetail(seq);
+		
+		List<PlayMemDto> partList = playboardService.getPlayMems(seq);
+		
+		MyProfileDto profile = playboardService.getMakerProfile(pDto.getEmail());
+		
+		PlayboardHashTagDto hashs = playboardService.getHashTags(seq);
+		
+		model.addAttribute("detail", pDto);
+		model.addAttribute("hashs", hashs);
+		model.addAttribute("profile", profile);
+		model.addAttribute("partList", partList);
+		return "admin/playboard/playboardDetail";
 
+	}
+
+	@RequestMapping(value = "adminBoardReportReason.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String adminBoardReportReason(@RequestParam("seq") int seq, @RequestParam("board_code") String board_code, Model model) {
+		
+		System.out.println("seq : " + seq);
+		System.out.println("board_code : " + board_code);
+		
+		List<BoardReportDto> reportList = adminService.getBoardReportReason(new BoardReportDto(board_code, seq));
+		model.addAttribute("reasons", reportList);
+		return "admin/reportReason";
+	}
+	
+	@RequestMapping(value = "adminBoradReportDelete.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String adminBoradReportDelete(BoardReportDto reportDto, RedirectAttributes redirectAttributes) {
+		System.out.println(reportDto.toString());
+		adminService.deleteBoardReport(reportDto);
+		
+		redirectAttributes.addAttribute("seq", reportDto.getBoard_seq());
+		redirectAttributes.addAttribute("board_code", reportDto.getBoard_code());
+		
+		return "redirect:/adminBoardReportReason.do";
+	}
 	
 	
 	@RequestMapping(value = "adminFundingList.do",method = {RequestMethod.GET,RequestMethod.POST})
@@ -102,24 +144,7 @@ public class AdminCotroller {
 		model.addAttribute("totalRecordCount", totalfundingCount);
 		
 		return "admin/fundingboard/fundingboardAdmin";
-<<<<<<< HEAD
-=======
-
->>>>>>> 41cb3d594b64e43dae7e8d23ff2bdab5fbfa8773
 	}
 	
-	@RequestMapping(value = "adminPlayboardDetail.do", method= {RequestMethod.GET, RequestMethod.POST})
-	public String adminPlayboardDetail(int seq, Model model) {
-		PlayboardDto pDto = adminService.getPlayboardDetail(seq);
-		
-		List<PlayMemDto> partList = playboardService.getPlayMems(seq);
-		
-		MyProfileDto profile = playboardService.getMakerProfile(pDto.getEmail());
-		
-		model.addAttribute("detail", pDto);
-		model.addAttribute("profile", profile);
-		model.addAttribute("partList", partList);
-		return "admin/playboard/playboardDetail";
-
-	}
+	
 }
