@@ -191,8 +191,8 @@ public class FundingServiceImpl implements FundingService {
 	}
 
 	@Override
-	public boolean fundingDelete(FundingDto dto) {
-		return funddao.fundingDelete(dto);
+	public boolean fundingDelete(int seq) {
+		return funddao.fundingDelete(seq);
 	}
 
 	@Override

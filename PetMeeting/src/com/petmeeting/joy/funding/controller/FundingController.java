@@ -209,27 +209,28 @@ public class FundingController {
 		boolean b = service.fundUpdate(dto,bean);
 		if(b) {
 			System.out.println("업데이트 성공");
-			return "redirect:/funding.do";
+			return "redirect:/adminFundingList.do";
 		}
 		else {
 			System.out.println("업데이트 실패");
-			return "redirect:/funding.do";
+			return "redirect:/adminFundingList.do";
 		}
 	}
 	
 	/*삭제*/
 	@RequestMapping(value = "fundDelete.do",method = {RequestMethod.GET,RequestMethod.POST})
-	public String fundDelete(FundingDto dto) {
-		boolean b = service.fundingDelete(dto);
-		if(b) {
-			  System.out.println("삭제성공");
-			  return "redirect:/funding.do";
-			  }
-		else {
-			System.out.println("삭제실패");
-			return "redirect:/funding.do";
+	public String fundDelete(HttpServletRequest req) {
+		String [] Sseq = req.getParameterValues("seq");
+		int[] seq = new int[Sseq.length];
+		
+		for(int i=0; i<Sseq.length; i++) {
+			seq[i] = Integer.parseInt(Sseq[i]);
+			System.out.println("들어온 seq : " + seq[i] );
+			
+			service.fundingDelete(seq[i]);
 			}
-		}
+		return "redirect:/adminFundingList.do";
+	}
 	
 	/*관리자 내역서 글쓰기 창*/
 	@RequestMapping(value = "statement.do",method = {RequestMethod.GET,RequestMethod.POST})

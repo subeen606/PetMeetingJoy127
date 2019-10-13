@@ -16,12 +16,22 @@ public interface AdminDao {
 	public void deletePlayMem(int seq);
 	public void deletePlayboardQnA(int seq);
 	
-
+	public PlayboardDto getPlayboardDetail(int seq);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/*funding*/
 	public List<FundingDto> getFundingList(fundingBean fbean);
 	public int getFundingCount(fundingBean fbean);
 
 
-	public PlayboardDto getPlayboardDetail(int seq);
+	
 
 }

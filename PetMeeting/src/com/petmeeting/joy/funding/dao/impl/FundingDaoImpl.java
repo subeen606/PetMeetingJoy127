@@ -120,8 +120,8 @@ public class FundingDaoImpl implements FundingDao {
 	}
 
 	@Override
-	public boolean fundingDelete(FundingDto dto) {
-		int n = sqlSession.delete(ns + "fundingDelete", dto);
+	public boolean fundingDelete(int seq) {
+		int n = sqlSession.delete(ns + "fundingDelete", seq);
 		return n>0?true:false;
 	}
 

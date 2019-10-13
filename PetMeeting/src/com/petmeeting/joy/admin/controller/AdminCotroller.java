@@ -12,13 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.petmeeting.joy.admin.service.AdminService;
-<<<<<<< HEAD
 import com.petmeeting.joy.playboard.model.MyProfileDto;
 import com.petmeeting.joy.playboard.model.PlayMemDto;
-=======
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.fundingBean;
->>>>>>> master
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
 import com.petmeeting.joy.playboard.service.PlayboardService;
@@ -85,20 +82,22 @@ public class AdminCotroller {
 		int start = sn * fbean.getRecordCountPerPage() + 1;
 		int end = (sn + 1) * fbean.getRecordCountPerPage();
 		
+		fbean.setStart(start);
+		fbean.setEnd(end);
+		
 		System.out.println("펀딩 리스트에 들어온 admin: " + fbean.toString());
 		
 		List<FundingDto> flist = adminService.getFundingList(fbean);
 		int totalfundingCount = adminService.getFundingCount(fbean);
 		
-		fbean.setStart(start);
-		fbean.setEnd(end);
+		System.out.println("펀딩 admin리스트 수: " + totalfundingCount);
 		
 		model.addAttribute("flist", flist);
 		model.addAttribute("f_categorys", fbean.getF_categorys());
-		
+			
 		model.addAttribute("pageNumber", sn);
 		model.addAttribute("pageCountPerScreen", 10);
-		model.addAttribute("recordCountPerPage", fbean.getRecordCountPerPage());//그냥 10이라고 써도되지만 이렇게도 한번 써보자
+		model.addAttribute("recordCountPerPage", fbean.getRecordCountPerPage());
 		model.addAttribute("totalRecordCount", totalfundingCount);
 		
 		return "admin/fundingboard/fundingboardAdmin";

@@ -58,7 +58,7 @@ WHERE SEQ=#{seq}
 </update>
 
 <!-- funding 삭제 -->
-<delete id="fundingDelete" parameterType="com.petmeeting.joy.funding.model.FundingDto">
+<delete id="fundingDelete" parameterType="java.lang.Integer">
 DELETE FROM PM_FUNDINGBOARD
 WHERE SEQ=#{seq}
 </delete>

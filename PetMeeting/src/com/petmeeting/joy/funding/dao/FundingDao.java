@@ -19,7 +19,7 @@ public interface FundingDao {
 	/*수정*/
 	public boolean fundingUpdate(FundingDto dto);
 	/*삭제*/
-	public boolean fundingDelete(FundingDto dto);
+	public boolean fundingDelete(int seq);
 	
 	/* 좋아요 체크 */
 	public int isFundlike(FundinglikeBean bean);

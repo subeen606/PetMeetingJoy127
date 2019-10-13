@@ -32,7 +32,7 @@ public interface FundingService {
 	public FundingDto fundingUpdate(int seq);
 	
 	public boolean fundUpdate(FundingDto dto, DayBean bean);
-	public boolean fundingDelete(FundingDto dto);
+	public boolean fundingDelete(int seq);
 	
 	public boolean addfundingSta(FundingStaDto sta);
 	public FundingStaDto fundingStaDetail(int seq);
