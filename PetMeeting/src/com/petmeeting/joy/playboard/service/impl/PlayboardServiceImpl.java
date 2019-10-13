@@ -226,7 +226,7 @@ public class PlayboardServiceImpl implements PlayboardService{
 		List<PlayboardQnADto> list = pdao.getPlayboardQnAList(qna);
 		
 		for (PlayboardQnADto dto : list) {
-			int count = pdao.QnAReplyCheck(qna.getSeq());
+			int count = pdao.QnAReplyCheck(dto.getSeq());
 			if(count > 0) {
 				dto.setReplyCheck(true);
 			}

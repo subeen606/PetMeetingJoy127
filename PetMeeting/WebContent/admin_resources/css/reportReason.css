@@ -1,0 +1,75 @@
+@charset "UTF-8";
+@font-face { font-family: 'NanumSquareRound'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff'); font-weight: normal; font-style: normal; }
+body{
+	font-family: 'NanumSquareRound';
+	left: 0;
+	right: 0;
+}
+button{
+	font-family: 'NanumSquareRound';
+}
+.mainTitle{
+	width: 100%;
+	font-size: 22px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	font-weight: 700;
+}
+
+.emptyReport{
+	text-align: center;
+    width: 100%;
+    height: 200px;
+    padding-top: 120px;
+    font-size: 20px;
+}
+
+.reasonWrap{
+	width: 100%;
+	height: 400px;
+	overflow: auto;
+	/* border: 3px solid red; */
+}
+
+.reasonTable{
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+	border-spacing: 1; 
+  	border-collapse: collapse; 
+  	border-bottom: 2px solid rgba(0,0,0,0.05);
+	border-top: 2px solid rgba(0,0,0,0.05);
+}
+
+.reasonTable th{
+	background-color: rgba(0,0,0,0.03);
+	width: 150px;
+}
+
+.reasonTable td{
+	height: 50px;
+	padding-left: 15px;
+}
+
+.reasonTable tr{
+	border-bottom: 1px solid rgba(0,0,0,0.03);
+}
+
+.reasonTable tr:last-child{
+	border: none;
+}
+
+.reportCancelBtn{
+	width: 100px;
+	height: 35px;
+	font-size: 15px;
+	font-weight: bold;
+	color: #fff;
+	background-color: #B8413D;
+	border: none;
+	outline: none;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: 0.3s;
+}

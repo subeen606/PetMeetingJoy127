@@ -75,3 +75,31 @@ a{
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
+
+#reportResaonBtn{
+	border: none;
+	outline: none;
+	cursor: pointer;
+	background-color: #008c9eab;
+	height: 35px;
+	font-size: 17px;
+	width: 130px;
+	border-radius: 10px;
+	color: #fff;
+	transition: 0.3s;
+}
+#reportResaonBtn:hover{
+	background-color: #008c9e;
+}
+
+#deleteBtn{
+	border: none;
+	outline: none;
+	cursor: pointer;
+	background-color: #008c9e;
+	height: 40px;
+	font-size: 20px;
+	width: 70px;
+	border-radius: 10px;
+	color: #fff;
+}

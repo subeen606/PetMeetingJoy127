@@ -131,11 +131,12 @@ input{
 	font-weight: bold;
 	text-align: left;
 	cursor: pointer;
-	margin-bottom: 5px;
+	margin-top: 5px;
+	display: inline-block;
 }
 
 .playDate{
-	margin-top: 5px;
+	/* margin-top: 5px; */
 	margin-bottom: 5px;
 }
 .playLocation{
