@@ -97,15 +97,23 @@
 	</update>
 	
 	
+<<<<<<< HEAD
+=======
+	
+	
+	
+>>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
 
 	<!-- fundingList 추가 -->
 	<insert id="addFunding" parameterType="com.petmeeting.joy.funding.model.FundingDto">
 		INSERT INTO PM_FUNDINGBOARD(SEQ, BOARD_CODE, EMAIL, TITLE, INTRO, CONTENT, THUMBNAIL, MAX_PRICE, CURRENT_PRICE, PERSONCOUNT, LIKECOUNT, READCOUNT,SDATE, EDATE, REGDATE)
 		VALUES(PM_FUNDINGBOARD_SEQ.NEXTVAL, 'FUND', #{email}, #{title}, #{intro}, #{content}, #{thumbnail}, #{max_price}, 0, 0, 0, 0, #{sdate}, #{edate}, SYSDATE)
 	</insert>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
 	
-
 	<!-- funding 리스트목록 -->
 	<select id="getFundingList" parameterType="com.petmeeting.joy.funding.model.fundingBean" resultType="com.petmeeting.joy.funding.model.FundingDto">
 		SELECT * FROM(SELECT ROW_NUMBER()OVER(ORDER BY REGDATE DESC)AS RNUM,
@@ -161,6 +169,10 @@
 	</delete>
 	
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
 	<!-- funding 수정 -->
 	<update id="fundingUpdate" parameterType="com.petmeeting.joy.funding.model.FundingDto">
 		UPDATE PM_FUNDINGBOARD

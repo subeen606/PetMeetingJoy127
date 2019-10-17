@@ -93,10 +93,11 @@ public class AdminServiceImpl implements AdminService {
 			detail.setFullCheck(false);
 		}			
 		return detail;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
 	}
-	
-	
-	
 	
 	@Override
 	public boolean addFunding(FundingDto dto , DayBean bean) {
