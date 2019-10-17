@@ -101,6 +101,53 @@
 		<tr>
 			<td colspan="2"><div>${detail.content }</div></td>
 		</tr>
+		
+		<tr>
+			<th colspan="2">Q&A</th>
+		</tr>		
+		<tr>			
+			<td colspan="2">
+				<table class="qnaTable">
+				<col width="28%"><col width="72%">
+				<c:forEach items="${qnaList }" var="qna">
+					<tr>
+						<td align="center" style="border-right: 2px solid rgba(0,0,0,0.05); ">
+							<font style="background-color: rgba(0,0,0,0.03)">${qna.email }(${qna.nickname })</font>
+						</td>
+					
+						<c:if test="${qna.parent eq 0 }">
+						<td>Q. ${qna.content }</td>
+						</c:if>
+						
+						<c:if test="${qna.parent ne 0 }">
+						<td>
+							&emsp;&emsp;<img alt="" src="${pageContext.request.contextPath}/playboard_resources/img/arrow.png" width="18px" style="vertical-align: top; ">
+							A. ${qna.content }
+						</td>
+						</c:if>					
+					</tr>
+				</c:forEach>
+					<tr>
+						<td colspan="2">
+							<form id="pagingFrm">
+								<input type="hidden" name="seq" value="${detail.seq }">
+								<input type="hidden" name="board_seq" value="${detail.seq }">
+								<input type="hidden" name="currPage" value="${currPage }">
+							</form>
+							
+							<c:if test="${currPage ne 1 }">
+								<a id="prevPage"><img src="${pageContext.request.contextPath}/playboard_resources/img/back.png" width="13px" height="13px" style="vertical-align: middle;">&emsp;이전 페이지</a>				
+							</c:if>
+							
+							<c:if test="${!((currPage*10) >= totalCount) }">
+								<a id="nextPage">다음 페이지&emsp;<img src="${pageContext.request.contextPath}/playboard_resources/img/next.png" width="13px" height="13px"style="vertical-align: middle;"></a>
+							</c:if>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		
 		<tr>
 			<td colspan="2" align="center"><button type="button" id="deleteBtn">삭제</button></td>
 		</tr>
@@ -117,6 +164,18 @@ $(function () {
 			window.open("adminBoardReportReason.do?seq=+${detail.seq }"+"&board_code=PLAY", "report_reason", option);
 		}
 		
+	});
+	
+	/* Q&A 페이징 */
+	$("#prevPage").click(function () {
+		var cp = ${currPage }-1;
+		$("input[name='currPage']").val(parseInt($("input[name='currPage']").val())-1);
+		$("#pagingFrm").attr("action", "adminPlayboardDetail.do").submit();
+	});
+	$("#nextPage").click(function () {
+		var cp = ${currPage }+1;
+		$("input[name='currPage']").val(parseInt($("input[name='currPage']").val())+1);
+		$("#pagingFrm").attr("action", "adminPlayboardDetail.do").submit();
 	});
 });
 </script>

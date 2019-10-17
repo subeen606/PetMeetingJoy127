@@ -181,7 +181,7 @@
 	</select>
 	
 	<!-- 소모임 주최자 프로필 -->
-	<select id="getMakerProfile" parameterType="java.lang.String" resultType="com.petmeeting.joy.playboard.model.MyProfileDto">
+	<select id="getMyProfile" parameterType="java.lang.String" resultType="com.petmeeting.joy.playboard.model.MyProfileDto">
 		SELECT EMAIL, MYPROFILE_IMG, MYAGE, MYSEX, MYINTRO
 		FROM PM_MYPROFILE
 		WHERE EMAIL=#{email}
@@ -419,5 +419,17 @@
 		FROM PM_PLAYBOARDQNA
 		WHERE PARENT=#{seq}
 	</select>
+	
+	<!-- 멤버 신고  -->
+	<insert id="insertMemberReport" parameterType="com.petmeeting.joy.playboard.model.ReportDto">
+		INSERT INTO PM_MEMBER_REPORT(SEQ, BAD_EMAIL, EMAIL, REASON)
+		VALUES(PM_MEMBER_REPORT_SEQ.NEXTVAL, #{bad_email}, #{email}, #{reason})
+	</insert>
+	<!-- 멤버 신고 수 증가 -->
+	<update id="plusMemberReportCount" parameterType="com.petmeeting.joy.playboard.model.ReportDto">
+		UPDATE PM_MEMBER
+		SET REPORTCOUNT = REPORTCOUNT+1
+		WHERE EMAIL=#{bad_email}
+	</update>
 	
 </mapper>

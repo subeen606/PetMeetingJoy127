@@ -19,18 +19,11 @@ public interface AdminDao {
 	
 	public PlayboardDto getPlayboardDetail(int seq);
 	
-<<<<<<< HEAD
-	
-	
-	
-	
-=======
 	public List<BoardReportDto> getBoardReportReason(BoardReportDto reportDto);
 	
 	public void deleteBoardReport(BoardReportDto reportDto);
 	public void minusReportCount(BoardReportDto reportDto);
->>>>>>> 4e5675b2cdc8c87dd4c27907aa466a1a244516af
-	
+
 	
 	
 	
@@ -40,10 +33,5 @@ public interface AdminDao {
 	public int getFundingCount(fundingBean fbean);
 
 
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> 4e5675b2cdc8c87dd4c27907aa466a1a244516af
 
 }

@@ -34,6 +34,7 @@ public class PlayboardDto implements Serializable{
    
    private boolean deadlineCheck;		// 모집기한 지났으면 true 지나지 않았으면 false
    private boolean fullCheck;			// 모집인원이 다 찼으면 true 차지 않았으면 false
+   private boolean pdateCheck;			// 모임예정일이 지났으면 true 지나지 않았으면 false
    
    private PlayboardHashTagDto hashs;
    
@@ -296,6 +297,16 @@ public boolean isFullCheck() {
 
 public void setFullCheck(boolean fullCheck) {
 	this.fullCheck = fullCheck;
+}
+
+
+public boolean isPdateCheck() {
+	return pdateCheck;
+}
+
+
+public void setPdateCheck(boolean pdateCheck) {
+	this.pdateCheck = pdateCheck;
 }
 
 

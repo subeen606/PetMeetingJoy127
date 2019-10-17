@@ -5,8 +5,12 @@ import java.io.Serializable;
 public class ReportDto implements Serializable{
 	
 	private int seq;
+	
 	private String board_code;
 	private int board_seq;
+	
+	private String bad_email;
+	
 	private String email;
 	private String reason;
 	
@@ -27,8 +31,6 @@ public class ReportDto implements Serializable{
 		this.reasonTxt = reasonTxt;
 	}
 
-
-
 	public ReportDto(int board_seq, String email, String reason, String reasonTxt) {
 		super();
 		this.board_seq = board_seq;
@@ -36,6 +38,16 @@ public class ReportDto implements Serializable{
 		this.reason = reason;
 		this.reasonTxt = reasonTxt;
 	}
+
+	public ReportDto(String bad_email, String email, String reason, String reasonTxt) {
+		super();
+		this.bad_email = bad_email;
+		this.email = email;
+		this.reason = reason;
+		this.reasonTxt = reasonTxt;
+	}
+
+
 
 	public int getSeq() {
 		return seq;
@@ -91,15 +103,23 @@ public class ReportDto implements Serializable{
 
 
 
-	@Override
-	public String toString() {
-		return "ReportDto [seq=" + seq + ", board_code=" + board_code + ", board_seq=" + board_seq + ", email=" + email
-				+ ", reason=" + reason + ", reasonTxt=" + reasonTxt + "]";
+	public String getBad_email() {
+		return bad_email;
 	}
 
 
 
+	public void setBad_email(String bad_email) {
+		this.bad_email = bad_email;
+	}
 
-	
+
+	@Override
+	public String toString() {
+		return "ReportDto [seq=" + seq + ", board_code=" + board_code + ", board_seq=" + board_seq + ", bad_email="
+				+ bad_email + ", email=" + email + ", reason=" + reason + ", reasonTxt=" + reasonTxt + "]";
+	}
+
+		
 
 }

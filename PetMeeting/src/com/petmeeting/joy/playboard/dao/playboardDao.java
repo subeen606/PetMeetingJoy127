@@ -25,7 +25,7 @@ public interface playboardDao {
 	public int getTotalRowCount(PlayboardSearchBean search);
 	
 	public PlayboardDto getPlayboardDetail(int seq);
-	public MyProfileDto getMakerProfile(String email);
+	public MyProfileDto getMyProfile(String email);
 	
 	public void plusReadCount(int seq);
 	
@@ -75,6 +75,9 @@ public interface playboardDao {
 	public void insertPlayboardQnAReply(PlayboardQnADto qna);
 	
 	public int QnAReplyCheck(int seq);
+	
+	public void insertMemberReport(ReportDto rdto);
+	public void plusMemberReportCount(ReportDto rdto);
 
 
 }

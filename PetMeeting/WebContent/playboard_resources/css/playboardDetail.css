@@ -433,7 +433,7 @@ div{
 	width: 100%;
 	height: 160px;
 	text-align: center;
-	padding-top: 150px;
+	padding-top: 100px;
 }
 
 @media screen and (max-width: 990px) { 
@@ -462,4 +462,34 @@ div{
 	.playParticipate{
 	padding-top: 50px;
 	}
+}
+
+.dropdown{
+	display: inline-block;
+	cursor: pointer;	
+}
+
+.memberDropDown{
+	display: none;
+	position: absolute;
+	background-color: #fff;
+	cursor: pointer;
+	width: 100px;
+	font-size: 15px;
+	box-shadow: 2px 2px 3px rgba(0,0,0,0.06);
+}
+
+.memberDropDown ul li{
+	padding-left: 10px;
+	
+	transition: 0.01s;
+}
+.memberDropDown ul li:hover{
+	background-color: #f9f9f9;
+	color: #f38c2a;
+}
+.memberDropDown a{
+	display: block;
+	height: 30px;
+	line-height: 2;
 }

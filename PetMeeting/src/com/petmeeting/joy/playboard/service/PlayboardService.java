@@ -21,7 +21,7 @@ public interface PlayboardService {
 	public int getTotalRowCount(PlayboardSearchBean search);
 	
 	public PlayboardDto getPlayboardDetail(int seq, PlayboardDto pdto);
-	public MyProfileDto getMakerProfile(String email);
+	public MyProfileDto getMyProfile(String email);
 	public PlayboardCheckBean getPlayboardChecks(PlayboardDto pdto);
 	public void plusReadCount(int seq);	
 	
@@ -56,4 +56,6 @@ public interface PlayboardService {
 	public int getTotalQnACount(int seq);
 	
 	public void insertPlayboardQnAReply(PlayboardQnADto qna);
+	
+	public void reportMember(ReportDto rdto);
 }

@@ -357,7 +357,7 @@ public class PlayboardController {
 	//	System.out.println("체크!! : " + checks.toString());
 		
 		PlayboardHashTagDto hashs = pService.getHashTags(seq);
-		MyProfileDto profile = pService.getMakerProfile(dto.getEmail());
+		MyProfileDto profile = pService.getMyProfile(dto.getEmail());
 		
 		List<PlayMemDto> partList = pService.getPlayMems(seq);
 	//	System.out.println("참여자들 목록 : " + partList.toString());
@@ -375,10 +375,10 @@ public class PlayboardController {
 		}
 		
 		
-		System.out.println("Q&A 총 개수 : " + pService.getTotalQnACount(seq));
-		System.out.println("Q&A 페이징!!!!!!!!!!!!!!!! : " + qnaDto.toString());
+	//	System.out.println("Q&A 총 개수 : " + pService.getTotalQnACount(seq));
+	//	System.out.println("Q&A 페이징!!!!!!!!!!!!!!!! : " + qnaDto.toString());
 		List<PlayboardQnADto> qnaList = pService.getPlayboardQnAList(qnaDto);
-		System.out.println("QnA 리스트 : " + qnaList.toString());
+	//	System.out.println("QnA 리스트 : " + qnaList.toString());
 	
 		model.addAttribute("totalCount", pService.getTotalQnACount(seq));
 		model.addAttribute("currPage", qnaDto.getCurrPage());
@@ -404,7 +404,7 @@ public class PlayboardController {
 		System.out.println("디테일 : "+dto.toString());
 		
 		PlayboardHashTagDto hashs = pService.getHashTags(afterSeq);
-		MyProfileDto profile = pService.getMakerProfile(dto.getEmail());
+		MyProfileDto profile = pService.getMyProfile(dto.getEmail());
 		
 		model.addAttribute("hashs", hashs);
 		model.addAttribute("checks", checks);
@@ -492,7 +492,7 @@ public class PlayboardController {
 	*/
 	
 	// 모임 신고
-	@RequestMapping(value="report.do", method={RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value="boardReport.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String reportPlay(int seq, HttpServletRequest req, Model model) {
 		PlayboardDto reportMem = new PlayboardDto(seq, ((MemberDto)req.getSession().getAttribute("login")).getEmail());
 		//System.out.println(checkDto.toString());
@@ -515,6 +515,26 @@ public class PlayboardController {
 		pService.reportPlay(reportDto);
 	}
 	*/
+	
+
+	@RequestMapping(value="memberReportIfo.do", method={RequestMethod.GET,RequestMethod.POST})
+	public void memberReportIfo(ReportDto reportDto, Model model, String nickname, RedirectAttributes attr) {
+		System.out.println("ajax reportDto : " + reportDto.toString());
+		System.out.println("닉넴 : " + nickname);
+		
+		model.addAttribute("nickname", nickname);
+		model.addAttribute("reportDto", reportDto);
+
+		attr.addAttribute("reportDto", reportDto);
+		attr.addAttribute("nickname", nickname);
+		//return "playboard/report";
+	}
+
+	@RequestMapping(value="memberReport.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String memberReport() {
+		return "playboard/report";
+	}
+	
 
 	@RequestMapping(value="reportAf.do", method={RequestMethod.GET,RequestMethod.POST})
 	public void reportPlayAf(ReportDto reportDto) {
@@ -524,7 +544,13 @@ public class PlayboardController {
 			reportDto.setReason("기타 사유: "+reportDto.getReasonTxt());
 		}
 		
-		pService.reportPlay(reportDto);
+		if(reportDto.getBad_email() != null && reportDto.getBoard_seq() == 0) {
+			System.out.println("멤버신고");
+			pService.reportMember(reportDto);
+		}else if(reportDto.getBad_email().equals("") && reportDto.getBoard_seq() != 0) {
+			System.out.println("게시글 신고");
+			pService.reportPlay(reportDto);
+		}
 		
 	}
 	
@@ -546,6 +572,13 @@ public class PlayboardController {
 		redirectAttr.addAttribute("seq", qna.getBoard_seq());
 		pService.insertPlayboardQnAReply(qna);
 		return "redirect:/detailPlay.do";
+	}
+	
+	
+	//채팅..?
+	@RequestMapping(value="chatting.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String chatting() {
+		return "playboard/chat";
 	}
 
 	

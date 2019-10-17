@@ -57,6 +57,15 @@
 		<property name="uploadTempDir" value="upload" />
 
 	</bean>
-
+	
+	<!-- web socket 설정 -->
+	<websocket:handlers>
+		<websocket:mapping handler="myHandler" path="/echo.do"/>
+		<websocket:handshake-interceptors>
+			<bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></bean>
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
+	
+	<bean id="myHandler" class="com.petmeeting.joy.websocket.WebSocket"/>
 
 </beans>

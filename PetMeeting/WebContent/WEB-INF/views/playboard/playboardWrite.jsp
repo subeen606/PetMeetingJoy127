@@ -64,7 +64,7 @@
 	    			<span>모임 제목</span>
 	    		</div>
 	    		<div class="writeInput">
-	    			<input type="text" name="title">
+	    			<input type="text" name="title" placeholder="20자 이내 작성">
 	    		</div>
     		</div>
     		
@@ -289,7 +289,13 @@ $(function () {
 			$("input[name='hash" + (i+1) + "']").val(split[i]);
 		} 
 	});
-
+	
+	$("input[name='title']").keyup(function () {
+		if($.trim($("input[name='title']").val()).length > 20){
+			alert("제목은 20자 이하로 작성해 주세요");
+			$("input[name='title']").focus();
+		}
+	});
 	
 	/* 소모임 글쓰기 submit */
 	$("#submitBtn").click(function () {

@@ -1,5 +1,6 @@
 package com.petmeeting.joy.admin.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import com.petmeeting.joy.admin.model.BoardReportDto;
 import com.petmeeting.joy.admin.service.AdminService;
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.fundingBean;
+import com.petmeeting.joy.playboard.Util.DateUtil;
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
 
@@ -21,7 +23,31 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Override
 	public List<PlayboardDto> getAllPlayboardList(PlayboardSearchBean search) {
-		return adminDao.getAllPlayboardList(search);
+		List<PlayboardDto> all =  adminDao.getAllPlayboardList(search);
+		List<PlayboardDto> checkList = new ArrayList<PlayboardDto>();
+		
+		for (PlayboardDto dto : all) {
+			if(DateUtil.isEnd(dto.getEdate()) == true) {	// 마감
+				dto.setDeadlineCheck(true);
+			}else if(DateUtil.isEnd(dto.getEdate()) == false) {
+				dto.setDeadlineCheck(false);
+			}
+			
+			if(dto.getPeople() == dto.getPersoncount()) {	// 모집인원이 다 찬경우
+				dto.setFullCheck(true);
+			}else {
+				dto.setFullCheck(false);
+			}
+			
+			if(DateUtil.isEnd(dto.getPdate()) == true) {	// 모임예정일 지남
+				dto.setPdateCheck(true);
+			}else {
+				dto.setPdateCheck(false);
+			}
+			
+			checkList.add(dto);
+		}
+		return checkList;
 	}
 
 	@Override
@@ -57,14 +83,21 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.getFundingCount(fbean);
 	}
 	
-<<<<<<< HEAD
-=======
-
 	@Override
->>>>>>> 4e5675b2cdc8c87dd4c27907aa466a1a244516af
 	public PlayboardDto getPlayboardDetail(int seq) {
-		return adminDao.getPlayboardDetail(seq);
-
+		PlayboardDto detail = adminDao.getPlayboardDetail(seq);
+		if(DateUtil.isEnd(detail.getEdate()) == true) {	// 마감
+			detail.setDeadlineCheck(true);
+		}else if(DateUtil.isEnd(detail.getEdate()) == false) {
+			detail.setDeadlineCheck(false);
+		}
+		
+		if(detail.getPeople() == detail.getPersoncount()) {	// 모집인원이 다 찬경우
+			detail.setFullCheck(true);
+		}else {
+			detail.setFullCheck(false);
+		}			
+		return detail;
 	}
 
 }

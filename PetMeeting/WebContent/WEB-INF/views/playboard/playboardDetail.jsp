@@ -71,14 +71,17 @@
 			<div class="playMaker">
 				<div class="infoTitle">
 					<span class="smallTxt">모임 주최자</span>
-				</div>
-				<c:if test="${empty profile || empty profile.myprofile_img }">
-					<img src="${pageContext.request.contextPath}/playboard_resources/img/user.png" width="50px" height="50px">
-				</c:if>
-				<c:if test="${not empty profile || not empty profile.myprofile_img }">
-					<img id="profilePic" src="${pageContext.request.contextPath}/playboard_resources/img/brandon.jpg">
-				</c:if>
-				&nbsp;&nbsp;${detail.nickname }
+				</div>			
+					<c:if test="${empty profile || empty profile.myprofile_img }">
+						<img src="${pageContext.request.contextPath}/playboard_resources/img/user.png" width="50px" height="50px">&nbsp;&nbsp;
+					</c:if>
+					<c:if test="${not empty profile || not empty profile.myprofile_img }">
+						<img id="profilePic" src="${pageContext.request.contextPath}/playboard_resources/img/brandon.jpg">&nbsp;&nbsp;
+					</c:if>
+					<a class="dropdown" email="${detail.email }" nickname="${detail.nickname }">
+						${detail.nickname }
+					</a>
+				
 			</div>	
 			<div class="playDate">
 				<div class="infoTitle">
@@ -113,20 +116,22 @@
 	   					<c:if test="${empty partList }">
 		   					<div style="text-align: center;">현재 참여자가 없습니다.</div>
 		   				</c:if>	
-		   				<c:forEach items="${partList }" var="partMem">		   						   						   					
-		   						<c:if test="${empty partMem.memProfile.myprofile_img }">
-		   							<div class="memberProfileCell">
-		   							<img src="${pageContext.request.contextPath}/playboard_resources/img/user.png" width="40px" height="40px">&nbsp;&nbsp;
-		   							${partMem.nickname }
-		   							</div>
-		   						</c:if>			
-		   						
-		   						<c:if test="${not empty partMem.memProfile.myprofile_img }">
-		   							<div class="memberProfileCell">
-		   							<img class="partMemProfilePic" src="${pageContext.request.contextPath}/playboard_resources/img/bakar.jpg">&nbsp;&nbsp;		   							
-		   							${partMem.nickname }
-		   							</div>
-		   						</c:if>	   						   				
+		   				
+		   				<c:forEach items="${partList }" var="partMem">		   
+		   						<div class="memberProfileCell">		
+			   									   						     					
+				   						<c:if test="${empty partMem.memProfile.myprofile_img }">	   									   							
+				   							<img src="${pageContext.request.contextPath}/playboard_resources/img/user.png" width="40px" height="40px">&nbsp;&nbsp;
+				   								   									   									   							
+				   						</c:if>			
+				   						
+				   						<c:if test="${not empty partMem.memProfile.myprofile_img }">		   								   							   							
+				   							<img class="partMemProfilePic" src="${pageContext.request.contextPath}/playboard_resources/img/bakar.jpg">&nbsp;&nbsp;		   											   								   									   								   							
+				   						</c:if>	
+				   					<a class="dropdown" email="${partMem.email }" nickname="${partMem.nickname }">		    
+			   							${partMem.nickname }	
+			   						</a>
+		   						</div>						   				
 		   				</c:forEach>
 	   				</div>
 	   			</div>
@@ -336,6 +341,19 @@
 	
 </div>
 
+<div class="memberDropDown">
+	<ul>
+		<li><a>프로필 보기</a></li>
+		<li><a>쪽지 보내기</a></li>
+		<li><a id="reportMember">신고하기</a></li>
+	</ul>
+	<form id="memberProfileFrm">
+		<input type="hidden" name="email">
+		<input type="hidden" name="bad_email">
+		<input type="hidden" name="nickname" id="_nickname">
+	</form>
+</div>
+
 
 <script type="text/javascript">
 $(function () {	
@@ -425,7 +443,7 @@ $(function () {
 				alert("신고는 한 번만 가능합니다");
 			}else if(${checks.reportCheck } == false){
 				var option = "width = 550, height = 500, top = 100, left = 300, location = no, resizeable = no";
-				window.open("report.do?seq="+${detail.seq }, "report", option);
+				window.open("boardReport.do?seq="+${detail.seq }, "report", option);
 			}	
 		}	
 	});
@@ -491,6 +509,83 @@ $(function () {
 		$("input[name='currPage']").val(parseInt($("input[name='currPage']").val())+1);
 		$("#pagingFrm").attr("action", "detailPlay.do").submit();
 	});
+	
+
+	/* 닉네임 클릭시 드롭다운 div 보이게 하기  */
+	$(".dropdown").click(function () {
+		
+		$("#memberProfileFrm input[name='nickname']").val($(this).attr("nickname"));
+		$("#memberProfileFrm input[name='bad_email']").val($(this).attr("email"));
+		$("#memberProfileFrm input[name='email']").val("${login.email }");
+		
+		var left = $(this).offset().left;
+		var top = $(this).offset().top + $(this).height();
+
+		if($(".memberDropDown").length > 1){
+			$(".memberDropDown").css("display", "none");
+			$(".memberDropDown").css({
+				"display": "block",
+				"left": left,
+				"top": top
+			});
+		}else{
+			$(".memberDropDown").css({
+				"display": "block",
+				"left": left,
+				"top": top
+			});
+		}		 		
+	});
+	
+	/* 스크롤 움직일 경우 드롭다운 div 제거 */
+	$(window).scroll(function(event){ 
+		$(".memberDropDown").css("display", "none");
+	});	
+	$(".memberProfile").scroll(function(event) {
+		$(".memberDropDown").css("display", "none");
+	});
+	/* 다른 곳 클릭 시 드롭다운 div 제거 */
+	$(window).click(function(event){
+		//alert($(event.target).attr('class'));		
+		if($(event.target).attr('class') != "dropdown"){
+			$(".memberDropDown").css("display", "none");
+		} 
+	});
+	
+	/* 멤버 신고 */
+	$("#reportMember").click(function () {
+		//alert($("#memberProfileFrm input[name='nickname']").val());
+		if($("#memberProfileFrm input[name='bad_email']").val() == $("#memberProfileFrm input[name='email']").val()){
+			alert("자기 자신은 신고할 수 없습니다");
+			return false;
+		}else{
+			var formdata = $("#memberProfileFrm").serialize();
+		//	$("#memberProfileFrm").attr({"action":"memberReport.do", "method":"post"}).submit();
+		/*	
+			$.ajax({
+				url: "memberReportIfo.do",
+				type: "post",
+				data: formdata,
+				success: function () {
+					//alert("성공");
+					var option = "width = 550, height = 500, top = 100, left = 300, location = no, resizeable = no";
+					var reportPopUp = window.open("memberReport.do", "report", option);
+					$(reportPopUp).find("input[name='bad_email']").val($("#memberProfileFrm input[name='bad_email']").val());
+				},
+				error: function () {
+					alert("에러");
+				}
+			});
+		*/
+			var option = "width = 550, height = 500, top = 100, left = 300, location = no, resizeable = no";
+			var reportPopUp = window.open("memberReport.do", "report", option);
+		//	$(reportPopUp).find("input[name='bad_email']").val($("#memberProfileFrm input[name='bad_email']").val());
+	
+			
+		}		
+	});
+	
+	
 	
 	
 /* 지도 출력 */

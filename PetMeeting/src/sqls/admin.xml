@@ -19,7 +19,7 @@
 				AND DEL=1)
 			</if>			
 			<if test="searchCategory == '마감'">
-				AND PDATE <![CDATA[<=]]> SYSDATE)
+				AND EDATE <![CDATA[<=]]> SYSDATE)
 			</if>								
 			WHERE RNUM <![CDATA[>=]]> #{startRow} AND RNUM <![CDATA[<=]]> #{endRow}
 	</select>
@@ -37,7 +37,7 @@
 				AND DEL=1)
 			</if>			
 			<if test="searchCategory == '마감'">
-				AND PDATE <![CDATA[<=]]> SYSDATE)
+				AND EDATE <![CDATA[<=]]> SYSDATE)
 			</if>								
 	</select>
 	
@@ -67,8 +67,6 @@
 		FROM PM_PLAYBOARD, (SELECT NICKNAME FROM PM_MEMBER WHERE EMAIL=(SELECT EMAIL FROM PM_PLAYBOARD WHERE SEQ=#{seq}))
 		WHERE SEQ=#{seq}
 	</select>
-<<<<<<< HEAD
-=======
 
 	<!-- 신고 내용 불러오기 -->
 	<select id="getBoardReportReason" parameterType="com.petmeeting.joy.admin.model.BoardReportDto" resultType="com.petmeeting.joy.admin.model.BoardReportDto">
@@ -102,7 +100,6 @@
 	
 	
 	
->>>>>>> 4e5675b2cdc8c87dd4c27907aa466a1a244516af
 	
 	<!-- funding 리스트목록 -->
 	<select id="getFundingList" parameterType="com.petmeeting.joy.funding.model.fundingBean" resultType="com.petmeeting.joy.funding.model.FundingDto">
@@ -137,12 +134,6 @@
 	</select>
 	
 	
-
-<<<<<<< HEAD
-
-=======
-	
->>>>>>> 4e5675b2cdc8c87dd4c27907aa466a1a244516af
 
 
 </mapper>

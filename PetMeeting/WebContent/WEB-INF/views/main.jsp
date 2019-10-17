@@ -22,5 +22,13 @@
     </header>
     <!-- Header part end-->
 
+
+	<a id="goChat">채팅...?</a>
+	
+<script type="text/javascript">
+$("#goChat").click(function () {
+	location.href = "chatting.do";
+});
+</script>
 </body>
 </html>
