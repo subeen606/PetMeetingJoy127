@@ -96,15 +96,17 @@
             <div class="top-right">
                 <div class="header-menu">
                     <div class="user-area dropdown float-right">
-                       ${login.email } 모드
+                       
                      </div>
 	                     <c:if test="${not empty login }">
 	                     <div class="logindiv">
+	                     	로그인 정보: 관리자&emsp;
 	              			<a href="logout.do">로그아웃</a>
 	              		 </div>
 						 </c:if>
 	                     <c:if test="${empty login }">
 	                     <div class="logindiv">
+	                     	로그인 정보: 관리자&emsp;
 							<a href="login.do">로그인</a>                       		
 	                      </div>
 	                      </c:if>  

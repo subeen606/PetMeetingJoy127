@@ -55,13 +55,6 @@ public class AdminDaoImpl implements AdminDao {
 		return sqlSession.selectOne(namespace+"getPlayboardDetail", seq);
 	}
 
-<<<<<<< HEAD
-
-=======
-	
-	
-	/*funding*/	
->>>>>>> f3684eefb7a9f97d5b91a9cd135814d8e427c35c
 	@Override
 	public List<BoardReportDto> getBoardReportReason(BoardReportDto reportDto) {
 		return sqlSession.selectList(namespace+"getBoardReportReason", reportDto);
@@ -77,14 +70,12 @@ public class AdminDaoImpl implements AdminDao {
 	public void minusReportCount(BoardReportDto reportDto) {
 		sqlSession.update(namespace+"minusReportCount", reportDto);
 	}
-<<<<<<< HEAD
+
 	
 	
 	
 	/*funding*/
-=======
 
->>>>>>> f3684eefb7a9f97d5b91a9cd135814d8e427c35c
 	@Override
 	public boolean addFunding(FundingDto dto) {
 		int n = sqlSession.insert(namespace + "addFunding", dto);
@@ -110,7 +101,6 @@ public class AdminDaoImpl implements AdminDao {
 		return n>0?true:false;
 	}
 
-<<<<<<< HEAD
 	@Override
 	public boolean addfundingSta(FundingStaDto sta) {
 		int n = sqlSession.insert(namespace + "addfundingSta", sta);
@@ -141,7 +131,4 @@ public class AdminDaoImpl implements AdminDao {
 	public List<FundMemberDto> whofundingMem(int seq) {
 		return sqlSession.selectList(namespace + "whofundingMem", seq);
 	}
-=======
->>>>>>> f3684eefb7a9f97d5b91a9cd135814d8e427c35c
-
 }
