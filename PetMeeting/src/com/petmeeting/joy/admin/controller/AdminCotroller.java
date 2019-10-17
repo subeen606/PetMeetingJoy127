@@ -1,34 +1,43 @@
 package com.petmeeting.joy.admin.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.petmeeting.joy.admin.model.BoardReportDto;
+import com.petmeeting.joy.admin.model.FundMemberDto;
 import com.petmeeting.joy.admin.service.AdminService;
-<<<<<<< HEAD
 import com.petmeeting.joy.playboard.model.MyProfileDto;
 import com.petmeeting.joy.playboard.model.PlayMemDto;
+import com.petmeeting.joy.funding.model.DayBean;
 import com.petmeeting.joy.funding.model.FundingDto;
+import com.petmeeting.joy.funding.model.FundingStaDto;
+import com.petmeeting.joy.funding.model.FundinglikeBean;
 import com.petmeeting.joy.funding.model.fundingBean;
-=======
-
+import com.petmeeting.joy.funding.util.FUpUtil;
 import com.petmeeting.joy.playboard.model.MyProfileDto;
 import com.petmeeting.joy.playboard.model.PlayMemDto;
 
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.fundingBean;
 
->>>>>>> 4e5675b2cdc8c87dd4c27907aa466a1a244516af
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardHashTagDto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
@@ -42,7 +51,12 @@ public class AdminCotroller {
 	
 	@Autowired
 	PlayboardService playboardService;
-
+	
+	@RequestMapping(value = "adminMain.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String adminMain() {
+		return "admin/adminMain";
+	}
+	
 	@RequestMapping(value = "adminPlayboardList.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public String adminPlayboardList(PlayboardSearchBean search, Model model) {
 				
@@ -127,20 +141,29 @@ public class AdminCotroller {
 	}
 	
 	
+	
+	
+	/*funding 관리자*/
 	@RequestMapping(value = "adminFundingList.do",method = {RequestMethod.GET,RequestMethod.POST})
 	public String adminFundingList(Model model, fundingBean fbean) {
+		System.out.println("펀딩 리스트에 들어온 admin: " + fbean.toString());
 		
+		int totalfundingCount = adminService.getFundingCount(fbean);
 		int sn = fbean.getPageNumber();
-		int start = sn * fbean.getRecordCountPerPage() + 1;
-		int end = (sn + 1) * fbean.getRecordCountPerPage();
 		
+		int start = sn * fbean.getRecordCountPerPage() + 1;
 		fbean.setStart(start);
+		
+		int end = (sn + 1) * fbean.getRecordCountPerPage();
+		if (end > totalfundingCount) {
+			end = totalfundingCount;
+		}
 		fbean.setEnd(end);
 		
 		System.out.println("펀딩 리스트에 들어온 admin: " + fbean.toString());
 		
 		List<FundingDto> flist = adminService.getFundingList(fbean);
-		int totalfundingCount = adminService.getFundingCount(fbean);
+		
 		
 		System.out.println("펀딩 admin리스트 수: " + totalfundingCount);
 		
@@ -152,8 +175,135 @@ public class AdminCotroller {
 		model.addAttribute("recordCountPerPage", fbean.getRecordCountPerPage());
 		model.addAttribute("totalRecordCount", totalfundingCount);
 		
-		return "admin/fundingboard/fundingboardAdmin";
+		return "admin/fundingboard/fundingAdminList";
+	}
+	
+	/*funding 삭제*/
+	@RequestMapping(value = "adminFundDelete.do",method = {RequestMethod.GET,RequestMethod.POST})
+	public String fundDelete(HttpServletRequest req) {
+		String [] Sseq = req.getParameterValues("seq");
+		int[] seq = new int[Sseq.length];
+		
+		for(int i=0; i<Sseq.length; i++) {
+			seq[i] = Integer.parseInt(Sseq[i]);
+			System.out.println("들어온 seq : " + seq[i] );
+
+			adminService.deletefunding(seq[i]);
+			}
+		return "redirect:/adminFundingList.do";
+	}
+	
+	/*funding 글쓰기*/
+	@RequestMapping(value = "fundingWrite.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String fundingWrite() {
+		 
+		return "admin/fundingboard/fundingWrite"; 
+	
+	}
+	
+	/*funding 글쓰기 Af*/
+	@RequestMapping(value = "fundingWriteAf.do", method = {RequestMethod.GET,RequestMethod.POST})
+	public String fundingWriteAf(FundingDto dto, DayBean bean,
+			@RequestParam(value = "fileload",required = false)MultipartFile fileload, HttpServletRequest req) {
+		
+		String filename = fileload.getOriginalFilename();
+		dto.setThumbnail(filename);// dto에 파일네임 넣기
+		
+		String fupload = req.getServletContext().getRealPath("/fundingFileupload");
+		System.out.println("fupload 파일 업로드위치: " + fupload);
+	
+		String f = dto.getThumbnail();
+		String newfilename = FUpUtil.getNewFileName(f);
+
+		dto.setThumbnail(newfilename);
+		File file = new File(fupload + "/" + newfilename);
+		
+		try {
+			FileUtils.writeByteArrayToFile(file, fileload.getBytes());
+		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("들어온 정보: " + dto.toString() + " , " + bean.toString());
+		
+		adminService.addFunding(dto, bean);
+		return "redirect:/adminFundingList.do";
 	}
 	
 	
+	/*수정*/
+	@RequestMapping(value = "fundUpdate.do",method = {RequestMethod.GET,RequestMethod.POST})
+	public String fundUpdate(int seq, Model model) {
+		System.out.println("들어옴: " + seq);
+		FundingDto dto = adminService.fundingDetail(seq);
+		model.addAttribute("dto", dto);
+		return "admin/fundingboard/fundingUpdate";
+	}
+	
+	
+	/*funding 수정 Af*/
+	@RequestMapping(value = "fundingUpateAf.do" , method = {RequestMethod.GET,RequestMethod.POST})
+	public String fundingUpateAf(FundingDto dto ,  DayBean bean, @RequestParam(value = "fileload",required = false)MultipartFile fileload, HttpServletRequest req) {
+
+				String filename = fileload.getOriginalFilename();
+				dto.setThumbnail(filename);// dto에 파일네임 넣기
+
+				String fupload = req.getServletContext().getRealPath("/fundingFileupload");
+				System.out.println("fupload 파일 업로드위치: " + fupload);
+
+				String f = dto.getThumbnail();
+
+				File file = new File(fupload + "/" + f);
+				
+				try {
+					FileUtils.writeByteArrayToFile(file, fileload.getBytes());
+				
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			
+		System.out.println("수정Af에 들어온 dto: " + dto.toString());
+		System.out.println("수정Af에 들어온 bean: " +bean.toString());
+		
+		boolean b = adminService.fundUpdate(dto,bean);
+		if(b) {
+			System.out.println("업데이트 성공");
+			return "redirect:/adminFundingList.do";
+		}
+		else {
+			System.out.println("업데이트 실패");
+			return "redirect:/adminFundingList.do";
+		}
+	}
+	
+	/*funding 디테일*/
+	@RequestMapping(value = "adminFundingDetail.do" , method = {RequestMethod.GET,RequestMethod.POST})
+	public String fundingDetail(Model model,int seq) {
+		FundingDto dto = adminService.fundingDetail(seq);
+		model.addAttribute("dto", dto);
+		return "admin/fundingboard/fundingAdminDetail";
+	}	
+	
+	/*fundingMem popup*/
+	@RequestMapping(value = "fundingMempop.do",method = {RequestMethod.GET,RequestMethod.POST})
+	public String fundingMempop(int seq, Model model){
+		System.out.println("memlistPop:" + seq);
+		List<FundMemberDto> mlist = adminService.whofundingMem(seq);
+		FundingDto dto = adminService.fundingDetail(seq);
+		model.addAttribute("mlist", mlist);
+		model.addAttribute("dto", dto);
+		return "admin/fundingboard/fundingMemPop";
+	}
+	
+	
+	/*funding 내역서 글쓰기 Af*/
+	@RequestMapping(value = "statementAf.do" , method = {RequestMethod.GET,RequestMethod.POST})
+	public String statementAf(FundingStaDto sta) {
+		System.out.println("들어온 sta : " + sta.toString());
+		
+		adminService.addfundingSta(sta);
+		
+		return "redirect:/adminFundingList.do";
+	}
 }

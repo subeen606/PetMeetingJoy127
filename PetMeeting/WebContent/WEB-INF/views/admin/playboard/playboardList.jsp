@@ -17,6 +17,14 @@
 </head>
 <body>
 
+<div id="right-panel" class="right-panel">
+	<!--::header part start::-->
+		<jsp:include page="/admin_resources/admincss/templates/adminheader.jsp" flush="false"/>
+	<!-- Header part end-->
+
+<!-- Content -->
+<div class="content">
+
 <div class="container">
 
 <div class="mainTitle">소모임 글목록</div>
@@ -76,6 +84,8 @@
 			<jsp:param name="recordCountPerPage" value="10" />
 	</jsp:include>
 	</div>
+</div>
+</div>
 </div>
 
 <script type="text/javascript">

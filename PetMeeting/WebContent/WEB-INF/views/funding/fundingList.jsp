@@ -68,12 +68,6 @@
 <jsp:useBean id="dates" class="com.petmeeting.joy.funding.util.DateUtil"/>
 <jsp:useBean id="today" class="java.util.Date"/>
 
-<%-- 
-		<c:if test="${login.auth eq '8'}"> 
-			<a href="fundingWrite.do"> [후원 만들기] </a>
-		</c:if>
- --%>
-
 <div class="pack">
 
 	<div class="select">

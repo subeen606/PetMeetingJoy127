@@ -3,7 +3,9 @@ package com.petmeeting.joy.admin.dao;
 import java.util.List;
 
 import com.petmeeting.joy.admin.model.BoardReportDto;
+import com.petmeeting.joy.admin.model.FundMemberDto;
 import com.petmeeting.joy.funding.model.FundingDto;
+import com.petmeeting.joy.funding.model.FundingStaDto;
 import com.petmeeting.joy.funding.model.fundingBean;
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
@@ -19,31 +21,32 @@ public interface AdminDao {
 	
 	public PlayboardDto getPlayboardDetail(int seq);
 	
-<<<<<<< HEAD
-	
-	
-	
-	
-=======
+
 	public List<BoardReportDto> getBoardReportReason(BoardReportDto reportDto);
 	
 	public void deleteBoardReport(BoardReportDto reportDto);
 	public void minusReportCount(BoardReportDto reportDto);
->>>>>>> 4e5675b2cdc8c87dd4c27907aa466a1a244516af
+
 	
 	
 	
 	
 	
 	/*funding*/
+	public boolean addFunding(FundingDto dto);
 	public List<FundingDto> getFundingList(fundingBean fbean);
 	public int getFundingCount(fundingBean fbean);
-
-
-<<<<<<< HEAD
+	public FundingDto fundingDetail(int seq);
+	public boolean addfundingSta(FundingStaDto sta);
 	
-=======
+	public boolean fundingUpdate(FundingDto dto);
+	public void fundingDelete(int seq);
+	public void fundingStaDel(int seq);
+	public int fundingStacheck(int seq);
+	
+	public List<FundMemberDto> whofundingMem(int seq);
+	
+	
 
->>>>>>> 4e5675b2cdc8c87dd4c27907aa466a1a244516af
 
 }

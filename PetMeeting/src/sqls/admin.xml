@@ -67,8 +67,6 @@
 		FROM PM_PLAYBOARD, (SELECT NICKNAME FROM PM_MEMBER WHERE EMAIL=(SELECT EMAIL FROM PM_PLAYBOARD WHERE SEQ=#{seq}))
 		WHERE SEQ=#{seq}
 	</select>
-<<<<<<< HEAD
-=======
 
 	<!-- 신고 내용 불러오기 -->
 	<select id="getBoardReportReason" parameterType="com.petmeeting.joy.admin.model.BoardReportDto" resultType="com.petmeeting.joy.admin.model.BoardReportDto">
@@ -102,8 +100,13 @@
 	
 	
 	
->>>>>>> 4e5675b2cdc8c87dd4c27907aa466a1a244516af
+	<!-- fundingList 추가 -->
+	<insert id="addFunding" parameterType="com.petmeeting.joy.funding.model.FundingDto">
+		INSERT INTO PM_FUNDINGBOARD(SEQ, BOARD_CODE, EMAIL, TITLE, INTRO, CONTENT, THUMBNAIL, MAX_PRICE, CURRENT_PRICE, PERSONCOUNT, LIKECOUNT, READCOUNT,SDATE, EDATE, REGDATE)
+		VALUES(PM_FUNDINGBOARD_SEQ.NEXTVAL, 'FUND', #{email}, #{title}, #{intro}, #{content}, #{thumbnail}, #{max_price}, 0, 0, 0, 0, #{sdate}, #{edate}, SYSDATE)
+	</insert>
 	
+
 	<!-- funding 리스트목록 -->
 	<select id="getFundingList" parameterType="com.petmeeting.joy.funding.model.fundingBean" resultType="com.petmeeting.joy.funding.model.FundingDto">
 		SELECT * FROM(SELECT ROW_NUMBER()OVER(ORDER BY REGDATE DESC)AS RNUM,
@@ -112,37 +115,80 @@
 				FROM PM_FUNDINGBOARD
 		WHERE 1=1
 		<if test="f_categorys == '진행'">
-		AND EDATE <![CDATA[>=]]> SYSDATE	
+		AND EDATE <![CDATA[>=]]> SYSDATE
+		AND	CURRENT_PRICE <![CDATA[<]]> MAX_PRICE
 		</if>
 		<if test="f_categorys == '마감'">
-		AND EDATE <![CDATA[<]]> SYSDATE		
+		AND EDATE <![CDATA[<]]> SYSDATE
+		OR CURRENT_PRICE <![CDATA[=]]> MAX_PRICE		
 		</if>
 		)
 		WHERE RNUM BETWEEN ${start} AND ${end}			
 	</select>
 	
-	<!-- 리스트 수 가지고오기 -->
+	<!-- funding 리스트 수 가지고오기 -->
 	<select id="getFundingCount" parameterType="com.petmeeting.joy.funding.model.fundingBean" resultType="java.lang.Integer">
 		SELECT NVL(COUNT(*),0) AS CNT
 		FROM PM_FUNDINGBOARD
 		
 		WHERE 1=1
 		<if test="f_categorys == '진행'">
-			AND EDATE <![CDATA[>=]]> SYSDATE	
+		AND EDATE <![CDATA[>=]]> SYSDATE
+		AND	CURRENT_PRICE <![CDATA[<]]> MAX_PRICE
 		</if>
 		<if test="f_categorys == '마감'">
-			AND EDATE <![CDATA[<]]> SYSDATE
+		AND EDATE <![CDATA[<]]> SYSDATE
+		OR CURRENT_PRICE <![CDATA[=]]> MAX_PRICE		
 		</if>
-		
 	</select>
 	
+	<!-- fundingDetail 보기  -->
+	<select id="adminfundingDetail" parameterType="java.lang.Integer" resultType="com.petmeeting.joy.funding.model.FundingDto">
+		SELECT SEQ, BOARD_CODE, EMAIL, TITLE, INTRO, CONTENT, THUMBNAIL, MAX_PRICE, CURRENT_PRICE, PERSONCOUNT, LIKECOUNT, READCOUNT, SDATE, EDATE, REGDATE
+		FROM PM_FUNDINGBOARD
+		WHERE SEQ=#{seq}
+	</select>
+	
+	<!-- funding 글 삭제 -->
+	<delete id="fundingDelete" parameterType="java.lang.Integer">
+		DELETE FROM PM_FUNDINGBOARD
+		WHERE SEQ=#{seq}
+	</delete>
+	
+	<!-- funding 내역서 삭제 -->
+	<delete id="fundingStaDel" parameterType="java.lang.Integer">
+		DELETE FROM PM_FUNDING_STA
+		WHERE SEQ=#{seq}
+	</delete>
 	
 
-<<<<<<< HEAD
+	<!-- funding 수정 -->
+	<update id="fundingUpdate" parameterType="com.petmeeting.joy.funding.model.FundingDto">
+		UPDATE PM_FUNDINGBOARD
+		SET TITLE=#{title},INTRO=#{intro},CONTENT=#{content},MAX_PRICE=#{max_price},SDATE=#{sdate},EDATE=#{edate}
+		<if test="thumbnail != null and thumbnail != ''">
+		,THUMBNAIL=#{thumbnail}
+		</if>
+		WHERE SEQ=#{seq}
+	</update>
 
-=======
+	<!-- 내역서 저장 -->
+	<insert id="addfundingSta" parameterType="com.petmeeting.joy.funding.model.FundingStaDto">
+		INSERT INTO PM_FUNDING_STA(SEQ,EMAIL,CONTENT)
+		VALUES(#{seq},#{email},#{content})
+	</insert>
+
+	<!-- 내역서 썼는지 check -->
+	<select id="fundingStacheck" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM PM_FUNDING_STA
+		WHERE SEQ=#{seq}
+	</select> 
 	
->>>>>>> 4e5675b2cdc8c87dd4c27907aa466a1a244516af
-
+	<!--후원한 사람 list -->
+	<select id="whofundingMem" parameterType="java.lang.Integer" resultType="com.petmeeting.joy.admin.model.FundMemberDto">
+		SELECT F.MYPROFILE_IMG, G.NICKNAME, G.EMAIL, M.DONATION, M.D_DATE, G.NAME
+		FROM PM_MYPROFILE F,PM_FUNDINGMEM M , PM_MEMBER G
+		WHERE F.EMAIL = M.EMAIL AND M.EMAIL = G.EMAIL AND M.FUNDING_SEQ = #{funding_seq}
+	</select>
 
 </mapper>

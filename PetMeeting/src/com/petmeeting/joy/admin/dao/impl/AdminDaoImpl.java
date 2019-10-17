@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import com.petmeeting.joy.admin.dao.AdminDao;
 import com.petmeeting.joy.admin.model.BoardReportDto;
+import com.petmeeting.joy.admin.model.FundMemberDto;
 import com.petmeeting.joy.funding.model.FundingDto;
+import com.petmeeting.joy.funding.model.FundingStaDto;
 import com.petmeeting.joy.funding.model.fundingBean;
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
@@ -47,22 +49,13 @@ public class AdminDaoImpl implements AdminDao {
 		sqlSession.delete(namespace+"deletePlayboardQnA", seq);
 	}
 	
-<<<<<<< HEAD
 
-	
-=======
->>>>>>> 4e5675b2cdc8c87dd4c27907aa466a1a244516af
 	@Override
 	public PlayboardDto getPlayboardDetail(int seq) {
 		return sqlSession.selectOne(namespace+"getPlayboardDetail", seq);
 	}
-<<<<<<< HEAD
-	
-	
-	/*funding*/
-=======
->>>>>>> 4e5675b2cdc8c87dd4c27907aa466a1a244516af
-	
+
+
 	@Override
 	public List<BoardReportDto> getBoardReportReason(BoardReportDto reportDto) {
 		return sqlSession.selectList(namespace+"getBoardReportReason", reportDto);
@@ -78,25 +71,64 @@ public class AdminDaoImpl implements AdminDao {
 	public void minusReportCount(BoardReportDto reportDto) {
 		sqlSession.update(namespace+"minusReportCount", reportDto);
 	}
-
-	
 	
 	
 	
 	/*funding*/
 	@Override
-	public List<FundingDto> getFundingList(fundingBean fbean) {	
-		return sqlSession.selectList(namespace + "getFundingList", fbean);
+	public boolean addFunding(FundingDto dto) {
+		int n = sqlSession.insert(namespace + "addFunding", dto);
+		
+		return n>0? true:false;
 	}
-
+	
 	@Override
 	public int getFundingCount(fundingBean fbean) {
 		return sqlSession.selectOne(namespace + "getFundingCount", fbean);
 	}
 
-<<<<<<< HEAD
-=======
+	
+	@Override
+	public List<FundingDto> getFundingList(fundingBean fbean) {	
+		return sqlSession.selectList(namespace + "getFundingList", fbean);
+	}
 
->>>>>>> 4e5675b2cdc8c87dd4c27907aa466a1a244516af
+	
+	@Override
+	public boolean fundingUpdate(FundingDto dto) {
+		int n = sqlSession.update(namespace + "fundingUpdate", dto);
+		return n>0?true:false;
+	}
+
+	@Override
+	public boolean addfundingSta(FundingStaDto sta) {
+		int n = sqlSession.insert(namespace + "addfundingSta", sta);
+		return n>0?true:false;
+	}
+	
+	@Override
+	public int fundingStacheck(int seq) {
+		return sqlSession.selectOne(namespace + "fundingStacheck", seq);
+	}
+
+	@Override
+	public void fundingDelete(int seq) {		
+		sqlSession.delete(namespace + "fundingDelete" , seq);
+	}
+
+	@Override
+	public void fundingStaDel(int seq) {
+		sqlSession.delete(namespace + "fundingStaDel", seq);
+	}
+
+	@Override
+	public FundingDto fundingDetail(int seq) {
+		return sqlSession.selectOne(namespace + "adminfundingDetail", seq);
+	}
+
+	@Override
+	public List<FundMemberDto> whofundingMem(int seq) {
+		return sqlSession.selectList(namespace + "whofundingMem", seq);
+	}
 
 }

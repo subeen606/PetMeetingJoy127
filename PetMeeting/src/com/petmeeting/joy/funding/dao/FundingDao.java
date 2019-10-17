@@ -11,16 +11,12 @@ import com.petmeeting.joy.login.model.MemberDto;
 
 public interface FundingDao {
 
-	public boolean addFunding(FundingDto dto);
+	//public boolean addFunding(FundingDto dto);
 	public List<FundingDto> fundingList(FundingParam param);
 	public FundingDto fundingDetail(int seq);
 	public MemberDto fundingMem(String email);
 	public void readcount(int seq);
-	/*수정*/
-	public boolean fundingUpdate(FundingDto dto);
-	/*삭제*/
-	public boolean fundingDelete(int seq);
-	
+
 	/* 좋아요 체크 */
 	public int isFundlike(FundinglikeBean bean);
 
@@ -37,11 +33,12 @@ public interface FundingDao {
 	public void personCount(int board_seq);
 	public int isfunding(FundingmemDto mem);
 	public int sumfund(int board_seq);
+	public boolean m_dPoint(FundingmemDto mem);
 	
 	public void cPrice(FundingmemDto mem);
 	
 	/*내역서*/
-	public boolean addfundingSta(FundingStaDto sta);
+	//public boolean addfundingSta(FundingStaDto sta);
 	public FundingStaDto fundingStaDetail(int seq);
 	public int fundingStacheck(int seq);
 }

@@ -56,65 +56,66 @@
     <div class="main_menu" id="fundingbar">
     </div>
     <!-- Header part end-->
-    
-<div id="divv" class="container">
- <div style="text-align: center;">
- 	<div>
- 		<p class="payfont"> Funding </p>
- 	</div>
- 	<div class="con-flex">
-		<img class="listimg" src="fundingFileupload/${dto.thumbnail}"> 
-		<div class="paycontent">
-			<div class="pc">
-				<span class="titleSt">${dto.title }</span><br><br>
-				<span class="introSt">${dto.intro }</span>
-			</div>
-		</div>
-	</div>
-	<div class="fundcontent">
-	 	<div>	
-			<div>
-			이름: ${mem.name }
-			</div>
-			<div>
-			휴대폰번호: ${mem.phone }
-			</div>
-			<div>
-			주소: ${mem.address } / ${mem.address_detail }
-			</div>
+
+<form id="frm">
+<input type="hidden" name="email" value="${login.email }">
+<input type="hidden" name="funding_seq" value="${dto.seq }">  
+	<div id="divv" class="container">
+	 <div style="text-align: center;">
+	 	<div>
+	 		<p class="payfont"> Funding </p>
 	 	</div>
-	 	<div>	
-			<div>
-				목표금액: <input id="goal_fund" value="${dto.max_price }" readonly="readonly"><br>
-				후원금액: <input id="_funding" type="text" placeholder="후원금액">원
+	 	<div class="con-flex">
+			<img class="listimg" src="fundingFileupload/${dto.thumbnail}"> 
+			<div class="paycontent">
+				<div class="pc">
+					<span class="titleSt">${dto.title }</span><br><br>
+					<span class="introSt">${dto.intro }</span>
+				</div>
 			</div>
-			
-			<input type="radio" name="howfund" value="포인트기부">포인트기부 &nbsp;&nbsp;
-			<input type="radio" name="howfund" value="결제기부">결제기부
-			
-			<div id="pointCheck" style="display: none;">
-				사용 POINT <input id="fundingPt" type="text">  / 보유 POINT <input id="_point" type="text" value="${mem.point }" readonly="readonly"> 
-				<input id="pointBtn" type="button" value="포인트사용">
-			</div>	
-
-			<div>
-				총 후원금액 : <input id="funding" type="text" readonly="readonly"> 원
-			</div>
-			<input type="checkbox" class="check">전체선택 <br>
-			<input type="checkbox" id="check1" class="checkB">PetMeeting 이용약관 동의 <a href="">상세보기</a>
-			<input type="checkbox" id="check2" class="checkB">개인정보 수집/이용 동의 <a href="">상세보기</a>
-		 </div>
-		<div>
-			<input  id="check_module" type="button" value="기부 하기">
-			<input id="close" type="button" value="닫기">
 		</div>
-	 </div>	
-</div>
-</div>
-
-
-
-
+		<div class="fundcontent">
+		 	<div>	
+				<div>
+				이름: ${mem.name }
+				</div>
+				<div>
+				휴대폰번호: ${mem.phone }
+				</div>
+				<div>
+				주소: ${mem.address } / ${mem.address_detail }
+				</div>
+		 	</div>
+		 	<div>	
+				<div>
+					목표금액: <input id="goal_fund1" value="${dto.max_price }" readonly="readonly">원<br>
+					남은금액: <input id="goal_fund" value="${dto.max_price - dto.current_price }" readonly="readonly">원<br>
+					후원금액: <input name="donation" id="_funding" type="text" placeholder="후원금액">원
+				</div>
+				
+				<input type="radio" name="howfund" value="포인트기부">포인트기부 &nbsp;&nbsp;
+				<input type="radio" name="howfund" value="결제기부">결제기부
+				
+				<div id="pointCheck" style="display: none;">
+					사용 POINT <input name="d_point" id="fundingPt" type="text" placeholder="0">  / 보유 POINT <input id="_point" type="text" value="${mem.point }" readonly="readonly"> 
+					<input id="pointBtn" type="button" value="포인트사용">
+				</div>	
+	
+				<div>
+					총 후원금액 : <input id="funding" type="text" readonly="readonly"> 원
+				</div>
+				<input type="checkbox" class="check">전체선택 <br>
+				<input type="checkbox" id="check1" class="checkB">PetMeeting 이용약관 동의 <a href="">상세보기</a>
+				<input type="checkbox" id="check2" class="checkB">개인정보 수집/이용 동의 <a href="">상세보기</a>
+			 </div>
+			<div>
+				<input  id="check_module" type="button" value="기부 하기">
+				<input id="close" type="button" value="닫기">
+			</div>
+		 </div>	
+	</div>
+	</div>
+</form>
 
 
 <script>
@@ -178,6 +179,10 @@ $("#pointBtn").click(function() {
 		$("#funding").val("");
 		$("#fundingPt").focus();
 		}
+	if($("#fundingPt").val() < 500){
+		alert("포인트는 500점 이상부터 사용가능합니다");
+		$("#fundingPt").focus();
+	}
 	if( _funding < point ){
 		alert("후원금액을 초과했습니다.\n사용하실  POINT를 다시 확인해주세요");
 		$("#fundingPt").focus();
@@ -187,7 +192,7 @@ $("#pointBtn").click(function() {
 		alert("보유POINT를 초과하셨습니다.\n사용하실 POINT를 다시확인해주세요");
 		$("#fundingPt").focus();
 	}
-	if( _funding >= point && havepoint >= point){
+	if( _funding >= point && havepoint >= point && point >= 500){
 		$("#funding").val($("#_funding").val() - $("#fundingPt").val());
 	}
 });
@@ -199,6 +204,10 @@ $("#close").click(function() {
 
 /* 기부하기 버튼 눌렀을때 (point사용  / 결제 API) */
 $("#check_module").click(function () {
+	
+	if($("input[name=d_point]").val() == null || $("input[name=d_point]").val() == ""){
+		$("input[name=d_point]").val(0);
+	}
 	
 	var goal = parseInt($("#goal_fund").val()); //목표 금액
 	var _funding = parseInt($("#_funding").val()); //후원 금액
@@ -224,10 +233,10 @@ $("#check_module").click(function () {
 
 	else if(a==true && b==true){
 			if( $("#funding").val() == '0' ){
-				//alert("포인트 결제");
-				//location.href="fundingpayAf.do?donation="+$("#fundingPt").val();
+				var queryString = $("#frm").serialize();
+				
 				$.ajax({
-						data : "donation="+$("#fundingPt").val()+"&email=${login.email}"+"&funding_seq=${dto.seq}",
+						data : queryString,
 						type: "POST",
 						url: "fundingpayAf.do",
 						success: function(data) {
@@ -298,15 +307,15 @@ $("#check_module").click(function () {
 				msg += '결제 금액 : ' + rsp.paid_amount +'\n';
 				msg += '카드 승인번호 : ' + rsp.apply_num +'\n';
 				msg += '후원해주셔서 감사합니다.';
-				/* location.href="fundingpayAf.do?seq="+${dto.seq}+"&donation="+$("#funding").val(); */
+				var queryString = $("#frm").serialize();
+				
 				$.ajax({
-					data : "donation="+$("#funding").val()+"&email=${login.email}"+"&funding_seq=${dto.seq}",
+					data : queryString,
 					type: "POST",
 					url: "fundingpayAf.do",
 					success: function(data) {
-						alert("success");
-						alert("후원해주셔서 감사합니다");
 						self.close();
+						opener.document.location.reload();
 					},error: function() {
 						alert("error");
 					}

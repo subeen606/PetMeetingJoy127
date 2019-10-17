@@ -11,8 +11,6 @@ import com.petmeeting.joy.funding.model.FundingmemDto;
 import com.petmeeting.joy.login.model.MemberDto;
 
 public interface FundingService {
-	
-	public boolean addFunding(FundingDto dto, DayBean bean);
 
 	public List<FundingDto> fundingList(String email,FundingParam param);
 	
@@ -29,12 +27,6 @@ public interface FundingService {
 	public boolean addFundMem(FundingmemDto mem);
 	public void personCount(int board_seq);
 	
-	public FundingDto fundingUpdate(int seq);
-	
-	public boolean fundUpdate(FundingDto dto, DayBean bean);
-	public boolean fundingDelete(int seq);
-	
-	public boolean addfundingSta(FundingStaDto sta);
 	public FundingStaDto fundingStaDetail(int seq);
 
 }

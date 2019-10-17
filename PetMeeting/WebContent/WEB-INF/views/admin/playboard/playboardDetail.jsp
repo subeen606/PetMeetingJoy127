@@ -16,6 +16,13 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/admin_resources/css/playboardDetail.css">
 </head>
 <body>
+<div id="right-panel" class="right-panel">
+	<!--::header part start::-->
+		<jsp:include page="/admin_resources/admincss/templates/adminheader.jsp" flush="false"/>
+	<!-- Header part end-->
+
+<!-- Content -->
+<div class="content">
 <div class="container">
 <div class="mainTitle">소모임 상세보기</div>
 	<table class="detailTable">
@@ -105,6 +112,8 @@
 			<td colspan="2" align="center"><button type="button" id="deleteBtn">삭제</button></td>
 		</tr>
 	</table>
+</div>
+</div>
 </div>
 
 <script type="text/javascript">

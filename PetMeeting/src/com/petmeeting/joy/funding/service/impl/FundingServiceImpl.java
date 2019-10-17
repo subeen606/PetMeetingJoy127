@@ -22,21 +22,6 @@ public class FundingServiceImpl implements FundingService {
 	@Autowired
 	FundingDao funddao;
 	
-	@Override
-	public boolean addFunding(FundingDto dto , DayBean bean) {
-		
-		FundingDto fundDto = new FundingDto(bean.getEmail(),
-											dto.getTitle(), 
-											dto.getIntro(), 
-											dto.getContent(),
-											dto.getThumbnail(),
-											dto.getMax_price(), 
-											bean.getSDate(), 
-											bean.getEDate()
-											);
-			
-		return funddao.addFunding(fundDto);
-	}
 
 	@Override
 	public List<FundingDto> fundingList(String email,FundingParam param) {
@@ -47,7 +32,7 @@ public class FundingServiceImpl implements FundingService {
 			
 			int seq = fund.getSeq();
 			
-			int check = funddao.fundingStacheck(seq);
+			//int check = funddao.fundingStacheck(seq);
 			int count = funddao.isfunding(new FundingmemDto(seq, email));
 			
 			if(count==1) {
@@ -55,11 +40,10 @@ public class FundingServiceImpl implements FundingService {
 			}else {
 				fund.setIsfunding(false);
 			}
-			if(check==1) {
-				fund.setIsfundingsta(true);
-			}else {
-				fund.setIsfundingsta(false);
-			}
+			/*
+			 * if(check==1) { fund.setIsfundingsta(true); }else {
+			 * fund.setIsfundingsta(false); }
+			 */
 			flist.add(fund);
 		}
 		return flist;
@@ -95,18 +79,15 @@ public class FundingServiceImpl implements FundingService {
 			if(f==0) {
 				dto.setIsfunding(false);
 			}
-			if(c>0) {
-				dto.setIsfundingsta(true);
-			}
-			if(c==0) {
-				dto.setIsfundingsta(false);
-			}
-			
-			
-			System.out.println("디테일가는 service dto : " +dto.toString());
-			
-			
-		 return dto;
+		
+		  if(c>0) { 
+			  dto.setIsfundingsta(true); 
+		  	} 
+		  if(c==0) { 
+			  dto.setIsfundingsta(false);
+		  	}
+		System.out.println("디테일가는 service dto : " +dto.toString());
+		return dto;
 	 }
 
 	 
@@ -138,10 +119,8 @@ public class FundingServiceImpl implements FundingService {
 
 	@Override
 	public boolean addFundMem(FundingmemDto mem) {
-		mem = new FundingmemDto(mem.getFunding_seq(),mem.getEmail(), mem.getDonation());
-		
 		funddao.cPrice(mem);
-		
+		funddao.m_dPoint(mem);
 		return funddao.addFundMem(mem);
 	}
 
@@ -166,44 +145,9 @@ public class FundingServiceImpl implements FundingService {
 		return funddao.isFundlike(bean);
 	}
 
-	/*update하기위한 디테일*/
-	@Override
-	public FundingDto fundingUpdate(int seq) {
-		return funddao.fundingDetail(seq);
-	}
-
-	@Override
-	public boolean fundUpdate(FundingDto dto, DayBean bean) {
-		System.out.println("서비스들어오는 dto 와 빈: " +dto.toString()+","+bean.toString());
-		FundingDto fundDto = new FundingDto(
-											dto.getSeq(),
-											bean.getEmail(),
-											dto.getTitle(), 
-											dto.getIntro(), 
-											dto.getContent(),
-											dto.getThumbnail(),
-											dto.getMax_price(), 
-											bean.getSDate(), 
-											bean.getEDate()
-											);
-
-		 return funddao.fundingUpdate(fundDto);
-	}
-
-	@Override
-	public boolean fundingDelete(int seq) {
-		return funddao.fundingDelete(seq);
-	}
-
-	@Override
-	public boolean addfundingSta(FundingStaDto sta) {
-		return funddao.addfundingSta(sta);
-	}
-
 	@Override
 	public FundingStaDto fundingStaDetail(int seq) {
 		return funddao.fundingStaDetail(seq);
 	}
-
 
 }

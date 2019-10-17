@@ -34,7 +34,7 @@ public class DateUtil {
 		c.setTime(d);
 		Calendar t=Calendar.getInstance();
 		//오늘이 마지막날 보다 큰가?
-		return Integer.parseInt(StringCal(t))>Integer.parseInt(StringCal(c));
+		return Integer.parseInt(StringCal(t))>=Integer.parseInt(StringCal(c));
 	}
 	//칼렌더를 20120807형식으로 만들기
 	public static String StringCal(Calendar dd){
@@ -46,20 +46,13 @@ public class DateUtil {
 	
 	//퍼센트 표현
 	public static double PercentP(String curP, String maxP) {
-		
 		/*
-		 * double f = Double.parseDouble(curP)/Double.parseDouble(maxP)*100; return
-		 * String.format("%.2f", f);
+		  double f = Double.parseDouble(curP)/Double.parseDouble(maxP)*100; return
+		  String.format("%.2f", f);
 		 */
 		double f = ((double)Integer.parseInt(curP)/(double)Integer.parseInt(maxP))*100;	
 		
 		return Math.round(f);
 	}
 	
-	//콤마찍기 
-	/*
-	 * public static int Comma(int money) { DecimalFormat Commas = new
-	 * DecimalFormat("#,###"); String moneyy = (String)Commas.format(money); int mo
-	 * = Integer.parseInt(moneyy); return mo; }
-	 */
 }

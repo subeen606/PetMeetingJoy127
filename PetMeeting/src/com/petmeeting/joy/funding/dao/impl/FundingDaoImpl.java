@@ -22,13 +22,6 @@ public class FundingDaoImpl implements FundingDao {
 	
 	String ns = "funding.";
 	
-	//펀딩등록
-	@Override
-	public boolean addFunding(FundingDto dto) {
-		int n = sqlSession.insert(ns + "addFunding", dto);
-		
-		return n>0? true:false;
-	}
 
 	@Override
 	public List<FundingDto> fundingList(FundingParam param) {
@@ -112,33 +105,23 @@ public class FundingDaoImpl implements FundingDao {
 		sqlSession.update(ns+ "cPrice", mem);
 		
 	}
-
-	@Override
-	public boolean fundingUpdate(FundingDto dto) {
-		int n = sqlSession.update(ns + "fundingUpdate", dto);
-		return n>0?true:false;
-	}
-
-	@Override
-	public boolean fundingDelete(int seq) {
-		int n = sqlSession.delete(ns + "fundingDelete", seq);
-		return n>0?true:false;
-	}
-
-	@Override
-	public boolean addfundingSta(FundingStaDto sta) {
-		int n = sqlSession.insert(ns + "addfundingSta", sta);
-		return n>0?true:false;
-	}
-
 	@Override
 	public FundingStaDto fundingStaDetail(int seq) {
 		return sqlSession.selectOne(ns +"fundingStaDetail", seq);
 	}
 
+
+	@Override
+	public boolean m_dPoint(FundingmemDto mem) {
+		int n = sqlSession.update(ns + "m_dPoint", mem);
+		return n>0?true:false;
+	}
+
+
 	@Override
 	public int fundingStacheck(int seq) {
-		return sqlSession.selectOne(ns + "fundingStacheck", seq);
+		return sqlSession.selectOne(ns + "funding_Stacheck", seq);
 	}
+
 
 }

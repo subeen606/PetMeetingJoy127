@@ -9,14 +9,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-	
-	<link rel="icon" href="${pageContext.request.contextPath}/common/navbar/img/petmeetingicon.png">
 </head>
 <body>
+    <div id="right-panel" class="right-panel">
+		 <!--::header part start::-->
+		 	<jsp:include page="/admin_resources/admincss/templates/adminheader.jsp" flush="false"/>
+		 <!-- Header part end-->
 
-<a href="adminPlayboardList.do">소모임 목록</a>
-
-<a href="adminFundingList.do">funding List</a>
+        <!-- Content -->
+        <div class="content">
+        	블라블라 블라블라
+            <!-- Animated -->
+            <div class="animated fadeIn">
+			
+            </div>
+            <!-- .animated -->
+        </div>
+        <!-- /.content -->
+        <div class="clearfix"></div>
+      </div>  
 
 </body>
 </html>

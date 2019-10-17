@@ -30,12 +30,12 @@
 		<div class="detailti">
 			" ${dto.title } "
 		</div>
-		<div class="deleUp">
+<%-- 		<div class="deleUp">
 			<c:if test="${login.auth eq '8' }">
 				<input id="updateBtn" type="button" value="수정">
 				<input id="deleteBtn" type="button" value="삭제">
 			</c:if>
-		</div>
+		</div> --%>
 		
 	
 		<div class="deDate">
@@ -81,7 +81,7 @@
 		</div>		
 
 		<div class="deBtn">	
-			<c:if test="${dates.isEnd(dto.edate) eq 'false' && dto.current_price ne dto.max_price && login.auth ne '8'}">
+			<c:if test="${dates.isEnd(dto.edate) eq 'false' && dto.current_price ne dto.max_price}">
 				<input type="button" id="fundingBtn" value="후원하기">
 			</c:if>
 			<c:if test="${dates.isEnd(dto.edate) eq 'true' || dto.current_price eq dto.max_price}">
