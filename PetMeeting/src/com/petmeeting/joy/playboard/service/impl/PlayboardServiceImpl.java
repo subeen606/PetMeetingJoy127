@@ -99,8 +99,8 @@ public class PlayboardServiceImpl implements PlayboardService{
 	}
 
 	@Override
-	public MyProfileDto getMakerProfile(String email) {
-		return pdao.getMakerProfile(email);
+	public MyProfileDto getMyProfile(String email) {
+		return pdao.getMyProfile(email);
 	}
 
 	@Override
@@ -243,6 +243,12 @@ public class PlayboardServiceImpl implements PlayboardService{
 	@Override
 	public void insertPlayboardQnAReply(PlayboardQnADto qna) {
 		pdao.insertPlayboardQnAReply(qna);
+	}
+
+	@Override
+	public void reportMember(ReportDto rdto) {
+		pdao.insertMemberReport(rdto);
+		pdao.plusMemberReportCount(rdto);
 	}
 
 	

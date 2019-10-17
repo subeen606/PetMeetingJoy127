@@ -66,8 +66,8 @@ public class PlayboardDaoImpl implements playboardDao{
 	}
 
 	@Override
-	public MyProfileDto getMakerProfile(String email) {
-		return sqlSession.selectOne(namespace+"getMakerProfile", email);
+	public MyProfileDto getMyProfile(String email) {
+		return sqlSession.selectOne(namespace+"getMyProfile", email);
 	}
 
 	@Override
@@ -226,6 +226,16 @@ public class PlayboardDaoImpl implements playboardDao{
 	@Override
 	public int QnAReplyCheck(int seq) {
 		return sqlSession.selectOne(namespace+"QnAreplyCheck", seq);
+	}
+
+	@Override
+	public void insertMemberReport(ReportDto rdto) {
+		sqlSession.insert(namespace+"insertMemberReport", rdto);
+	}
+
+	@Override
+	public void plusMemberReportCount(ReportDto rdto) {
+		sqlSession.update(namespace+"plusMemberReportCount", rdto);
 	}
 
 

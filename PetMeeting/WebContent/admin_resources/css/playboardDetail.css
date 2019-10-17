@@ -30,14 +30,14 @@ a{
 }
 .detailTable{
 	width: 100%;
-	font-size: 17px;
+	font-size: 18px;
 	border-spacing: 1; 
  	border-collapse: collapse; 
 }
 .detailTable th{
 	background-color: #008c9e0f;
 	width: 30%;
-	font-size: 20px;
+	font-size: 19px;
 }
 .detailTable tr{
 	height: 60px;
@@ -102,4 +102,31 @@ a{
 	width: 70px;
 	border-radius: 10px;
 	color: #fff;
+}
+
+.qnaTable{
+	font-size: 15px;
+	width: 100%;
+	border-spacing: 1; 
+ 	border-collapse: collapse; 
+ 	margin-top: 15px; 
+}
+.qnaTable tr{
+	height: 40px;
+	border: none;
+}
+.qnaTable tr:last-child{
+	border: none;
+}
+
+#prevPage{
+	float: left;
+	cursor: pointer;
+}
+
+#nextPage{
+	float: right;
+	cursor: pointer;
+}
+
 }

@@ -51,7 +51,7 @@
 	
 	<form id="delFrm" action="adminPlayboardDelete.do" method="post">
 		<table class="boardTable">
-		
+			<col width="5%"><col width="5%"><col width="15%"><col width="35%"><col width="20%"><col width="5%"><col width="25%">
 			<thead>
 				<tr>
 					<th><input type="checkbox" name="alldel"></th><th>No.</th><th>모임 유형</th><th>제목</th><th>작성자</th><th>신고 수</th><th>작성일</th>
@@ -64,7 +64,14 @@
 						<td align="center"><input type="checkbox" name="delcheck" value="${pList.seq }"></td>
 						<td align="center">${i.count }</td>
 						<td align="center">${pList.category }</td>
-						<td style="padding-left: 20px;"><a class="titleAnchor" seq="${pList.seq }">${pList.title }</a></td>
+						<td style="padding-left: 20px;">
+							<a class="titleAnchor" seq="${pList.seq }">
+								<c:if test="${pList.deadlineCheck eq true }"><font color="red">[모집 마감]</font></c:if> 
+								<c:if test="${pList.del eq 1 }"><font color="red">[게시자에의해 삭제된 게시글]</font></c:if>
+								<c:if test="${pList.pdateCheck eq true }"><font color="red">[모임예정일 지남]</font></c:if>
+								${pList.title }
+							</a>
+						</td>
 						<td align="center">${pList.email }</td>
 						<td align="center">${pList.reportcount }</td>
 						<td align="center"><fmt:formatDate value="${pList.regdate }"  pattern="yyyy.MM.dd HH:mm"/></td>

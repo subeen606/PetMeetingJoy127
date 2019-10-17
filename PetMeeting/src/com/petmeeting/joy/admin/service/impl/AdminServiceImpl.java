@@ -14,6 +14,7 @@ import com.petmeeting.joy.funding.model.DayBean;
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.FundingStaDto;
 import com.petmeeting.joy.funding.model.fundingBean;
+import com.petmeeting.joy.playboard.Util.DateUtil;
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
 
@@ -27,7 +28,31 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Override
 	public List<PlayboardDto> getAllPlayboardList(PlayboardSearchBean search) {
-		return adminDao.getAllPlayboardList(search);
+		List<PlayboardDto> all =  adminDao.getAllPlayboardList(search);
+		List<PlayboardDto> checkList = new ArrayList<PlayboardDto>();
+		
+		for (PlayboardDto dto : all) {
+			if(DateUtil.isEnd(dto.getEdate()) == true) {	// 마감
+				dto.setDeadlineCheck(true);
+			}else if(DateUtil.isEnd(dto.getEdate()) == false) {
+				dto.setDeadlineCheck(false);
+			}
+			
+			if(dto.getPeople() == dto.getPersoncount()) {	// 모집인원이 다 찬경우
+				dto.setFullCheck(true);
+			}else {
+				dto.setFullCheck(false);
+			}
+			
+			if(DateUtil.isEnd(dto.getPdate()) == true) {	// 모임예정일 지남
+				dto.setPdateCheck(true);
+			}else {
+				dto.setPdateCheck(false);
+			}
+			
+			checkList.add(dto);
+		}
+		return checkList;
 	}
 
 	@Override
@@ -103,6 +128,7 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.getFundingCount(fbean);
 	}
 	
+<<<<<<< HEAD
 	@Override
 	public void deletefunding(int seq) {
 		adminDao.fundingStaDel(seq);
@@ -136,6 +162,23 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public FundingDto fundingDetail(int seq) {
 		return adminDao.fundingDetail(seq);
+=======
+	@Override
+	public PlayboardDto getPlayboardDetail(int seq) {
+		PlayboardDto detail = adminDao.getPlayboardDetail(seq);
+		if(DateUtil.isEnd(detail.getEdate()) == true) {	// 마감
+			detail.setDeadlineCheck(true);
+		}else if(DateUtil.isEnd(detail.getEdate()) == false) {
+			detail.setDeadlineCheck(false);
+		}
+		
+		if(detail.getPeople() == detail.getPersoncount()) {	// 모집인원이 다 찬경우
+			detail.setFullCheck(true);
+		}else {
+			detail.setFullCheck(false);
+		}			
+		return detail;
+>>>>>>> f3684eefb7a9f97d5b91a9cd135814d8e427c35c
 	}
 
 	@Override

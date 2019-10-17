@@ -13,32 +13,50 @@
 <body>
 
 <div class="container">
+
 <form id="reportFrm">
-<input type="hidden" name="seq" value="0">
-<input type="hidden" name="board_seq" value="${detail.seq }">
-<input type="hidden" name="email" value="${login.email }">
+	<input type="hidden" name="seq" value="0">
+	<input type="hidden" name="board_seq" value="${detail.seq }">
+	<input type="hidden" name="email" value="${login.email }">
+	<input type="hidden" name="bad_email">
 	<div class="row">
 		<img src="${pageContext.request.contextPath}/playboard_resources/img/siren.png" width="30px" height="30px" style="transform: translate(5px, 10px);">&nbsp;&nbsp;<h3>신고하기</h3>
 	</div>
-	<div class="line"></div>
-	<div class="row">
-		<div class="title">
-			작성자
+	<div class="line"></div>	
+	
+	<c:if test="${not empty detail }">
+		<div class="row">	
+			<div class="title">
+				작성자
+			</div>
+			<div class="content">
+				${detail.nickname }(${detail.email })
+			</div>
 		</div>
-		<div class="content">
-			${detail.nickname }(${detail.email })
+		
+		<div class="row">
+			<div class="title">
+				제목
+			</div>
+			<div class="content">
+				[${detail.category }] ${detail.title }
+			</div>
+		</div>	
+		
+	</c:if>
+	
+	<c:if test="${empty detail }">
+	<div id="memberReport">
+		<div class="row">
+			<div class="title">
+				신고 대상
+			</div>
+			<div class="content" id="nickname">
+				
+			</div>
 		</div>
 	</div>
-	
-	<div class="row">
-		<div class="title">
-			제목
-		</div>
-		<div class="content">
-			[${detail.category }] ${detail.title }
-		</div>
-	</div>
-	
+	</c:if>
 	<div class="line"></div>
 	
 	<div class="row">
@@ -57,13 +75,22 @@
 	<div class="row">
 		<button id="reportBtn">신고하기</button>
 	</div>
-	</form>
+</form>
 </div>
 
 <script type="text/javascript">
+
 $(function () {
-	
-	
+	/* //alert($(opener.document).find("#memberProfileFrm input[name='bad_email']").val());
+	if("${detail.email }" == null || "${detail.email }" == ""){
+		var bad_email = $(opener.document).find("#memberProfileFrm input[name='bad_email']").val();
+		$("#nickname input[name='bad_email']").val(bad_email);
+		$("#nickname").text($(opener.document).find("#memberProfileFrm input[name='nickname']").val());		
+		$("input[name='nickname']").val($(opener.document).find("#memberProfileFrm input[name='nickname']").val());	
+	} */
+	//alert($(window.opener.document).find("#memberProfileFrm input[name='bad_email']").val());
+	$("input[name='bad_email']").val($(window.opener.document).find("#memberProfileFrm input[name='bad_email']").val());
+	$("#nickname").text($(window.opener.document).find("#memberProfileFrm input[name='nickname']").val());		
 
 	$("input[name='reason']").on("change", function () {
 		if($("input[name='reason']:checked").val() == "기타"){
@@ -88,7 +115,11 @@ $(function () {
 		
 		var check = confirm("신고는 취소하실 수 없습니다. 신고하시겠습니까?\n(무분별한 신고는 운영자에 의해 제재될 수 있습니다.)");
 		if(check){
-
+			
+			if($("input[name='board_seq']").val() == null || $("input[name='board_seq']").val() == ""){
+				$("input[name='board_seq']").val("0");
+			}
+			
 			$("#reportFrm").attr("action", "reportAf.do").submit();	
 			window.opener.document.location.reload(true);
 			self.close();				

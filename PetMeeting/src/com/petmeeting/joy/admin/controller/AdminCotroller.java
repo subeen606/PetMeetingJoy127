@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.petmeeting.joy.admin.model.BoardReportDto;
 import com.petmeeting.joy.admin.model.FundMemberDto;
 import com.petmeeting.joy.admin.service.AdminService;
@@ -31,15 +30,22 @@ import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.FundingStaDto;
 import com.petmeeting.joy.funding.model.FundinglikeBean;
 import com.petmeeting.joy.funding.model.fundingBean;
+<<<<<<< HEAD
 import com.petmeeting.joy.funding.util.FUpUtil;
+=======
+>>>>>>> f3684eefb7a9f97d5b91a9cd135814d8e427c35c
 import com.petmeeting.joy.playboard.model.MyProfileDto;
 import com.petmeeting.joy.playboard.model.PlayMemDto;
-
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.fundingBean;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> f3684eefb7a9f97d5b91a9cd135814d8e427c35c
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardHashTagDto;
+import com.petmeeting.joy.playboard.model.PlayboardQnADto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
 import com.petmeeting.joy.playboard.service.PlayboardService;
 
@@ -101,16 +107,32 @@ public class AdminCotroller {
 	}
 	
 	@RequestMapping(value = "adminPlayboardDetail.do", method= {RequestMethod.GET, RequestMethod.POST})
-	public String adminPlayboardDetail(int seq, Model model) {
+	public String adminPlayboardDetail(int seq, Model model, PlayboardQnADto qnaDto) {
 		PlayboardDto pDto = adminService.getPlayboardDetail(seq);
 		
 		List<PlayMemDto> partList = playboardService.getPlayMems(seq);
 		
-		MyProfileDto profile = playboardService.getMakerProfile(pDto.getEmail());
+		MyProfileDto profile = playboardService.getMyProfile(pDto.getEmail());
 		
 		PlayboardHashTagDto hashs = playboardService.getHashTags(seq);
 		
+		if(qnaDto.getCurrPage() == 0) {
+			qnaDto = new PlayboardQnADto(seq, 1, 1, 10);
+		}else {
+			int totalQnA = playboardService.getTotalQnACount(seq);
+			int end = qnaDto.getCurrPage()*10;
+			if(end > totalQnA) {
+				end = totalQnA;
+			}
+			qnaDto = new PlayboardQnADto(seq, qnaDto.getCurrPage(), ((qnaDto.getCurrPage()-1)*10)+1, end);
+		}
+		
+		List<PlayboardQnADto> qnaList = playboardService.getPlayboardQnAList(qnaDto);
+		
 		model.addAttribute("detail", pDto);
+		model.addAttribute("totalCount", playboardService.getTotalQnACount(seq));
+		model.addAttribute("currPage", qnaDto.getCurrPage());
+		model.addAttribute("qnaList", qnaList);
 		model.addAttribute("hashs", hashs);
 		model.addAttribute("profile", profile);
 		model.addAttribute("partList", partList);
