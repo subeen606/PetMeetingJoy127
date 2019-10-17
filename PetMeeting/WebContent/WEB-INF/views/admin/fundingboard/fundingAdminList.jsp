@@ -68,7 +68,7 @@
 						<td><fmt:formatDate pattern="yyyy/MM/dd" value="${list.sdate }"/> ~ <fmt:formatDate pattern="yyyy/MM/dd" value="${list.edate }"/></td>
 						<td>${dates.PercentP(list.current_price,list.max_price)}%</td>
 						<c:if test="${dates.isEnd(list.edate) eq 'true' || list.current_price eq list.max_price}">
-							<td>마감</td>
+							<td id="end">마감</td>
 							<c:if test="${list.isfundingsta eq 'true' }">	
 								<td><a href="javascript:popup(${list.seq });"><img class="listicon" src="./fundingboard_resources/img/fileD.png"></a></td>
 							</c:if>
@@ -78,7 +78,7 @@
 						</c:if>
 						<c:if test="${dates.isEnd(list.edate) eq 'false'}">
 							<c:if test="${list.current_price lt list.max_price}">
-								<td>진행</td>
+								<td id="ing">진행</td>
 								<td> <img class="listicon" src="./fundingboard_resources/img/fileX.png"> </td>
 							</c:if>
 						</c:if>

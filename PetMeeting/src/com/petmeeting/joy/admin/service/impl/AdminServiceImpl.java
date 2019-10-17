@@ -77,12 +77,23 @@ public class AdminServiceImpl implements AdminService {
 		adminDao.deleteBoardReport(reportDto);
 		adminDao.minusReportCount(reportDto);
 	}
-
+	
+	@Override
 	public PlayboardDto getPlayboardDetail(int seq) {
-		return adminDao.getPlayboardDetail(seq);
-
+		PlayboardDto detail = adminDao.getPlayboardDetail(seq);
+		if(DateUtil.isEnd(detail.getEdate()) == true) {	// 마감
+			detail.setDeadlineCheck(true);
+		}else if(DateUtil.isEnd(detail.getEdate()) == false) {
+			detail.setDeadlineCheck(false);
+		}
+		
+		if(detail.getPeople() == detail.getPersoncount()) {	// 모집인원이 다 찬경우
+			detail.setFullCheck(true);
+		}else {
+			detail.setFullCheck(false);
+		}			
+		return detail;
 	}
-
 	
 	
 	
@@ -128,7 +139,7 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.getFundingCount(fbean);
 	}
 	
-<<<<<<< HEAD
+
 	@Override
 	public void deletefunding(int seq) {
 		adminDao.fundingStaDel(seq);
@@ -162,25 +173,8 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public FundingDto fundingDetail(int seq) {
 		return adminDao.fundingDetail(seq);
-=======
-	@Override
-	public PlayboardDto getPlayboardDetail(int seq) {
-		PlayboardDto detail = adminDao.getPlayboardDetail(seq);
-		if(DateUtil.isEnd(detail.getEdate()) == true) {	// 마감
-			detail.setDeadlineCheck(true);
-		}else if(DateUtil.isEnd(detail.getEdate()) == false) {
-			detail.setDeadlineCheck(false);
-		}
-		
-		if(detail.getPeople() == detail.getPersoncount()) {	// 모집인원이 다 찬경우
-			detail.setFullCheck(true);
-		}else {
-			detail.setFullCheck(false);
-		}			
-		return detail;
->>>>>>> f3684eefb7a9f97d5b91a9cd135814d8e427c35c
 	}
-
+	
 	@Override
 	public List<FundMemberDto> whofundingMem(int seq) {
 		return adminDao.whofundingMem(seq);

@@ -38,6 +38,7 @@ a{
 	background-color: #008c9e0f;
 	width: 30%;
 	font-size: 20px;
+	text-align: center;
 }
 .detailTable tr{
 	height: 60px;
@@ -50,6 +51,7 @@ a{
 	padding-left: 20px;
 	padding-right: 20px;
 	background-color: #fff;
+	text-align: center;
 }
 #delBtn{
 	border: none;

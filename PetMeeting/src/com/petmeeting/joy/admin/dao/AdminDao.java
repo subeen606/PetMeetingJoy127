@@ -20,29 +20,20 @@ public interface AdminDao {
 	public void deletePlayboardQnA(int seq);
 	
 	public PlayboardDto getPlayboardDetail(int seq);
-	
-<<<<<<< HEAD
-
-=======
->>>>>>> f3684eefb7a9f97d5b91a9cd135814d8e427c35c
 	public List<BoardReportDto> getBoardReportReason(BoardReportDto reportDto);
 	
 	public void deleteBoardReport(BoardReportDto reportDto);
 	public void minusReportCount(BoardReportDto reportDto);
 
-<<<<<<< HEAD
-	
-=======
->>>>>>> f3684eefb7a9f97d5b91a9cd135814d8e427c35c
 	
 	
 	
-	
+
 	/*funding*/
 	public boolean addFunding(FundingDto dto);
 	public List<FundingDto> getFundingList(fundingBean fbean);
 	public int getFundingCount(fundingBean fbean);
-<<<<<<< HEAD
+
 	public FundingDto fundingDetail(int seq);
 	public boolean addfundingSta(FundingStaDto sta);
 	
@@ -52,11 +43,7 @@ public interface AdminDao {
 	public int fundingStacheck(int seq);
 	
 	public List<FundMemberDto> whofundingMem(int seq);
-	
-	
-=======
 
->>>>>>> f3684eefb7a9f97d5b91a9cd135814d8e427c35c
 
 
 }

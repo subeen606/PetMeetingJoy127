@@ -55,6 +55,7 @@ a{
 	background-color: #008c9e;	
 	color: #fff;
 	font-size: 17px;
+	text-align: center;
 }
 .boardTable thead tr{
 	height: 60px;
@@ -71,6 +72,7 @@ a{
 }
 .boardTable tbody td{
 	padding: 10px;
+	text-align: center;
 }
 #deleteBtn{
 	border: none;
@@ -113,4 +115,10 @@ a{
     margin-bottom: 20px;
     float: right;
     cursor: pointer;
+}
+#end{
+	color: #e61a1a;
+}
+#ing{
+	color: #048cec;
 }

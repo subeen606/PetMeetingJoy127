@@ -30,19 +30,15 @@ import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.FundingStaDto;
 import com.petmeeting.joy.funding.model.FundinglikeBean;
 import com.petmeeting.joy.funding.model.fundingBean;
-<<<<<<< HEAD
+
 import com.petmeeting.joy.funding.util.FUpUtil;
-=======
->>>>>>> f3684eefb7a9f97d5b91a9cd135814d8e427c35c
+
+
 import com.petmeeting.joy.playboard.model.MyProfileDto;
 import com.petmeeting.joy.playboard.model.PlayMemDto;
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.fundingBean;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> f3684eefb7a9f97d5b91a9cd135814d8e427c35c
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardHashTagDto;
 import com.petmeeting.joy.playboard.model.PlayboardQnADto;
