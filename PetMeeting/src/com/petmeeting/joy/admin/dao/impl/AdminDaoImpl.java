@@ -70,8 +70,7 @@ public class AdminDaoImpl implements AdminDao {
 		
 	@Override
 	public void deleteBoardReport(ReportDto reportDto) {
-		sqlSession.delete(namespace+"deleteBoardReport", reportDto);
-		
+		sqlSession.delete(namespace+"deleteBoardReport", reportDto);		
 	}
 
 	@Override
@@ -79,6 +78,10 @@ public class AdminDaoImpl implements AdminDao {
 		sqlSession.update(namespace+"minusReportCount", reportDto);
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> cddc411da6e841a4b95af60d72a1a6dc6b9389d2
 	/* member */
 	@Override
 	public List<AdminMemberDto> getAllMemberList(MemberSearchBean memSearch) {
@@ -114,9 +117,28 @@ public class AdminDaoImpl implements AdminDao {
 	public int petProfileCheck(String email) {
 		return sqlSession.selectOne(namespace+"petProfileCheck", email);
 	}
+	
+	@Override
+	public List<ReportDto> getMemberReportReason(String email) {
+		return sqlSession.selectList(namespace+"getMemberReportReason", email);
+	}
+	
+	@Override
+	public void deleteMemberReport(ReportDto reportDto) {
+		sqlSession.delete(namespace+"deleteMemberReport", reportDto);
+	}
+
+	@Override
+	public void minusMemberReportCount(ReportDto reportDto) {
+		sqlSession.update(namespace+"minusMemberReportCount", reportDto);
+	}
 
 	/* funding */
+<<<<<<< HEAD
 
+=======
+	@Override
+>>>>>>> cddc411da6e841a4b95af60d72a1a6dc6b9389d2
 	public boolean addFunding(FundingDto dto) {
 		int n = sqlSession.insert(namespace + "addFunding", dto);
 		
@@ -187,5 +209,25 @@ public class AdminDaoImpl implements AdminDao {
 		sqlSession.insert(namespace + "revMsgFundMem" , msgList);
 	}
 
+<<<<<<< HEAD
+=======
+	@Override
+	public void deleteBoardReport(BoardReportDto reportDto) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<BoardReportDto> getBoardReportReason(BoardReportDto reportDto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void minusReportCount(BoardReportDto reportDto) {
+		// TODO Auto-generated method stub
+		
+	}
+>>>>>>> cddc411da6e841a4b95af60d72a1a6dc6b9389d2
 
 }

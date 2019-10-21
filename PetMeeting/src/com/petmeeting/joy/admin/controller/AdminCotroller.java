@@ -75,6 +75,10 @@ public class AdminCotroller {
 		}	
 		if(search.getSearchCategory() == null) {
 			search.setSearchCategory("선택");
+			search.setSearchText("");
+		}
+		if(search.getSortingType() == null) {
+			search.setSortingType("선택");
 		}
 		
 		int totalRowCount = adminService.getPlayboardTotalRowCount(search);
@@ -149,11 +153,13 @@ public class AdminCotroller {
 		System.out.println("board_code : " + board_code);
 		
 		List<BoardReportDto> reportList = adminService.getBoardReportReason(new ReportDto(board_code, seq));
-		model.addAttribute("reasons", reportList);
+		model.addAttribute("board_seq", seq);
+		model.addAttribute("board_code", board_code);
+		model.addAttribute("board_reasons", reportList);
 		return "admin/reportReason";
 	}
 	
-	@RequestMapping(value = "adminBoradReportDelete.do", method= {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "adminBoardReportDelete.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public String adminBoradReportDelete(ReportDto reportDto, RedirectAttributes redirectAttributes) {
 		System.out.println(reportDto.toString());
 		adminService.deleteBoardReport(reportDto);
@@ -226,6 +232,25 @@ public class AdminCotroller {
 		return "admin/member/memberDetail";
 	}
 	
+	@RequestMapping(value = "adminMemberReportReason.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String adminMemberReportReason(@RequestParam("email") String email, Model model) {
+		System.out.println("신고내역 확인 할 email : " + email);
+		
+		List<ReportDto> reportList = adminService.getMemberReportReason(email);
+		model.addAttribute("bad_email", email);
+		model.addAttribute("member_reasons", reportList);
+		return "admin/reportReason";
+	}
+	
+	@RequestMapping(value = "adminMemberReportDelete.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String adminMemberReportDelete(ReportDto reportDto, RedirectAttributes redirectAttributes) {
+		System.out.println("삭제할 reportDto : " + reportDto.toString());
+		
+		adminService.deleteMemberReport(reportDto);
+		
+		redirectAttributes.addAttribute("email", reportDto.getBad_email());
+		return "redirect:/adminMemberReportReason.do";
+	}
 	
 	/*funding 관리자*/
 	@RequestMapping(value = "adminFundingList.do",method = {RequestMethod.GET,RequestMethod.POST})

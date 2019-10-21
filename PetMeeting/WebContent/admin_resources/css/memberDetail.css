@@ -37,6 +37,24 @@
 .memberInfoTable tr:last-child{
 	border: none;
 }
+
+#reportReasonBtn{
+	border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: #b95e5b;
+    height: 35px;
+    font-size: 17px;
+    width: 120px;
+    border-radius: 10px;
+    color: #fff;
+    transition: 0.3s;
+}
+#reportResaonBtn:hover{
+	background-color: #008c9e;
+}
+
+
 #myProfile-th{
 	cursor: pointer;
 }
