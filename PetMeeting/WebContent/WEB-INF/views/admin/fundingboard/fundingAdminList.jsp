@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <title>admin</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/admin_resources/css/admin_common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/admin_resources/css/fundingboard.css">
 </head>
 <body>
@@ -110,7 +111,7 @@
 <script type="text/javascript">
 
 function popup(seq){
-	window.open("fundingstaDetail.do?seq="+seq,"후원 내역서","width=1000,height=750,left=100,top=50");
+	window.open("fundingstaDetail.do?seq="+seq,"후원 내역서","width=780,height=820,left=100,top=50");
 }
 
 function sele(){

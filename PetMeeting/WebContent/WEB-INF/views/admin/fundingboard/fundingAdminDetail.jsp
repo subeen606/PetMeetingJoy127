@@ -11,6 +11,7 @@
 <title>admin</title>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/admin_resources/css/admin_common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/admin_resources/css/fundingboardDetail.css">
 </head>
 <body>
@@ -42,28 +43,30 @@
 			<td>${dto.intro }</td>
 		</tr>
 		<tr>
+			<th>목표금액</th>
+			<td><fmt:formatNumber value="${dto.max_price }" pattern="#,###"/> 원 </td>
+		</tr>
+		<tr>
+			<th>후원받은 금액</th>
+			<td><fmt:formatNumber value="${dto.current_price }" pattern="#,###"/> 원</td>
+		</tr>
+		<tr>
 			<th>좋아요</th>
 			<td>${dto.likecount } 개</td>
 		</tr>
 		<tr>
-			<th>후원자 수</th>
+			<th>후원자</th>
 			<td>${dto.personcount } 명</td>
 		</tr>
 		<tr>
 			<th>후원한 회원</th>
-		<%-- 		
-			<td>
-			<c:forEach var="mlist" items="${mlist }" varStatus="vs">
-				${mlist.nickname }
-			</c:forEach>
-			</td> --%>
-			<td><a href="javascript:popupOpen();" >후원회원 List</a></td>
+			<td><a id="fundMemlist" href="javascript:popupOpen();" >후원회원 List</a></td>
 		</tr>
 		<tr>
 			<th colspan="2">후원내용</th>
 		</tr>
 		<tr>
-			<td colspan="2">${dto.content }</td>
+			<td colspan="2" id="deContent" >${dto.content }</td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center">
@@ -105,7 +108,7 @@ $("#listBtn").click(function(){
 });
 
 function popupOpen(){
-	window.open('fundingMempop.do?seq='+$("#seq").val(),"후원하기","width=650,height=360,left=100,top=50");
+	window.open('fundingMempop.do?seq='+$("#seq").val(),"후원하기","width=710,height=410,left=200,top=100");
 	}
 
 </script>

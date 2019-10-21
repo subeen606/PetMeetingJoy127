@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.petmeeting.joy.admin.model.BoardReportDto;
 import com.petmeeting.joy.admin.model.FundMemberDto;
+import com.petmeeting.joy.funding.model.FMsgDto;
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.FundingStaDto;
 import com.petmeeting.joy.funding.model.fundingBean;
+import com.petmeeting.joy.playboard.model.MsgDto;
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
 
@@ -20,20 +22,13 @@ public interface AdminDao {
 	public void deletePlayboardQnA(int seq);
 	
 	public PlayboardDto getPlayboardDetail(int seq);
-<<<<<<< HEAD
-=======
-	
->>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
+
 	public List<BoardReportDto> getBoardReportReason(BoardReportDto reportDto);
 	
 	public void deleteBoardReport(BoardReportDto reportDto);
 	public void minusReportCount(BoardReportDto reportDto);
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
-	
 	
 	
 
@@ -48,14 +43,12 @@ public interface AdminDao {
 	public boolean fundingUpdate(FundingDto dto);
 	public void fundingDelete(int seq);
 	public void fundingStaDel(int seq);
+	public void fundingMemDel(int seq);
 	public int fundingStacheck(int seq);
 	
 	public List<FundMemberDto> whofundingMem(int seq);
-<<<<<<< HEAD
-=======
 	
->>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
-
-
-
+	public void sendMsgFund(List<FMsgDto> msgList);
+	public void revMsgFund(List<FMsgDto> msgList);
+	
 }

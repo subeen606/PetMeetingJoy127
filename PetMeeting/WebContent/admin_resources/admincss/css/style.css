@@ -18,13 +18,12 @@ Googel Fonts  */
 /* Googel Fonts End  
 
 */
-<<<<<<< HEAD
-=======
+
 @font-face { font-family: 'NanumSquareRound'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff'); font-weight: normal; font-style: normal; }
 body{
 	font-family: 'NanumSquareRound';
 }
->>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
+
 /* @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700"); */
 .bg-flat-color-1 {
   background: #00c292; }

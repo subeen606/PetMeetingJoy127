@@ -7,6 +7,8 @@ import com.petmeeting.joy.admin.model.FundMemberDto;
 import com.petmeeting.joy.funding.model.DayBean;
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.FundingStaDto;
+import com.petmeeting.joy.funding.model.FundingmemDto;
+import com.petmeeting.joy.funding.model.FMsgDto;
 import com.petmeeting.joy.funding.model.fundingBean;
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
@@ -32,5 +34,8 @@ public interface AdminService {
 	public boolean addfundingSta(FundingStaDto sta);
 	public FundingDto fundingDetail(int seq);
 	public List<FundMemberDto> whofundingMem(int seq);
+	public void sendMsgfund(List<FundMemberDto> mlist, String title);
+	public void sendMsgUpfund(List<FundMemberDto> mList, String title);
+	public void fundingStaDel(int seq);
 
 }

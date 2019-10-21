@@ -11,8 +11,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-	
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/fundingboard_resources/css/fundingboard.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/admin_resources/css/admin_common.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/admin_resources/css/fundingboard.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/fundingboard_resources/css/fundingboard.css">
      
     <!-- include libraries(jQuery, bootstrap) summernote -->
 	<!-- <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"> -->
@@ -29,16 +30,18 @@
 	<script src="${pageContext.request.contextPath}/fundingboard_resources/datepicker/datepicker.js"></script>  
 </head>
 <body>
-    <div id="right-panel" class="right-panel">
-		 <!--::header part start::-->
-		 	<jsp:include page="/admin_resources/admincss/templates/adminheader.jsp" flush="false"/>
-		 <!-- Header part end-->
+   
+<div id="right-panel" class="right-panel">
+	<!--::header part start::-->
+	<jsp:include page="/admin_resources/admincss/templates/adminheader.jsp" flush="false"/>
+	<!-- Header part end-->
 
-        <!-- Content -->		
-         <div class="content">
+<!-- Content -->		
+ <div class="content">
          
  <div class="container">
 		<form method="post" id="frm" enctype="multipart/form-data">
+		<input type="hidden" name="email" value="${login.email }">
 			<div class="writetitle">
 				<div class="wtitle">
 					<img class="writeimg" src="./fundingboard_resources/img/dog3.png">
@@ -47,54 +50,69 @@
 				</div>
 			</div>
 			
-		<div class="divdiv">	
-			<div class="writediv">
-				<div class="writeT">작성자</div>
-				<input type="text" name="email" value="${login.email }" readonly="readonly"/>
-			</div>
-			
-			<div class="writediv">
-				<div class="writeT">후원기간</div>
-				<img class="calimg" src="./fundingboard_resources/img/calendar.png">
-				<input class="cal" type="text" id="_Sdate" placeholder="후원시작일" autocomplete="off"> ~ 
-				<img class="calimg" src="./fundingboard_resources/img/calendar.png">
-				 <input class="cal" type="text" id="_Edate" placeholder="후원마감일" autocomplete="off"> 
-				<input type="hidden" name="syear"><input type="hidden" name="smonth"><input type="hidden" name="sday">
-				<input type="hidden" name="eyear"><input type="hidden" name="emonth"><input type="hidden" name="eday">
-			</div>
-			<div class="writediv">
-				<div class="writeT">목표금액</div>
-				<input type="text" name="max_price" placeholder="목표 금액"   numberOnly>원
-			</div>
-			<div class="writediv">
-				<div class="writeT">후원 명</div>
-				<input type="text" name="title" style="width: 40%;" placeholder="제목"/>
-			</div>
-			<div class="writediv">
-				<div class="writeT">소제목</div>
-				<textarea style="resize: none; width: 70%;" name="intro" placeholder="소제목"></textarea>
-			</div>
-			<div class="writediv">
-				<div class="writeT">대표사진</div>
-				<input type="file" name="fileload">
-			</div>
-			<div class="writediv">
-				<div class="wcontent">후원 내용</div>	
-				<textarea id="summernote" name="content"></textarea>
-			</div>
-			</div>
-			<div class="writediv2">
-				<div>
-					<input id="subBtn" type="button" value="글 작성" />
-				</div>
-			</div>
-		
-		</form>
-	</div>
-	</div>
-	</div>
+		<table class="WriteTable">
+			<tr>
+				<th>작성자</th>
+				<td>${login.email }</td>
+			</tr>
+			<tr>
+				<th>후원기간</th>
+				<td colspan="2"> 
+					<img class="calimg" src="./fundingboard_resources/img/calendar.png">
+					<input class="cal" type="text" id="_Sdate" placeholder="후원시작일" autocomplete="off"> ~ 
+					<img class="calimg" src="./fundingboard_resources/img/calendar.png">
+				 	<input class="cal" type="text" id="_Edate" placeholder="후원마감일" autocomplete="off"> 
+					<input type="hidden" name="syear"><input type="hidden" name="smonth"><input type="hidden" name="sday">
+					<input type="hidden" name="eyear"><input type="hidden" name="emonth"><input type="hidden" name="eday">
+				</td>
+			</tr>
+			<tr>
+				<th>후원 목표금액</th>
+				<td><input type="text" name="max_price" placeholder="목표 금액"  class="number">원</td>
+			</tr>
+			<tr>
+				<th>후원 명</th>
+				<td><input type="text" id="fundT" name="title" style="width: 40%;" placeholder="후원 명"/></td>
+			</tr>
+			<tr>
+				<th>후원 소제목</th>
+				<td><textarea id="introtitle" name="intro" placeholder="후원 소제목"></textarea></td>
+			</tr>
+			<tr>
+				<th>대표사진</th>
+				<td><input id="fundI" type="file" name="fileload"></td>
+			</tr>
+			<tr>
+				<th colspan="2">후원내용</th>
+			</tr>
+			<tr>
+				<td colspan="2"><textarea id="summernote" name="content"></textarea></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center"><input type="button" id="subBtn" value="등록"></td>
+			</tr>
+		</table>
+	</form>
+</div>
+</div>
+</div>
+
+
 <script type="text/javascript">
-	$(document).ready(function() {
+$("input[name='title']").keyup(function () {
+	if($.trim($("input[name='title']").val()).length>20){
+		alert("제목은 20자 이하까지 가능합니다.");
+		$("input[name='title']").focus();
+	}
+});
+$("textarea[name='intro']").keyup(function () {
+	if($.trim($("textarea[name='intro']").val()).length>35){
+		alert("제목은 35자 이하까지 가능합니다.");
+		$("textarea[name='intro']").focus();
+	}
+});
+
+$(document).ready(function() {
 		  $('#summernote').summernote({
 		    	placeholder: 'content',
 		        minHeight: 370,
@@ -144,7 +162,42 @@
 <script type="text/javascript">
 
 $("#subBtn").click(function() {
-	$("#frm").attr("action","fundingWriteAf.do").submit();
+	var num = $(".number").val().replace(/[^\d]+/g, "");
+	
+	/*후원일정 제어*/
+	if($("#_Sdate").val() == "" || $("#_Edate").val() == ""){
+		alert("후원기간을 설정해주세요.");
+	}
+	/*목표금액 제어*/
+	if($(".number").val() == ""){
+		alert("목표금액을 작성해주세요.");
+	}
+	if(num > 50000000){
+		alert("목표금액은 50,000,000 이하로 설정해주세요.");
+	}
+	/*제목, 소제목 , 내용 , 대표사진 제어*/
+	if($("#fundT").val() == "") {
+		alert("후원명을 입력해주세요.");
+	}
+	if($("#introtitle").val() == ""){
+		alert("후원 소제목을 입력해주세요.");
+	}
+	if($("#fundI").val() == ""){
+		alert("대표사진을 설정해주세요.");
+	}
+	if($("#summernote").val() == ""){
+		alert("후원내용을 입력해주세요.");
+	}
+	else if($("#_Sdate").val() != "" && $("#_Edate").val() != ""
+			&& $(".number").val() != "" && $("#fundT").val() != "" && $("#introtitle").val() != ""
+			&& $("#fundI").val() != "" && $("#summernote").val() != ""){
+				var num = $(".number").val().replace(/[^\d]+/g, "");
+				$(".number").val(parseInt(num));
+				//alert($(".number").val());
+				if(num <= 50000000){
+				$("#frm").attr("action","fundingWriteAf.do").submit();
+				}
+			}
 });
 
 $(document).ready(function() {
@@ -206,17 +259,18 @@ $('#_Sdate').on('pick.datepicker', function (e) {
 			      $("input[name='emonth']").val(edate.getMonth()+1);
 			      $("input[name='eday']").val(edate.getDate()); 
 		    	    
-		    	 });
-	      
+		    	 });	      
 	   });
-	   
-		$("input:text[numberOnly]").on("keyup",function() {
-			$(this).val($(this).val().replace(/[^0-9]/g,""));
-			
-		});
-		
-	   
 });
+$(document).on("keyup", "input[type=text].number", function () {
+    var $this = $(this);
+    var num = $this.val().replace(/[^0-9]/g,"");
+ 
+    var parts = num.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    $this.val(parts.join("."));
+});
+
 </script>
 </body>
 </html>

@@ -95,24 +95,14 @@
 		SET REPORTCOUNT = REPORTCOUNT-1
 		WHERE SEQ=#{board_seq}
 	</update>
-	
-	
-<<<<<<< HEAD
-=======
-	
-	
-	
->>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
+
 
 	<!-- fundingList 추가 -->
 	<insert id="addFunding" parameterType="com.petmeeting.joy.funding.model.FundingDto">
 		INSERT INTO PM_FUNDINGBOARD(SEQ, BOARD_CODE, EMAIL, TITLE, INTRO, CONTENT, THUMBNAIL, MAX_PRICE, CURRENT_PRICE, PERSONCOUNT, LIKECOUNT, READCOUNT,SDATE, EDATE, REGDATE)
 		VALUES(PM_FUNDINGBOARD_SEQ.NEXTVAL, 'FUND', #{email}, #{title}, #{intro}, #{content}, #{thumbnail}, #{max_price}, 0, 0, 0, 0, #{sdate}, #{edate}, SYSDATE)
 	</insert>
-<<<<<<< HEAD
 
-=======
->>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
 	
 	<!-- funding 리스트목록 -->
 	<select id="getFundingList" parameterType="com.petmeeting.joy.funding.model.fundingBean" resultType="com.petmeeting.joy.funding.model.FundingDto">
@@ -168,11 +158,13 @@
 		WHERE SEQ=#{seq}
 	</delete>
 	
+	<!-- fundingMem 삭제 (글삭제하기위한) -->
+	<delete id="fundingMemDel" parameterType="java.lang.Integer">
+		DELETE FROM PM_FUNDINGMEM
+		WHERE FUNDING_SEQ=#{funding_seq}
+	</delete>
+	
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
 	<!-- funding 수정 -->
 	<update id="fundingUpdate" parameterType="com.petmeeting.joy.funding.model.FundingDto">
 		UPDATE PM_FUNDINGBOARD
@@ -197,10 +189,35 @@
 	
 	<!--후원한 사람 list -->
 	<select id="whofundingMem" parameterType="java.lang.Integer" resultType="com.petmeeting.joy.admin.model.FundMemberDto">
-		SELECT F.MYPROFILE_IMG, G.NICKNAME, G.EMAIL, M.DONATION, M.D_DATE, G.NAME
+		SELECT F.MYPROFILE_IMG, G.NICKNAME, G.EMAIL, M.DONATION, M.D_DATE, G.NAME, M.FUNDING_SEQ
 		FROM PM_MYPROFILE F,PM_FUNDINGMEM M , PM_MEMBER G
 		WHERE F.EMAIL = M.EMAIL AND M.EMAIL = G.EMAIL AND M.FUNDING_SEQ = #{funding_seq}
 	</select>
-
+	
+	<!-- 후원 내역서 올릴때 후원한 회원들 한테 쪽지보내기 -->
+	<insert id="sendMsgFundMem" parameterType="java.util.List">
+		INSERT INTO PM_SENDMSG(SEQ, TO_EMAIL, FROM_EMAIL, CONTENT, SENDDATE, READDATE, IMPORTANT, READCHECK)
+				SELECT PM_SENDMSG_SEQ.NEXTVAL, A.*
+		FROM(
+		<foreach collection="list" item="msgList" separator="UNION ALL ">
+		SELECT
+		#{msgList.to_email}, 'admin', #{msgList.content}, SYSDATE, NULL, 1, 0
+		FROM DUAL
+		</foreach>
+		) A
+	</insert>
+	
+	<!-- 후원 내역서 올릴때 후원한 회원들 한테 보낸 쪽지 받기 -->
+	<insert id="revMsgFundMem" parameterType="java.util.List">	
+		INSERT INTO PM_REVMSG(SEQ, TO_EMAIL, FROM_EMAIL, CONTENT, SENDDATE, READDATE, IMPORTANT, READCHECK)	
+		SELECT PM_REVMSG_SEQ.NEXTVAL, A.*
+		FROM(
+		<foreach collection="list" item="msgList" separator="UNION ALL ">
+		SELECT
+		#{msgList.to_email}, 'admin', #{msgList.content}, SYSDATE, NULL, 1, 0
+		FROM DUAL
+		</foreach>
+		) A
+	</insert>
 
 </mapper>

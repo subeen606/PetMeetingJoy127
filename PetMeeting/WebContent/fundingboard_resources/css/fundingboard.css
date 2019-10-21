@@ -80,12 +80,6 @@
 .writediv{
 	padding: 10px 10px;
 }
-.writetitle{
-	background: #fff7ed;
-	padding-bottom: 7%;
-    padding-top: 5%;
-    
-}
 .writediv2{
 	padding-top: 30px;
 }
@@ -102,9 +96,6 @@
     color: #fff8eb;
     padding: 3.8px;
 }
-.wtitle{
-	text-align: center;
-}
 .wcontent{
 	width: 100%;
     float: left;
@@ -116,17 +107,12 @@
     color: #fff8eb;
     padding: 3.8px;
 }
-.writeimg{
-	width:  80px;
-	height: 80px;
-	margin-bottom: 30px;
-}
 .cal{
 	width: 130px;
 }
 .calimg{
 	width:25px;
-	height: 25px;
+	height: 32px;
 }
 .divdiv{
 	border: 1px solid;

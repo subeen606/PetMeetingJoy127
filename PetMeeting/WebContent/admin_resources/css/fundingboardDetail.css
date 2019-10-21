@@ -1,58 +1,10 @@
 @charset "UTF-8";
 @font-face { font-family: 'NanumSquareRound'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff'); font-weight: normal; font-style: normal; }
-body{
-	font-family: 'NanumSquareRound';
-}
-select{
-	font-family: 'NanumSquareRound';
-}
-button{
-	font-family: 'NanumSquareRound';
-}
-a{
-	text-decoration: none;
+
+.detailTable th{
+	background-color: #9dad360f;
 }
 
-.container{
-	width: 60%;
-	margin-left: auto;
-	margin-right: auto;
-}
-.mainTitle{
-	width: 100%;
-	font-size: 27px;
-	font-weight: 800;
-	height: 100px;
-	padding-top: 20px;
-	padding-bottom: 20px;
-	display: table-cell;
-	vertical-align: middle;
-}
-.detailTable{
-	width: 100%;
-	font-size: 17px;
-	border-spacing: 1; 
- 	border-collapse: collapse; 
-}
-.detailTable th{
-	background-color: #008c9e0f;
-	width: 30%;
-	font-size: 20px;
-	text-align: center;
-}
-.detailTable tr{
-	height: 60px;
-	border-bottom: 1px solid rgba(0,0,0,0.04);
-}
-.detailTable tr:last-child{
-	border: none;
-}
-.detailTable td{
-	padding-left: 20px;
-	padding-right: 20px;
-	background-color: #fff;
-	text-align: center;
-}
 #delBtn{
 	border: none;
 	outline: none;
@@ -64,15 +16,116 @@ a{
 	border-radius: 10px;
 	color: #fff;
 }
-
-#upBtn,#listBtn{
+#listBtn{
 	border: none;
 	outline: none;
 	cursor: pointer;
 	background-color: #008c9e;
-	height: 40px;
-	font-size: 20px;
-	width: 70px;
+	height: 30px;
+	font-size: 13pt;
+	width: 50px;
 	border-radius: 10px;
+	margin-top:15px;
 	color: #fff;
+	float: left;
+}
+
+#upBtn{
+	border: none;
+	width: 100px;
+    height: 38px;
+	border-radius: 0.5em;
+	font-size: 15px;
+	background-color: #000;
+	color: #fff;
+	cursor: pointer;
+}
+
+#fundMemlist{
+	padding: 5px;
+    background-color: #ffb3b3c7;
+    border: 1px solid #ffa36d;
+    border-radius: 40px;
+    color: #2b2525;
+    font-size: 12pt;
+    font-weight: 650;
+}
+#deContent{
+	padding-top: 20px;
+}
+.writeimg{
+	width:  80px;
+	height: 80px;
+	margin-bottom: 30px;
+}
+.wtitle{
+	text-align: center;
+	padding-top: 35px;
+}
+.StaWriTable{
+	width: 100%;
+	font-size: 18px;
+	border-spacing: 1; 
+ 	border-collapse: collapse; 
+}
+.StaWriTable th{
+	background-color: #9dad360f;
+	width: 30%;
+	font-size: 19px;
+	text-align: center;
+}
+.StaWriTable tr{
+	height: 60px;
+	border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+.StaWriTable tr:last-child{
+	border: none;
+}
+.StaWriTable td{
+	padding-top: 7px;
+	padding-left: 20px;
+	padding-right: 20px;
+	background-color: #fff;
+}
+#subBtn{
+	border: none;
+	width: 100px;
+    height: 38px;
+	border-radius: 0.5em;
+	font-size: 15px;
+	background-color: #000;
+	color: #fff;
+	cursor: pointer;
+}
+#staTitle{
+	text-align: center;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 20pt;
+    font-weight: 800;
+    font-family: 'NanumSquareRound';
+    background-color: #9dad360f;
+    padding: 15px;
+}
+#staContent{
+	text-align: center;
+    margin-top: 40px;
+    border: 2px solid;
+    border-color: #e2e4d4;
+	
+}
+#staBtn{
+    text-align: center;
+    padding: 20px;
+}
+#StaupBtn,#StadelBtn{
+	border: none;
+    width: 50px;
+    height: 25px;
+    border-radius: 0.3em;
+    font-size: 10pt;
+    font-weight: 900;
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
 }

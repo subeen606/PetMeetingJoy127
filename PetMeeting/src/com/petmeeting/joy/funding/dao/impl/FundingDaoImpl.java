@@ -124,4 +124,10 @@ public class FundingDaoImpl implements FundingDao {
 	}
 
 
+	@Override
+	public void historyPonint(FundingmemDto mem) {
+		sqlSession.insert(ns + "historyPonint", mem);
+	}
+
+
 }

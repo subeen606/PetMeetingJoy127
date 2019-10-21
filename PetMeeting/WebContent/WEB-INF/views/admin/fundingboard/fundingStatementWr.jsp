@@ -12,7 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	
-    
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/admin_resources/css/admin_common.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/admin_resources/css/fundingboardDetail.css">	
     <link rel="stylesheet" href="${pageContext.request.contextPath}/fundingboard_resources/css/fundingboard.css">
      
     <!-- include libraries(jQuery, bootstrap) summernote -->
@@ -38,11 +39,10 @@
 
 <!-- Content -->
 <div class="content">	
- 
- 	
-	<div class="container">
+<div class="container">
 		<form method="post" id="frm">
 		<input type="hidden" name="seq" value="${dto.seq }"> 
+		<input type="hidden" name="email" value="${dto.email }">
 			<div class="writetitle">
 				<div class="wtitle">
 					<img class="writeimg" src="./fundingboard_resources/img/dog3.png">
@@ -50,56 +50,49 @@
 					<img class="writeimg" src="./fundingboard_resources/img/cat3.png">
 				</div>
 			</div>
-			
-		<div class="divdiv">	
-			<div class="writediv">
-				<div class="writeT">작성자</div>
-				<input type="text" name="email" value="${login.email }" readonly="readonly"/>
-			</div>
-			
-			<div class="writediv">
-				<div class="writeT">후원기간</div>
-				<img class="calimg" src="./fundingboard_resources/img/calendar.png">
-				<input class="cal" type="text" id="_Sdate" value="<fmt:formatDate pattern="yyyy-MM-dd [E]" value="${dto.sdate }"/>" autocomplete="off" readonly="readonly"> ~ 
-				<img class="calimg" src="./fundingboard_resources/img/calendar.png">
-				 <input class="cal" type="text" id="_Edate" value="<fmt:formatDate pattern="yyyy-MM-dd [E]" value="${dto.edate }"/>" autocomplete="off" readonly="readonly"> 
-				<input type="hidden" name="syear"><input type="hidden" name="smonth"><input type="hidden" name="sday">
-				<input type="hidden" name="eyear"><input type="hidden" name="emonth"><input type="hidden" name="eday">
-			</div>
-			<div class="writediv">
-				<div class="writeT">목표금액</div>
-				<input type="text" name="max_price" value="${dto.max_price }" readonly="readonly">원
-			</div>
-			<div class="writediv">
-				<div class="writeT">후원받은 금액</div>
-				<input type="text" name="current_price" value="${dto.current_price }" readonly="readonly">원
-			</div>
-			<div class="writediv">
-				<div class="writeT">후원 명</div>
-				<input type="text" name="title" style="width: 40%;" value="${dto.title }" readonly="readonly"/>
-			</div>
-			<div class="writediv">
-				<div class="writeT">소제목</div>
-				<textarea style="resize: none; width: 70%;" name="intro" readonly="readonly">${dto.intro }</textarea>
-			</div>
-			<div class="writediv">
-				<div class="wcontent">후원 내용</div>	
-				${dto.content }
-			</div>
-			<div class="writediv">
-				<div class="wcontent">후원 내역</div>	
-				<textarea id="summernote" name="content"></textarea>
-			</div>
-			
-			</div>
-			<div class="writediv2">
-				<div>
-					<input id="subBtn" type="button" value="내역서 등록" />
-				</div>
-			</div>
-		
+			<table class="StaWriTable">
+				<tr>
+					<th>후원명</th>
+					<td>${dto.title }</td>
+				</tr>
+				<tr>
+					<th>후원일정</th>
+					<td><fmt:formatDate pattern="yyyy년  MM월 dd일" value="${dto.sdate }"/> ~ <fmt:formatDate pattern="yyyy년  MM월 dd일" value="${dto.edate }"/> </td>
+				</tr>
+				<tr>
+					<th>후원소개</th>
+					<td>${dto.intro }</td>
+				</tr>
+				<tr>
+					<th>목표금액</th>
+					<td><fmt:formatNumber value="${dto.max_price }" pattern="#,###"/> 원 </td>
+				</tr>
+				<tr>
+					<th>후원받은 금액</th>
+					<td><fmt:formatNumber value="${dto.current_price }" pattern="#,###"/> 원</td>
+				</tr>
+				<tr>
+					<th colspan="2">후원내용</th>
+				</tr>
+				<tr>
+					<td colspan="2" id="deContent" >${dto.content }</td>
+				</tr>
+				<tr>
+					<th colspan="2">후원 내역서</th>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<textarea id="summernote" name="content"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="center">
+						<input id="subBtn" type="button" value="내역서 등록">
+					</td>
+				</tr>
+			</table>
 		</form>
-	</div>
+</div>
 </div>
 </div>
 <script type="text/javascript">

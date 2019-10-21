@@ -13,6 +13,8 @@ import com.petmeeting.joy.admin.service.AdminService;
 import com.petmeeting.joy.funding.model.DayBean;
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.FundingStaDto;
+import com.petmeeting.joy.funding.model.FundingmemDto;
+import com.petmeeting.joy.funding.model.FMsgDto;
 import com.petmeeting.joy.funding.model.fundingBean;
 import com.petmeeting.joy.playboard.Util.DateUtil;
 import com.petmeeting.joy.playboard.model.PlayboardDto;
@@ -93,10 +95,6 @@ public class AdminServiceImpl implements AdminService {
 			detail.setFullCheck(false);
 		}			
 		return detail;
-<<<<<<< HEAD
-=======
-
->>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
 	}
 	
 	@Override
@@ -142,9 +140,10 @@ public class AdminServiceImpl implements AdminService {
 	
 
 	@Override
-	public void deletefunding(int seq) {
-		adminDao.fundingStaDel(seq);
-		adminDao.fundingDelete(seq);
+	public void deletefunding(int seq) {		
+			adminDao.fundingStaDel(seq);
+			adminDao.fundingMemDel(seq);
+			adminDao.fundingDelete(seq);
 	}
 	
 	
@@ -179,5 +178,46 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<FundMemberDto> whofundingMem(int seq) {
 		return adminDao.whofundingMem(seq);
+	}
+
+	@Override
+	public void sendMsgfund(List<FundMemberDto> mList, String title) {
+		List<FMsgDto> msgList = new ArrayList<FMsgDto>();
+		
+		for(FundMemberDto mem : mList) {
+			FMsgDto mdto = new FMsgDto();
+			FundingDto dto = adminDao.fundingDetail(mem.getFunding_seq());
+			
+			mdto.setTo_email(mem.getEmail());
+			mdto.setFrom_email("admin");
+			mdto.setContent(mem.getNickname() +"님 " + "[" + dto.getTitle() +"]" +" 에 후원을 해주셔서 진심으로 감사드립니다. 후원관련 내역서를 확인해 주세요.");
+			
+			msgList.add(mdto);
+		}
+		adminDao.sendMsgFund(msgList);
+		adminDao.revMsgFund(msgList);
+	}
+	
+	@Override
+	public void sendMsgUpfund(List<FundMemberDto> mList, String title) {
+		List<FMsgDto> msgList = new ArrayList<FMsgDto>();
+		
+		for(FundMemberDto mem : mList) {
+			FMsgDto mdto = new FMsgDto();
+			FundingDto dto = adminDao.fundingDetail(mem.getFunding_seq());
+			
+			mdto.setTo_email(mem.getEmail());
+			mdto.setFrom_email("admin");
+			mdto.setContent(mem.getNickname() +"님 " + "후원명  [" + dto.getTitle() +"]" +" 의 내용이 변경 되었습니다. 확인해주세요.");
+			
+			msgList.add(mdto);
+		}
+		adminDao.sendMsgFund(msgList);
+		adminDao.revMsgFund(msgList);
+	}
+
+	@Override
+	public void fundingStaDel(int seq) {
+		adminDao.fundingStaDel(seq);
 	}
 }

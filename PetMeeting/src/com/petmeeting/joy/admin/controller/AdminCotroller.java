@@ -39,10 +39,6 @@ import com.petmeeting.joy.playboard.model.PlayMemDto;
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.fundingBean;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
 import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardHashTagDto;
 import com.petmeeting.joy.playboard.model.PlayboardQnADto;
@@ -291,6 +287,16 @@ public class AdminCotroller {
 		boolean b = adminService.fundUpdate(dto,bean);
 		if(b) {
 			System.out.println("업데이트 성공");
+			
+			
+			List<FundMemberDto> memList = adminService.whofundingMem(dto.getSeq());
+			for(int i=0; i<memList.size(); i++ ) {
+			System.out.println("글수정 Af 에들어온 List : " + memList.get(i).toString() );
+			}
+			
+			if(memList.size() > 0 ) {
+				adminService.sendMsgUpfund(memList, dto.getTitle());
+			}
 			return "redirect:/adminFundingList.do";
 		}
 		else {
@@ -324,8 +330,33 @@ public class AdminCotroller {
 	public String statementAf(FundingStaDto sta) {
 		System.out.println("들어온 sta : " + sta.toString());
 		
+		FundingDto dto = adminService.fundingDetail(sta.getSeq());
+		
+		List<FundMemberDto> memList = adminService.whofundingMem(sta.getSeq());
+		for(int i=0; i<memList.size(); i++ ) {
+		System.out.println("글쓰기 Af 에들어온 List : " + memList.get(i).toString() );
+		}
+		
+		if(memList.size() > 0 ) {
+			adminService.sendMsgfund(memList, dto.getTitle());
+		}
+		
 		adminService.addfundingSta(sta);
 		
 		return "redirect:/adminFundingList.do";
+	}
+	
+	/*funding 내역서만 삭제*/
+	@ResponseBody
+	@RequestMapping(value = "fundingStaDel.do" ,method = {RequestMethod.GET,RequestMethod.POST})
+	public void fundingStaDel(int seq) {
+		adminService.fundingStaDel(seq);
+	}
+	
+	/*funding 내역서 수정*/
+	@ResponseBody
+	@RequestMapping(value = "fundingStaUp.do",method = {RequestMethod.GET,RequestMethod.POST})
+	public void fundingStaUp() {
+		
 	}
 }

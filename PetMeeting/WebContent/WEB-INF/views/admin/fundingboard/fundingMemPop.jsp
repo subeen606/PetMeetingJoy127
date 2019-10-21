@@ -9,21 +9,22 @@
 <title>Insert title here</title>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/admin_resources/css/admin_common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/admin_resources/css/fundingboard.css">
 </head>
 <body>
 
 <div class="container">
 
-<div class="mainTitle">[ ${dto.title } ] 후원회원 리스트</div>	
+<div class="Title">[ ${dto.title } ]</div>
+<div id="fundMem_list">후원회원 리스트</div>	
 
 <table class="boardTable">
 	<thead>
-		<tr>
+		<tr id="poptr">
 			<th>No.</th>
 			<th>EMAIL</th>
 			<th>NICNAME</th>
-			<th>NAME</th>
 			<th>후원금</th>
 			<th>후원일</th>
 		</tr>
@@ -40,9 +41,8 @@
 				<td>${vs.count }</td>
 				<td>${list.email }</td>
 				<td>${list.nickname }</td>
-				<td>${list.name }</td>
 				<td><fmt:formatNumber value="${list.donation }" pattern="#,###원"/></td>
-				<td><fmt:formatDate pattern="YYYY년 MM월 dd일" value="${list.d_date }"/></td>
+				<td><fmt:formatDate pattern="MM월 dd일" value="${list.d_date }"/></td>
 			</tr>
 		</c:forEach>
 		</c:if>

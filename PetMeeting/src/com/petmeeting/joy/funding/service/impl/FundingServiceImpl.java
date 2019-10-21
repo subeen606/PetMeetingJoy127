@@ -121,6 +121,7 @@ public class FundingServiceImpl implements FundingService {
 	public boolean addFundMem(FundingmemDto mem) {
 		funddao.cPrice(mem);
 		funddao.m_dPoint(mem);
+		funddao.historyPonint(mem);
 		return funddao.addFundMem(mem);
 	}
 

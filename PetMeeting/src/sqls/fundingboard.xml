@@ -144,4 +144,11 @@ WHERE SEQ= #{funding_seq}
 	WHERE SEQ=#{seq}
 </select> 
 
+
+<!-- 후원 내역뽑기 위해 INSERT -->
+<insert id="historyPonint" parameterType="com.petmeeting.joy.funding.model.FundingmemDto">
+	INSERT INTO PM_POINT_HISTORY(EMAIL, USEDINFO, USEPOINT, RESULTPOINT, REGDATE, USEDTYPE) 
+	VALUES(#{email},(SELECT TITLE FROM PM_FUNDINGBOARD WHERE SEQ=#{funding_seq}),#{d_point},(SELECT POINT FROM PM_MEMBER WHERE EMAIL=#{email}),SYSDATE,1)
+</insert>
+
 </mapper>

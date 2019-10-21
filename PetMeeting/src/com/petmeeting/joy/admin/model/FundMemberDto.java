@@ -6,6 +6,7 @@ import java.util.Date;
 public class FundMemberDto implements Serializable{
 
 	private String email;
+	private int funding_seq;
 	private String nickname;
 	private String myprofile_img;
 	private String name;
@@ -74,11 +75,22 @@ public class FundMemberDto implements Serializable{
 	public void setD_date(Date d_date) {
 		this.d_date = d_date;
 	}
+	
+	public int getFunding_seq() {
+		return funding_seq;
+	}
 
 
-	public FundMemberDto(String email, String nickname, String myprofile_img, String name, int donation, Date d_date) {
+	public void setFunding_seq(int funding_seq) {
+		this.funding_seq = funding_seq;
+	}
+
+
+	public FundMemberDto(String email, int funding_seq, String nickname, String myprofile_img, String name,
+			int donation, Date d_date) {
 		super();
 		this.email = email;
+		this.funding_seq = funding_seq;
 		this.nickname = nickname;
 		this.myprofile_img = myprofile_img;
 		this.name = name;
@@ -89,8 +101,9 @@ public class FundMemberDto implements Serializable{
 
 	@Override
 	public String toString() {
-		return "FundMemberDto [email=" + email + ", nickname=" + nickname + ", myprofile_img=" + myprofile_img
-				+ ", name=" + name + ", donation=" + donation + ", d_date=" + d_date + "]";
+		return "FundMemberDto [email=" + email + ", funding_seq=" + funding_seq + ", nickname=" + nickname
+				+ ", myprofile_img=" + myprofile_img + ", name=" + name + ", donation=" + donation + ", d_date="
+				+ d_date + "]";
 	}
 
 	

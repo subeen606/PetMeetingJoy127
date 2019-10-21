@@ -41,4 +41,7 @@ public interface FundingDao {
 	//public boolean addfundingSta(FundingStaDto sta);
 	public FundingStaDto fundingStaDetail(int seq);
 	public int fundingStacheck(int seq);
+	
+	/*funding point 내역  insert*/
+	public void historyPonint(FundingmemDto mem);
 }
