@@ -21,60 +21,112 @@
 </div>
 
 <div class="reasonWrap">
-<c:if test="${empty reasons }">
+<c:if test="${empty board_reasons && empty  member_reasons }">
 	<div class="emptyReport">
 	<img src="${pageContext.request.contextPath}/admin_resources/img/exclamation-mark.png" width="30px" height="30px" style="vertical-align: top;">
 	신고 내역이 존재하지 않습니다.
 	</div>
 </c:if> 
 
-<c:forEach items="${reasons }" var="reason" varStatus="i">
-	<table class="reasonTable">
-		<tr>
-			<th>${i.count }</th>
-			<td>
-			<form id="reportDeleteFrm">
-				<input type="hidden" name="seq" value="${reason.seq }">
-				<input type="hidden" name="board_seq" value="${reason.board_seq }">
-				<input type="hidden" name="board_code" value="${reason.board_code }">
-			</form>
-			<button type="button" class="reportCancelBtn">신고 삭제</button>
-			</td>
-		</tr>
-		<tr>
-			<th>신고자</th>
-			<td>${reason.email }(${reason.nickname })</td>
-		</tr>
-		<tr>
-			<th>신고 사유</th>
-			<td>
-				<c:if test="${reason.reason eq '홍보'}">
-					홍보성 게시글
-				</c:if>
-				<c:if test="${reason.reason eq '음란'}">
-					홍보성 게시글
-				</c:if>
-				<c:if test="${reason.reason eq '비방'}">
-					홍보성 게시글
-				</c:if>
-				<c:if test="${reason.reason ne '홍보' && reason.reason ne '음란' && reason.reason ne '비방' }">
-					${reason.reason }
-				</c:if>			
-			</td>
-		</tr>
-	</table>
-</c:forEach>
+<c:if test="${not empty board_reasons }">
+<form id="boardReportDeleteFrm">
+	<input type="hidden" name="seq">
+	<input type="hidden" name="board_seq" value="${board_seq }">
+	<input type="hidden" name="board_code" value="${board_code }">
+</form>
+	<c:forEach items="${board_reasons }" var="reason" varStatus="i">
+		<table class="reasonTable">
+		
+			<tr>
+				<th>${i.count }</th>
+				<td>
+				<button type="button" class="boardReportCancelBtn" seq="${reason.seq }">신고 삭제</button>
+				</td>
+			</tr>
+			<tr>
+				<th>신고자</th>
+				<td>${reason.email }(${reason.nickname })</td>
+			</tr>
+			<tr>
+				<th>신고 사유</th>
+				<td>
+					<c:if test="${reason.reason eq '홍보'}">
+						홍보성 게시글
+					</c:if>
+					<c:if test="${reason.reason eq '음란'}">
+						음란성 또는 청소년에게 부적합한 게시글
+					</c:if>
+					<c:if test="${reason.reason eq '비방'}">
+						비방 또는 심한 욕설사용
+					</c:if>
+					<c:if test="${reason.reason ne '홍보' && reason.reason ne '음란' && reason.reason ne '비방' }">
+						${reason.reason }
+					</c:if>			
+				</td>
+			</tr>
+		</table>
+	</c:forEach>
+</c:if>
+
+<c:if test="${not empty member_reasons }">
+<form id="memberReportDeleteFrm">
+	<input type="hidden" name="seq">
+	<input type="hidden" name="bad_email" value="${bad_email }">
+</form>
+	<c:forEach items="${member_reasons }" var="reason" varStatus="i">
+		<table class="reasonTable">
+			<tr>
+				<th>${i.count }</th>
+				<td>				
+				<button type="button" class="memberReportCancelBtn" seq="${reason.seq }">신고 삭제</button>
+				</td>
+			</tr>
+			<tr>
+				<th>신고자</th>
+				<td>${reason.email }(${reason.nickname })</td>
+			</tr>
+			<tr>
+				<th>신고 사유</th>
+				<td>
+					<c:if test="${reason.reason eq '홍보'}">
+						홍보성 게시글
+					</c:if>
+					<c:if test="${reason.reason eq '음란'}">
+						음란성 또는 청소년에게 부적합한 게시글
+					</c:if>
+					<c:if test="${reason.reason eq '비방'}">
+						비방 또는 심한 욕설사용
+					</c:if>
+					<c:if test="${reason.reason ne '홍보' && reason.reason ne '음란' && reason.reason ne '비방' }">
+						${reason.reason }
+					</c:if>			
+				</td>
+			</tr>
+		</table>
+	</c:forEach>
+</c:if>
 
 </div>
 
 <script type="text/javascript">
 $(function() {
-	$(".reportCancelBtn").click(function () {
+	$(".boardReportCancelBtn").click(function () {
+		$("#boardReportDeleteFrm input[name='seq']").val($(this).attr("seq"));
 		var check = confirm("해당 신고를 삭제하시겠습니까?");
 		if(check){
-			$("#reportDeleteFrm").attr({"action":"adminBoradReportDelete.do", "method":"post"}).submit();
+			$("#boardReportDeleteFrm").attr({"action":"adminBoardReportDelete.do", "method":"post"}).submit();
 			window.opener.document.location.reload(true);
 		}		
+	});
+	
+	$(".memberReportCancelBtn").click(function () {
+		$("#memberReportDeleteFrm input[name='seq']").val($(this).attr("seq"));
+		
+		var check = confirm("해당 신고를 삭제하시겠습니까?");
+		if(check){
+			$("#memberReportDeleteFrm").attr({"action":"adminMemberReportDelete.do", "method":"post"}).submit();
+		}
+		
 	});
 });
 </script>

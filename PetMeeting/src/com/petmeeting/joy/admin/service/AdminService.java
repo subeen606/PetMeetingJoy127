@@ -34,6 +34,10 @@ public interface AdminService {
 	
 	public void insertLeaveMember(List<ReportDto> leaveMemberList);
 	
+	public List<ReportDto> getMemberReportReason(String email);
+	
+	public void deleteMemberReport(ReportDto reportDto);
+	
 	public boolean addFunding(FundingDto dto, DayBean bean);
 	public List<FundingDto> getFundingList(fundingBean fbean);
 	public int getFundingCount(fundingBean fbean);

@@ -60,7 +60,21 @@ button{
 	border: none;
 }
 
-.reportCancelBtn{
+.boardReportCancelBtn{
+	width: 100px;
+	height: 35px;
+	font-size: 15px;
+	font-weight: bold;
+	color: #fff;
+	background-color: #B8413D;
+	border: none;
+	outline: none;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+.memberReportCancelBtn{
 	width: 100px;
 	height: 35px;
 	font-size: 15px;

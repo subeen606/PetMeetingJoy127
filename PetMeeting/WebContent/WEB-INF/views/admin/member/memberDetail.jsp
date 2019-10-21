@@ -78,7 +78,7 @@
 		</tr>
 		<tr>
 			<th>신고</th>
-			<td colspan="2">${detail.reportcount }</td>
+			<td colspan="2">${detail.reportcount }&emsp;<button type="button" id="reportReasonBtn">신고내역 보기</button></td>
 		</tr>
 
 		<tr>
@@ -193,6 +193,11 @@
 	</table>
 <script type="text/javascript">
 $(function () {
+	
+	$("#reportReasonBtn").click(function () {
+		var option = "width = 550, height = 500, top = 100, left = 300, location = no, resizeable = no";
+		window.open("adminMemberReportReason.do?email=${detail.email }", "report_reason", option);
+	});
 	/*
 	$("#myProfile-th").click(function () {		
 		if($(".myProfile-tr").css("display") == "none"){

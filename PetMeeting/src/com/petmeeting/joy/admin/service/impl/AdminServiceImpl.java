@@ -31,6 +31,9 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	AdminDao adminDao;
 	
+	
+	//////////////////////////////////// 소모임 ////////////////////////////////////
+	/* 소모임 글목록 불러오기 */
 	@Override
 	public List<PlayboardDto> getAllPlayboardList(PlayboardSearchBean search) {
 		List<PlayboardDto> all =  adminDao.getAllPlayboardList(search);
@@ -59,30 +62,35 @@ public class AdminServiceImpl implements AdminService {
 		}
 		return checkList;
 	}
-
+	
+	/* 페이징을 위한 소모임 글 수 알아내기 */
 	@Override
 	public int getPlayboardTotalRowCount(PlayboardSearchBean search) {
 		return adminDao.getPlayboardTotalRowCount(search);
 	}
-
+	
+	/* 관리자에의한 소모임 글 삭제(DB에서 삭제) */
 	@Override
 	public void deletePlayboard(int seq) {
 		adminDao.deletePlayboard(seq);
 		adminDao.deletePlayMem(seq);
 		adminDao.deletePlayboardQnA(seq);
 	}
-
+	
+	/* 게시판 신고 내역 뽑기 */
 	@Override
 	public List<BoardReportDto> getBoardReportReason(ReportDto reportDto) {
 		return adminDao.getBoardReportReason(reportDto);
 	}
-
+	
+	/* 게시판 신고 삭제 */
 	@Override
 	public void deleteBoardReport(ReportDto reportDto) {
 		adminDao.deleteBoardReport(reportDto);
 		adminDao.minusReportCount(reportDto);
 	}
 	
+	/* 소모임 글 디테일 */
 	@Override
 	public PlayboardDto getPlayboardDetail(int seq) {
 		PlayboardDto detail = adminDao.getPlayboardDetail(seq);
@@ -100,6 +108,8 @@ public class AdminServiceImpl implements AdminService {
 		return detail;
 	}
 	
+	//////////////////////////////////// 회원관리 ////////////////////////////////////
+	/* 회원 목록 리스트 */
 	@Override
 	public List<AdminMemberDto> getAllMemberList(MemberSearchBean memSearch) {
 		
@@ -130,12 +140,14 @@ public class AdminServiceImpl implements AdminService {
 				
 		return memlist;
 	}
-
+	
+	/* 페이징을 위한 멤버 수 구하기 */
 	@Override
 	public int getMemberTotalCount(MemberSearchBean memSearch) {
 		return adminDao.getMemberTotalCount(memSearch);
 	}
-
+	
+	/* 회원 디테일(기본정보 + 회원프로필 + 펫프로필) */
 	@Override
 	public AdminMemberDto getMemberDetail(String email) {
 		AdminMemberDto dto = adminDao.getMemberDetail(email);
@@ -161,11 +173,33 @@ public class AdminServiceImpl implements AdminService {
 		}
 		return dto;
 	}
-
+	
+	/* 관리자에 의한 활동 중지 */
 	@Override
 	public void insertLeaveMember(List<ReportDto> leaveMemberList) {
 		adminDao.insertLeaveMember(leaveMemberList);
 	}
+	
+	/* 회원 신고 내역 뽑기 */
+	@Override
+	public List<ReportDto> getMemberReportReason(String email) {
+		return adminDao.getMemberReportReason(email);
+	}
+	
+	@Override
+	public void deleteMemberReport(ReportDto reportDto) {
+		adminDao.deleteMemberReport(reportDto);
+		adminDao.minusMemberReportCount(reportDto);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	//////////////////////////////////// 후원게시판 ////////////////////////////////////
 
 	@Override
 	public boolean addFunding(FundingDto dto , DayBean bean) {

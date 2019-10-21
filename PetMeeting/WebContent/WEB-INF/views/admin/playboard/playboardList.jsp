@@ -43,11 +43,23 @@
 					<option value="기타">기타</option>
 				</select>
 				
-				<select name="searchCategory">
+				<select name="sortingType">
 					<option value="선택" selected="selected">전체보기</option>
 					<option value="삭제">삭제된 게시글</option>
 					<option value="마감">마감된 게시글</option>
 				</select>
+				
+				<div class="searchWrap">
+				<select name="searchCategory">
+					<option value="선택">검색 분류</option>
+					<option value="작성자">작성자(아이디)</option>
+					<option value="제목">제목</option>
+					<option value="내용">내용</option>
+					<option value="장소">장소</option>
+				</select>
+				<input type="search" name="searchText">
+				<button type="button" id="searchBtn">검색</button>
+				</div>
 			</form>
 			
 			<form id="delFrm" action="adminPlayboardDelete.do" method="post">
@@ -119,6 +131,10 @@ $(function () {
 	}
 	$("select[name='searchCategory']").val("${searchBean.searchCategory }").attr("selected", "selected");
 	
+	if("${searchBean.searchText }" != ""){
+		$("input[name='searchText']").val("${searchBean.searchText }");
+	}
+	
 	/* 셀렉트 박스 바뀔 때 마다 검색 및 페이징 되도록 */
 	$("select[name='playCategory']").on("change", function () {
 		$("input[name='currPage']").val("0");
@@ -126,12 +142,28 @@ $(function () {
 		$("input[name='endRow']").val("0");
 		$("#searchFrm").attr({"action":"adminPlayboardList.do", "method":"post"}).submit();
 	});
-	$("select[name='searchCategory']").on("change", function () {
+	$("select[name='sortingType']").on("change", function () {
 		$("input[name='currPage']").val("0");
 		$("input[name='startRow']").val("0");
 		$("input[name='endRow']").val("0");
 		$("#searchFrm").attr({"action":"adminPlayboardList.do", "method":"post"}).submit();
 	});
+	$("#searchBtn").click(function () {
+		if($("select[name='searchCategory']").val() == "선택"){
+			alert("검색 분류를 선택하세요");
+			return false;
+		}
+		if($.trim($("input[name='searchText']").val()) == ""){
+			alert("검색내용을 입력해주세요");
+			return false;
+		}
+		
+		$("input[name='currPage']").val("0");
+		$("input[name='startRow']").val("0");
+		$("input[name='endRow']").val("0");
+		$("#searchFrm").attr({"action":"adminPlayboardList.do", "method":"post"}).submit();
+	});
+	
 	
 	/* 전체선택 및 전체선택 해제 */
 	$("input:checkbox[name='alldel']").change(function() {

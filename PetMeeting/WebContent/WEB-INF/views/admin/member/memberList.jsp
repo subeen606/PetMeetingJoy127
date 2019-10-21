@@ -45,6 +45,7 @@
 					<option value="vvip">VVIP</option>
 				</select>
 				
+				<div class="searchWrap">
 				<select name="search_category">
 					<option value="선택">검색 분류</option>
 					<option value="이메일">이메일</option>
@@ -52,6 +53,7 @@
 				</select>
 				<input type="search" name="search_txt">
 				<button type="button" id="searchBtn">검색</button>
+				</div>
 			</form>
 			
 			<form id="leaveMemberFrm" action="adminLeaveMember.do" method="post">

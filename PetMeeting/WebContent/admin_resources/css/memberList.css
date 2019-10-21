@@ -23,3 +23,34 @@
 	border: none;
 	outline: none;
 }
+
+.searchWrap{
+	float: right;
+}
+.searchWrap input{
+	border: none;
+	outline: none;
+	border-bottom: 1px solid black;
+	margin-right: 15px;
+}
+#searchBtn{
+	border: none;
+    outline: none;
+    cursor: pointer;
+    color: white;
+    width: 50px;
+    height: 35px;
+    border-radius: 0.5em;
+    background-color: #47c9da;
+}
+
+#leaveBtn{
+	border: none;
+    outline: none;
+	color: #fff;
+	background-color: #b90707;
+    padding: 5px;
+    border-radius: 0.5em;
+    width: 80px;
+    height: 35px;
+}
