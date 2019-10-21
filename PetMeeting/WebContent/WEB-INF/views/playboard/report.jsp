@@ -30,7 +30,7 @@
 				작성자
 			</div>
 			<div class="content">
-				${detail.nickname }(${detail.email })
+				${detail.nickname }
 			</div>
 		</div>
 		
@@ -121,7 +121,7 @@ $(function () {
 			}
 			
 			$("#reportFrm").attr("action", "reportAf.do").submit();	
-			window.opener.document.location.reload(true);
+			//window.opener.document.location.reload(true);
 			self.close();				
 				 
 			 /*

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.petmeeting.joy.admin.model.ReportDto;
 import com.petmeeting.joy.login.model.MemberDto;
 import com.petmeeting.joy.playboard.Util.DateUtil;
 import com.petmeeting.joy.playboard.Util.PlayboardUtil;
@@ -35,7 +36,6 @@ import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardHashTagDto;
 import com.petmeeting.joy.playboard.model.PlayboardQnADto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
-import com.petmeeting.joy.playboard.model.ReportDto;
 import com.petmeeting.joy.playboard.service.PlayboardService;
 import com.sun.org.glassfish.external.statistics.annotations.Reset;
 
@@ -491,6 +491,21 @@ public class PlayboardController {
 	}
 	*/
 	
+	// 신고여부 체크
+	@ResponseBody
+	@RequestMapping(value="reportCheck.do", method={RequestMethod.GET,RequestMethod.POST})
+	public String reportCheck(int seq, HttpServletRequest req) {
+		System.out.println("신고 할 seq : " + seq);
+		PlayboardDto checkDto = new PlayboardDto(seq, ((MemberDto)req.getSession().getAttribute("login")).getEmail());
+		
+		int check = pService.reportCheck(checkDto);
+		if(check > 0) {
+			return "no";
+		}else {
+			return "okay";
+		}
+	}
+	
 	// 모임 신고
 	@RequestMapping(value="boardReport.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String reportPlay(int seq, HttpServletRequest req, Model model) {
@@ -516,19 +531,6 @@ public class PlayboardController {
 	}
 	*/
 	
-
-	@RequestMapping(value="memberReportIfo.do", method={RequestMethod.GET,RequestMethod.POST})
-	public void memberReportIfo(ReportDto reportDto, Model model, String nickname, RedirectAttributes attr) {
-		System.out.println("ajax reportDto : " + reportDto.toString());
-		System.out.println("닉넴 : " + nickname);
-		
-		model.addAttribute("nickname", nickname);
-		model.addAttribute("reportDto", reportDto);
-
-		attr.addAttribute("reportDto", reportDto);
-		attr.addAttribute("nickname", nickname);
-		//return "playboard/report";
-	}
 
 	@RequestMapping(value="memberReport.do", method={RequestMethod.GET,RequestMethod.POST})
 	public String memberReport() {

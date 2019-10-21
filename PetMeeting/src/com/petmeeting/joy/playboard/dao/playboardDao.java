@@ -2,6 +2,7 @@ package com.petmeeting.joy.playboard.dao;
 
 import java.util.List;
 
+import com.petmeeting.joy.admin.model.ReportDto;
 import com.petmeeting.joy.playboard.model.MsgDto;
 import com.petmeeting.joy.playboard.model.MyProfileDto;
 import com.petmeeting.joy.playboard.model.PlayMemDto;
@@ -9,7 +10,6 @@ import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardHashTagDto;
 import com.petmeeting.joy.playboard.model.PlayboardQnADto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
-import com.petmeeting.joy.playboard.model.ReportDto;
 
 public interface playboardDao {
 	public void insertPlayboard(PlayboardDto pdto);

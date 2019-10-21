@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.petmeeting.joy.admin.dao.AdminDao;
+import com.petmeeting.joy.admin.model.AdminMemberDto;
 import com.petmeeting.joy.admin.model.BoardReportDto;
 import com.petmeeting.joy.admin.model.FundMemberDto;
+import com.petmeeting.joy.admin.model.MemberSearchBean;
+import com.petmeeting.joy.admin.model.ReportDto;
 import com.petmeeting.joy.admin.service.AdminService;
 import com.petmeeting.joy.funding.model.DayBean;
 import com.petmeeting.joy.funding.model.FundingDto;
@@ -68,12 +71,12 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<BoardReportDto> getBoardReportReason(BoardReportDto reportDto) {
+	public List<BoardReportDto> getBoardReportReason(ReportDto reportDto) {
 		return adminDao.getBoardReportReason(reportDto);
 	}
 
 	@Override
-	public void deleteBoardReport(BoardReportDto reportDto) {
+	public void deleteBoardReport(ReportDto reportDto) {
 		adminDao.deleteBoardReport(reportDto);
 		adminDao.minusReportCount(reportDto);
 	}
@@ -93,12 +96,75 @@ public class AdminServiceImpl implements AdminService {
 			detail.setFullCheck(false);
 		}			
 		return detail;
-<<<<<<< HEAD
-=======
-
->>>>>>> 6eac61176ac647a6359fee8f70b0f5df7a799ba9
 	}
 	
+	@Override
+	public List<AdminMemberDto> getAllMemberList(MemberSearchBean memSearch) {
+		
+		List<AdminMemberDto> memlist = adminDao.getAllMemberList(memSearch);
+		
+		for (AdminMemberDto dto : memlist) {
+			int leavememCheck = adminDao.leaveMemberCheck(dto.getEmail());
+			if(leavememCheck > 0) {
+				dto.setLeavememberCheck(true);
+			}else {
+				dto.setLeavememberCheck(false);
+			}
+			
+			int myPcheck = adminDao.memberProfileCheck(dto.getEmail());
+			if(myPcheck > 0) {
+				dto.setMyProfileCheck(true);
+			}else {
+				dto.setMyProfileCheck(false);
+			}
+			
+			int petPcheck = adminDao.petProfileCheck(dto.getEmail());
+			if(petPcheck > 0) {
+				dto.setPetProfileCheck(true);
+			}else {
+				dto.setPetProfileCheck(false);
+			}
+		}
+				
+		return memlist;
+	}
+
+	@Override
+	public int getMemberTotalCount(MemberSearchBean memSearch) {
+		return adminDao.getMemberTotalCount(memSearch);
+	}
+
+	@Override
+	public AdminMemberDto getMemberDetail(String email) {
+		AdminMemberDto dto = adminDao.getMemberDetail(email);
+		int leavememCheck = adminDao.leaveMemberCheck(dto.getEmail());
+		if(leavememCheck > 0) {
+			dto.setLeavememberCheck(true);
+		}else {
+			dto.setLeavememberCheck(false);
+		}
+		
+		int myPcheck = adminDao.memberProfileCheck(dto.getEmail());
+		if(myPcheck > 0) {
+			dto.setMyProfileCheck(true);
+		}else {
+			dto.setMyProfileCheck(false);
+		}
+		
+		int petPcheck = adminDao.petProfileCheck(dto.getEmail());
+		if(petPcheck > 0) {
+			dto.setPetProfileCheck(true);
+		}else {
+			dto.setPetProfileCheck(false);
+		}
+		return dto;
+	}
+
+	@Override
+	public void insertLeaveMember(List<ReportDto> leaveMemberList) {
+		adminDao.insertLeaveMember(leaveMemberList);
+	}
+
 	@Override
 	public boolean addFunding(FundingDto dto , DayBean bean) {
 		

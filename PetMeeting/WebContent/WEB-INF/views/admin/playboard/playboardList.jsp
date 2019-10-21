@@ -23,77 +23,77 @@
 		<jsp:include page="/admin_resources/admincss/templates/adminheader.jsp" flush="false"/>
 	<!-- Header part end-->
 
-<!-- Content -->
-<div class="content">
-
-<div class="container">
-
-<div class="mainTitle">소모임 글목록</div>
-
-	<form id="searchFrm">
-	<input type="hidden" name="startRow" value="${searchBean.startRow }">
-	<input type="hidden" name="endRow" value="${searchBean.endRow }">
-	<input type="hidden" name="currPage" value="${searchBean.currPage }">
-		<select name="playCategory">
-			<option value="선택" selected="selected">모임유형</option>
-			<option value="산책">산책</option>
-			<option value="봉사">봉사</option>
-			<option value="원데이 클래스">원데이 클래스</option>
-			<option value="동호회">동호회</option>
-			<option value="기타">기타</option>
-		</select>
+	<!-- Content -->
+	<div class="content">
+	
+		<div class="container">
 		
-		<select name="searchCategory">
-			<option value="선택" selected="selected">전체보기</option>
-			<option value="삭제">삭제된 게시글</option>
-			<option value="마감">마감된 게시글</option>
-		</select>
-	</form>
-	
-	<form id="delFrm" action="adminPlayboardDelete.do" method="post">
-		<table class="boardTable">
-			<col width="5%"><col width="5%"><col width="15%"><col width="35%"><col width="20%"><col width="5%"><col width="25%">
-			<thead>
-				<tr>
-					<th><input type="checkbox" name="alldel"></th><th>No.</th><th>모임 유형</th><th>제목</th><th>작성자</th><th>신고 수</th><th>작성일</th>
-				</tr>
-			</thead>
+		<div class="mainTitle">소모임 글목록</div>
+		
+			<form id="searchFrm">
+			<input type="hidden" name="startRow" value="${searchBean.startRow }">
+			<input type="hidden" name="endRow" value="${searchBean.endRow }">
+			<input type="hidden" name="currPage" value="${searchBean.currPage }">
+				<select name="playCategory">
+					<option value="선택" selected="selected">모임유형</option>
+					<option value="산책">산책</option>
+					<option value="봉사">봉사</option>
+					<option value="원데이 클래스">원데이 클래스</option>
+					<option value="동호회">동호회</option>
+					<option value="기타">기타</option>
+				</select>
+				
+				<select name="searchCategory">
+					<option value="선택" selected="selected">전체보기</option>
+					<option value="삭제">삭제된 게시글</option>
+					<option value="마감">마감된 게시글</option>
+				</select>
+			</form>
 			
-			<tbody>
-				<c:forEach items="${playboardList }" var="pList" varStatus="i">
-					<tr>
-						<td align="center"><input type="checkbox" name="delcheck" value="${pList.seq }"></td>
-						<td align="center">${i.count }</td>
-						<td align="center">${pList.category }</td>
-						<td style="padding-left: 20px;">
-							<a class="titleAnchor" seq="${pList.seq }">
-								<c:if test="${pList.deadlineCheck eq true }"><font color="red">[모집 마감]</font></c:if> 
-								<c:if test="${pList.del eq 1 }"><font color="red">[게시자에의해 삭제된 게시글]</font></c:if>
-								<c:if test="${pList.pdateCheck eq true }"><font color="red">[모임예정일 지남]</font></c:if>
-								${pList.title }
-							</a>
-						</td>
-						<td align="center">${pList.email }</td>
-						<td align="center">${pList.reportcount }</td>
-						<td align="center"><fmt:formatDate value="${pList.regdate }"  pattern="yyyy.MM.dd HH:mm"/></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</form>
-	
-	<button type="button" id="deleteBtn" onclick="delCheck()">삭제</button>
-	
-	<div class="pagingWrap">
-	<jsp:include page="/WEB-INF/views/admin/playboard/paging.jsp" flush="false">													
-			<jsp:param name="pageNumber" value="${searchBean.currPage }" />
-			<jsp:param name="totalRecordCount" value="${totalRowCount }" />
-			<jsp:param name="pageCountPerScreen" value="10" />
-			<jsp:param name="recordCountPerPage" value="10" />
-	</jsp:include>
+			<form id="delFrm" action="adminPlayboardDelete.do" method="post">
+				<table class="boardTable">
+					<col width="5%"><col width="5%"><col width="15%"><col width="35%"><col width="20%"><col width="5%"><col width="25%">
+					<thead>
+						<tr>
+							<th><input type="checkbox" name="alldel"></th><th>No.</th><th>모임 유형</th><th>제목</th><th>작성자</th><th>신고 수</th><th>작성일</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<c:forEach items="${playboardList }" var="pList" varStatus="i">
+							<tr>
+								<td align="center"><input type="checkbox" name="delcheck" value="${pList.seq }"></td>
+								<td align="center">${i.count }</td>
+								<td align="center">${pList.category }</td>
+								<td style="padding-left: 20px;">
+									<a class="titleAnchor" seq="${pList.seq }">
+										<c:if test="${pList.deadlineCheck eq true }"><font color="red">[모집 마감]</font></c:if> 
+										<c:if test="${pList.del eq 1 }"><font color="red">[게시자에의해 삭제된 게시글]</font></c:if>
+										<c:if test="${pList.pdateCheck eq true }"><font color="red">[모임예정일 지남]</font></c:if>
+										${pList.title }
+									</a>
+								</td>
+								<td align="center">${pList.email }</td>
+								<td align="center">${pList.reportcount }</td>
+								<td align="center"><fmt:formatDate value="${pList.regdate }"  pattern="yyyy.MM.dd HH:mm"/></td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</form>
+			
+			<button type="button" id="deleteBtn" onclick="delCheck()">삭제</button>
+			
+			<div class="pagingWrap">
+			<jsp:include page="/WEB-INF/views/admin/playboard/paging.jsp" flush="false">													
+					<jsp:param name="pageNumber" value="${searchBean.currPage }" />
+					<jsp:param name="totalRecordCount" value="${totalRowCount }" />
+					<jsp:param name="pageCountPerScreen" value="10" />
+					<jsp:param name="recordCountPerPage" value="10" />
+			</jsp:include>
+			</div>
+		</div>
 	</div>
-</div>
-</div>
 </div>
 
 <script type="text/javascript">
@@ -121,11 +121,13 @@ $(function () {
 	
 	/* 셀렉트 박스 바뀔 때 마다 검색 및 페이징 되도록 */
 	$("select[name='playCategory']").on("change", function () {
+		$("input[name='currPage']").val("0");
 		$("input[name='startRow']").val("0");
 		$("input[name='endRow']").val("0");
 		$("#searchFrm").attr({"action":"adminPlayboardList.do", "method":"post"}).submit();
 	});
 	$("select[name='searchCategory']").on("change", function () {
+		$("input[name='currPage']").val("0");
 		$("input[name='startRow']").val("0");
 		$("input[name='endRow']").val("0");
 		$("#searchFrm").attr({"action":"adminPlayboardList.do", "method":"post"}).submit();
@@ -136,12 +138,12 @@ $(function () {
 		if($("input:checkbox[name='alldel']").is(":checked")){
 			//alert("체크");
 			$("input:checkbox[name='delcheck']").each(function () {
-				$(this).attr("checked", true);
+				$(this).prop("checked", true);
 			});
 		}else{
 			//alert("체크 해제");
 			$("input:checkbox[name='delcheck']").each(function () {
-				$(this).attr("checked", false);
+				$(this).prop("checked", false);
 			});
 		}
 	});
