@@ -58,67 +58,95 @@
     <!-- Header part end-->
 
 <form id="frm">
-<input type="hidden" name="email" value="${login.email }">
-<input type="hidden" name="funding_seq" value="${dto.seq }">  
+	<input type="hidden" name="email" value="${login.email }">
+	<input type="hidden" name="funding_seq" value="${dto.seq }">  
 	<div id="divv" class="container">
-	 <div style="text-align: center;">
-	 	<div>
-	 		<p class="payfont"> Funding </p>
-	 	</div>
+	<div style="text-align: center;">
+	 	<div class="payfont">PETMEETING FUNDING</div>
 	 	<div class="con-flex">
 			<img class="listimg" src="fundingFileupload/${dto.thumbnail}"> 
 			<div class="paycontent">
 				<div class="pc">
-					<span class="titleSt">${dto.title }</span><br><br>
-					<span class="introSt">${dto.intro }</span>
+					<div class="titleSt">${dto.title }</div>
+					<div class="introSt">${dto.intro }</div>
 				</div>
 			</div>
 		</div>
 		<div class="fundcontent">
-		 	<div>	
-				<div>
-				이름: ${mem.name }
-				</div>
-				<div>
-				휴대폰번호: ${mem.phone }
-				</div>
-				<div>
-				주소: ${mem.address } / ${mem.address_detail }
-				</div>
-		 	</div>
-		 	<div>	
-				<div>
-					목표금액: <input id="goal_fund1" value="${dto.max_price }" readonly="readonly">원<br>
-					남은금액: <input id="goal_fund" value="${dto.max_price - dto.current_price }" readonly="readonly">원<br>
-					후원금액: <input name="donation" id="_funding" type="text" placeholder="후원금액">원
-				</div>
-				
-				<input type="radio" name="howfund" value="포인트기부">포인트기부 &nbsp;&nbsp;
-				<input type="radio" name="howfund" value="결제기부">결제기부
-				
-				<div id="pointCheck" style="display: none;">
-					사용 POINT <input name="d_point" id="fundingPt" type="text" placeholder="0">  / 보유 POINT <input id="_point" type="text" value="${mem.point }" readonly="readonly"> 
-					<input id="pointBtn" type="button" value="포인트사용">
-				</div>	
-	
-				<div>
-					총 후원금액 : <input id="funding" type="text" readonly="readonly"> 원
-				</div>
-				<input type="checkbox" class="check">전체선택 <br>
-				<input type="checkbox" id="check1" class="checkB">PetMeeting 이용약관 동의 <a href="">상세보기</a>
-				<input type="checkbox" id="check2" class="checkB">개인정보 수집/이용 동의 <a href="">상세보기</a>
-			 </div>
-			<div>
-				<input  id="check_module" type="button" value="기부 하기">
-				<input id="close" type="button" value="닫기">
-			</div>
-		 </div>	
-	</div>
-	</div>
+		<table class="payTable">
+			<tr>
+				<th>이름</th>
+				<td>${mem.name }</td>
+			</tr>
+			<tr>
+				<th>휴대폰 번호</th>
+				<td>${mem.phone }</td>
+			</tr>
+			<tr>
+				<th>주소</th>
+				<td>${mem.address }</td>
+			</tr>
+			<tr>
+				<th>상세주소</th>
+				<td>${mem.address_detail }</td>
+			</tr>
+			<tr>
+				<th>목표금액</th>
+				<td><input id="goal_fund1" value='<fmt:formatNumber value="${dto.max_price }" pattern="#,###"/>' readonly="readonly"> 원</td>
+			</tr>
+			<tr>
+				<th>남은금액</th>
+				<td><input id="goal_fund" value='<fmt:formatNumber value="${dto.max_price - dto.current_price }" pattern="#,###"/>' readonly="readonly"> 원</td>
+			</tr>
+			<tr>
+				<th>후원금액</th>
+				<td><input class="number" name="donation" id="_funding" type="text"  placeholder="후원금액" > 원</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="radio" name="howfund" value="포인트기부">포인트기부 &nbsp;&nbsp;
+					<input type="radio" name="howfund" value="결제기부">결제기부
+				</td>
+			</tr>
+			<tr id="pointCheck" style="display: none">
+				<th>사용POINT / 보유POINT</th>
+				<td><input name="d_point" id="fundingPt" type="text" placeholder="0">  /  <input id="_point" type="text" value="${mem.point }" readonly="readonly">
+				<input id="pointBtn" type="button" value="포인트사용">
+				</td>
+			</tr>
+			<tr>
+				<th>결제금액</th>
+				<td><input id="funding" type="text" readonly="readonly"> 원</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="checkbox" class="check">전체선택 <br>
+					<input type="checkbox" id="check1" class="checkB">PetMeeting 이용약관 동의 <a href="">상세보기</a>&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="check2" class="checkB">개인정보 수집/이용 동의 <a href="">상세보기</a>
+				</td>
+			</tr>
+		</table>
+		<div class="PayBtn">
+			<input class="PBtn" id="check_module" type="button" value="후원하기"> &nbsp;&nbsp;&nbsp;&nbsp;
+			<input  class="PBtn" id="close" type="button" value="취소">				
+		</div>
+	</div>	
+</div>
+</div>
 </form>
 
 
 <script>
+
+$(document).on("keyup", "input[type=text].number", function () {
+    var $this = $(this);
+    var num = $this.val().replace(/[^0-9]/g,"");
+ 
+    var parts = num.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    $this.val(parts.join("."));
+});
+
 /* 약관동의 */
 $(".check").click(function() {
 	$(".checkB").prop('checked', this.checked);
@@ -167,7 +195,10 @@ $("input[name=howfund]").click(function() {
 /* 포인트사용 버튼 클릭시 */
 $("#pointBtn").click(function() {
 	
-	alert("클릭");
+	//alert("클릭");
+	var num = $(".number").val().replace(/[^\d]+/g, "");
+	$(".number").val(parseInt(num));
+	
 	var goal = parseInt($("#goal_fund").val()); //목표 금액
 	var _funding = parseInt($("#_funding").val()); //후원 금액
 	var point = parseInt($("#fundingPt").val()); //사용 포인트

@@ -10,12 +10,12 @@ import com.petmeeting.joy.admin.dao.AdminDao;
 import com.petmeeting.joy.admin.model.AdminMemberDto;
 import com.petmeeting.joy.admin.model.BoardReportDto;
 import com.petmeeting.joy.admin.model.FundMemberDto;
-<<<<<<< HEAD
+
 import com.petmeeting.joy.funding.model.FMsgDto;
-=======
+
 import com.petmeeting.joy.admin.model.MemberSearchBean;
 import com.petmeeting.joy.admin.model.ReportDto;
->>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
+
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.FundingStaDto;
 import com.petmeeting.joy.funding.model.fundingBean;
@@ -63,12 +63,6 @@ public class AdminDaoImpl implements AdminDao {
 		return sqlSession.selectOne(namespace+"getPlayboardDetail", seq);
 	}
 
-<<<<<<< HEAD
-	
-=======
-
-
->>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
 	@Override
 	public List<BoardReportDto> getBoardReportReason(ReportDto reportDto) {
 		return sqlSession.selectList(namespace+"getBoardReportReason", reportDto);
@@ -85,11 +79,6 @@ public class AdminDaoImpl implements AdminDao {
 		sqlSession.update(namespace+"minusReportCount", reportDto);
 	}
 
-	
-<<<<<<< HEAD
-	/*funding*/
-
-=======
 	/* member */
 	@Override
 	public List<AdminMemberDto> getAllMemberList(MemberSearchBean memSearch) {
@@ -127,8 +116,7 @@ public class AdminDaoImpl implements AdminDao {
 	}
 
 	/* funding */
->>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
-	@Override
+
 	public boolean addFunding(FundingDto dto) {
 		int n = sqlSession.insert(namespace + "addFunding", dto);
 		
@@ -184,7 +172,6 @@ public class AdminDaoImpl implements AdminDao {
 		return sqlSession.selectList(namespace + "whofundingMem", seq);
 	}
 
-<<<<<<< HEAD
 	@Override
 	public void fundingMemDel(int seq) {
 		sqlSession.delete(namespace + "fundingMemDel", seq);
@@ -199,6 +186,6 @@ public class AdminDaoImpl implements AdminDao {
 	public void revMsgFund(List<FMsgDto> msgList) {
 		sqlSession.insert(namespace + "revMsgFundMem" , msgList);
 	}
-=======
->>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
+
+
 }

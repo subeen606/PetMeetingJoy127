@@ -120,7 +120,7 @@ $("#fundingBtn").click(function() {
 	if( ${dto.isfunding == true} ){
 		alert("이미 후원을 하셨습니다. 지속적인 관심 감사드립니다.");
 	}else{
-	window.open('fundingPay.do?board_seq='+$("#_seq").val()+'&funding_seq='+$("#_seq").val()+'&seq='+$("#_seq").val()+'&email=${login.email }',"후원하기","width=1000,height=900,left=100,top=50");
+	window.open('fundingPay.do?board_seq='+$("#_seq").val()+'&funding_seq='+$("#_seq").val()+'&seq='+$("#_seq").val()+'&email=${login.email }',"후원하기","width=820,height=900,left=100,top=50");
 	}
 });
 

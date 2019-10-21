@@ -1,4 +1,17 @@
 @charset "UTF-8";
+@font-face { font-family: 'NanumSquareRound'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff'); font-weight: normal; font-style: normal; }
+body{
+	font-family: 'NanumSquareRound';
+}
+select{
+	font-family: 'NanumSquareRound';
+}
+button{
+	font-family: 'NanumSquareRound';
+}
+a{
+	text-decoration: none;
+}
 
 .fundingContainer{
 	
@@ -127,11 +140,13 @@
     margin-bottom: 7rem;
     background-color: #fff5f2;
     border-radius: 10px;
+    text-align: center;
 }
 .deDate{
 	font-size: 20pt;
     margin-top: 2.5rem;
     font-weight: 600;
+    text-align: center;
 }
 .deContent{
 	margin-top: 3.3rem;
@@ -144,10 +159,12 @@
 }
 .deBtn{
 	margin-top: 3.3rem;
+	text-align: center;
 }
 .deRead{
 	border-bottom: 1px dotted #ff9c3d;
     padding-bottom: 50px;
+    text-align: center;
 }
 .deiconFont{
 	display: flex;
@@ -282,14 +299,8 @@ text-align: right;
 	font-weight: bold;
 }
 
-/* .con-flex {
-    display: flex!important;
-    padding-bottom: 3rem!important;
-    padding-top: 3rem!important;
-    border-bottom: 1px solid #efefef;
-} */
-
 .titleSt{
+	margin-top: 40px;
 	font-size: 13pt;
 	font-weight: bold;
 }
@@ -297,12 +308,14 @@ text-align: right;
 	margin-left:1.2rem;
 }
 .introSt{
+	margin-top: 35px;
 	font-size: 11pt;
 	font-weight: bold;
 	color: #e4af4ebd;
 }
 
 .fundcontent{
+	display: inline-table;
 	margin-top: 2rem;
 }
 
@@ -320,14 +333,10 @@ text-align: right;
     margin-right: 5rem;
 }
 .fundEnd{
-	font-size: 15pt;
-    font-weight: bold;
-    color: #f1a61d;
+    font-size: 22pt;
+    font-weight: 600;
+    color: #ff0000c7;
   
-}
-.endtext{
-	text-align: center;
-    padding-bottom: 20px;
 }
 .graph{
 	width: 300px;
@@ -346,7 +355,54 @@ text-align: right;
 	 20% {color: rgba(255,255,255,1);}
 	 100% {width: 100%;  color: rgba(255,255,255,0);}
 } 
-	
+/*payTable*/
+.payTable{
+	background-color: #f9f9f9;
+}
+.payTable th,td{
+	padding-top: 22px;
+}
+.payTable td{
+	text-align: center;
+	font-weight: 500;
+}
+.PBtn{
+	margin-top: 15px;
+    border: none;
+    outline: none;
+    border-radius: 0.7em;
+    font-size: 16px;
+    height: 33px;
+    background-color: #bfdeff;
+    color: #191818;
+    font-weight: 700;
+}
+
+#fundingBtn,#endListBtn{
+    margin-top: 15px;
+    margin-bottom: 30px;
+    border: none;
+    outline: none;
+    border-radius: 2.2em;
+    font-size: 16px;
+    height: 50px;
+    width: 180px;
+    background-color: #f7e6e1;
+    color: #343a40;
+    font-weight: 600;
+}
+.fundMore{
+	border: 2px solid;
+    width: 120px;
+    padding: 8px;
+    border-color: #ff9c3d;
+    background-color: #f1f1f1;
+    border-radius: 10em;
+}
+.more{
+	margin-left: 6px;
+	font-weight: bold;
+}
 /*btns*/
 .btns{
     position:absolute;

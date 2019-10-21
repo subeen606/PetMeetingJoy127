@@ -95,11 +95,8 @@
 		SET REPORTCOUNT = REPORTCOUNT-1
 		WHERE SEQ=#{board_seq}
 	</update>
-<<<<<<< HEAD
 
-=======
-	
-	
+
 	<!-- 모든 회원 목록 불러오기 -->
 	<resultMap type="com.petmeeting.joy.admin.model.MyProfileDto" id="MyProfileDto">
 		<result column="EMAIL" property="email"/>
@@ -270,7 +267,6 @@
 		FROM PM_PETPROFILE
 		WHERE EMAIL=#{email}
 	</select>
->>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
 
 	<!-- fundingList 추가 -->
 	<insert id="addFunding" parameterType="com.petmeeting.joy.funding.model.FundingDto">
@@ -340,10 +336,6 @@
 	</delete>
 	
 
-<<<<<<< HEAD
-=======
-
->>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
 	<!-- funding 수정 -->
 	<update id="fundingUpdate" parameterType="com.petmeeting.joy.funding.model.FundingDto">
 		UPDATE PM_FUNDINGBOARD
