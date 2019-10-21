@@ -1,0 +1,74 @@
+@charset "UTF-8";
+.maintitle{
+	width: 100%;
+	height: 100px;
+	display: table-cell;
+	vertical-align: middle;
+	font-size: 25px;
+	font-weight: 700;
+	padding-left: 10px;
+}
+.memberInfoTable{
+	width: 100%;
+	font-size: 17px;
+	border-spacing: 1; 
+ 	border-collapse: collapse; 
+}
+.memberInfoTable th{
+	background-color: #f7efea;
+}
+.subtitle-th{
+	background-color: #f2efff;
+	border-bottom: 2px solid #8c7e76;
+	border-top: 2px solid #8c7e76;
+}
+.memberInfoTable td{
+	padding: 10px;
+}
+.addr-td{
+	text-align: center;
+	background-color: #fbfbfb;
+}
+.memberInfoTable tr{
+	height: 50px;
+	border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+
+.memberInfoTable tr:last-child{
+	border: none;
+}
+#myProfile-th{
+	cursor: pointer;
+}
+#petProfile-th{
+	cursor: pointer;
+}
+
+
+
+.profilePic{
+	width: 140px; height: 140px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 50%;
+}
+
+.myProfileTable{
+	width: 100%;
+	font-size: 17px;
+	border-spacing: 1; 
+ 	border-collapse: collapse; 
+}
+.myProfileTable tr:last-child{
+	border: none;
+}
+
+.petProfileTable{
+	width: 100%;
+	font-size: 17px;
+	border-spacing: 1; 
+ 	border-collapse: collapse; 
+}
+.petProfileTable tr:last-child{
+	border: none;
+}

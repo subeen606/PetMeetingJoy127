@@ -2,6 +2,7 @@ package com.petmeeting.joy.playboard.service;
 
 import java.util.List;
 
+import com.petmeeting.joy.admin.model.ReportDto;
 import com.petmeeting.joy.playboard.model.MsgDto;
 import com.petmeeting.joy.playboard.model.MyProfileDto;
 import com.petmeeting.joy.playboard.model.PlayMemDto;
@@ -10,7 +11,6 @@ import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardHashTagDto;
 import com.petmeeting.joy.playboard.model.PlayboardQnADto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
-import com.petmeeting.joy.playboard.model.ReportDto;
 
 public interface PlayboardService {
 	
@@ -33,6 +33,8 @@ public interface PlayboardService {
 	public void unlike(int seq, PlayboardDto pdto);
 	
 	public void reportPlay(ReportDto rdto);
+	
+	public int reportCheck(PlayboardDto pdto);
 	
 	public PlayboardHashTagDto getHashTags(int seq);
 	

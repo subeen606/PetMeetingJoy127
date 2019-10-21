@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+
+.leaveMem{
+	color: #fff;
+	background-color: #b90707;
+    padding: 5px;
+    border-radius: 5px;
+}
+.boardTable tbody tr:hover{
+	background-color: #008c9e0f;
+}
+
+.infoBtn{
+	cursor: pointer;
+	background-color: rgba(255,255,255,0);
+	background-image: url("/PetMeeting/admin_resources/img/memberinfoBtn.png");
+	background-repeat: no-repeat;
+	background-size: 100%;
+	background-position: center;
+	width: 20px;
+	height: 20px;
+	border: none;
+	outline: none;
+}

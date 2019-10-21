@@ -3,6 +3,7 @@ package com.petmeeting.joy.admin.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -20,8 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.petmeeting.joy.admin.dao.AdminDao;
+import com.petmeeting.joy.admin.model.AdminMemberDto;
 import com.petmeeting.joy.admin.model.BoardReportDto;
 import com.petmeeting.joy.admin.model.FundMemberDto;
+import com.petmeeting.joy.admin.model.MemberSearchBean;
+import com.petmeeting.joy.admin.model.ReportDto;
 import com.petmeeting.joy.admin.service.AdminService;
 import com.petmeeting.joy.playboard.model.MyProfileDto;
 import com.petmeeting.joy.playboard.model.PlayMemDto;
@@ -62,7 +68,7 @@ public class AdminCotroller {
 	@RequestMapping(value = "adminPlayboardList.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public String adminPlayboardList(PlayboardSearchBean search, Model model) {
 				
-		System.out.println("searchBean : " + search.toString());
+	//	System.out.println("searchBean : " + search.toString());
 		
 		if(search.getPlayCategory() == null || search.getPlayCategory().equals("선택")) {
 			search.setPlayCategory("");
@@ -72,7 +78,7 @@ public class AdminCotroller {
 		}
 		
 		int totalRowCount = adminService.getPlayboardTotalRowCount(search);
-		System.out.println("소모임 총 글 수 : " + totalRowCount);
+	//	System.out.println("소모임 총 글 수 : " + totalRowCount);
 		
 		search.setStartRow((search.getCurrPage() * 10) + 1);
 		
@@ -82,7 +88,7 @@ public class AdminCotroller {
 		}
 		search.setEndRow(end);
 			
-		System.out.println("searchBean : " + search.toString());
+	//	System.out.println("searchBean : " + search.toString());
 		List<PlayboardDto> playboardList = adminService.getAllPlayboardList(search);
 
 		model.addAttribute("searchBean", search);
@@ -142,13 +148,13 @@ public class AdminCotroller {
 		System.out.println("seq : " + seq);
 		System.out.println("board_code : " + board_code);
 		
-		List<BoardReportDto> reportList = adminService.getBoardReportReason(new BoardReportDto(board_code, seq));
+		List<BoardReportDto> reportList = adminService.getBoardReportReason(new ReportDto(board_code, seq));
 		model.addAttribute("reasons", reportList);
 		return "admin/reportReason";
 	}
 	
 	@RequestMapping(value = "adminBoradReportDelete.do", method= {RequestMethod.GET, RequestMethod.POST})
-	public String adminBoradReportDelete(BoardReportDto reportDto, RedirectAttributes redirectAttributes) {
+	public String adminBoradReportDelete(ReportDto reportDto, RedirectAttributes redirectAttributes) {
 		System.out.println(reportDto.toString());
 		adminService.deleteBoardReport(reportDto);
 		
@@ -159,6 +165,66 @@ public class AdminCotroller {
 	}
 	
 	
+	@RequestMapping(value = "adminMemberList.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String adminMemberList(MemberSearchBean memSearchBean, Model model) {
+				
+		if(memSearchBean.getSortingType() == null) {
+			memSearchBean.setSortingType("전체");
+		}
+		
+		if(memSearchBean.getGrade() == null || memSearchBean.getGrade().equals("전체")) {
+			memSearchBean.setGrade("");
+		}
+		
+		if(memSearchBean.getSearch_category() == null) {
+			memSearchBean.setSearch_category("선택");
+		}
+		
+		int totalRowCount = adminService.getMemberTotalCount(memSearchBean);
+			System.out.println("총 회원 수 : " + totalRowCount);
+			
+			memSearchBean.setStart((memSearchBean.getCurrPage() * 10) + 1);
+			
+			int end = (memSearchBean.getCurrPage() + 1) * 10;
+			if(end > totalRowCount) {
+				end = totalRowCount;
+			}
+			memSearchBean.setEnd(end);
+		
+		System.out.println("memSearchBean : " + memSearchBean);
+		List<AdminMemberDto> memberList = adminService.getAllMemberList(memSearchBean);
+		//System.out.println(memberList.toString());
+		model.addAttribute("totalRowCount", totalRowCount);
+		model.addAttribute("searchBean", memSearchBean);
+		model.addAttribute("memberList", memberList);
+		return "admin/member/memberList";
+	}
+	
+	@RequestMapping(value = "adminLeaveMember.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String adminLeaveMember(HttpServletRequest req) {
+		String[] mems = req.getParameterValues("memcheck");
+		System.out.println(Arrays.toString(mems));
+		
+		List<ReportDto> leaveMemberList = new ArrayList<ReportDto>();
+		String reason = "관리자 권한";
+		for (int i = 0; i < mems.length; i++) {
+			leaveMemberList.add(new ReportDto(mems[i], reason));
+		}
+		
+		System.out.println(leaveMemberList.toString());
+		adminService.insertLeaveMember(leaveMemberList);
+		
+		return "redirect:/adminMemberList.do";
+	}
+	
+	@RequestMapping(value = "adminMemberDetail.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String adminMemberDetail(String email, Model model) {
+		System.out.println("정보 볼 이메일 : " + email);
+		AdminMemberDto memberDetail = adminService.getMemberDetail(email);
+		System.out.println("멤버 정보 : " + memberDetail.toString());
+		model.addAttribute("detail", memberDetail);
+		return "admin/member/memberDetail";
+	}
 	
 	
 	/*funding 관리자*/

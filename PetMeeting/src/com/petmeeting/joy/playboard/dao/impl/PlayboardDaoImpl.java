@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.petmeeting.joy.admin.model.ReportDto;
 import com.petmeeting.joy.playboard.dao.playboardDao;
 import com.petmeeting.joy.playboard.model.MsgDto;
 import com.petmeeting.joy.playboard.model.MyProfileDto;
@@ -14,7 +15,6 @@ import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardHashTagDto;
 import com.petmeeting.joy.playboard.model.PlayboardQnADto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
-import com.petmeeting.joy.playboard.model.ReportDto;
 
 @Repository
 public class PlayboardDaoImpl implements playboardDao{

@@ -2,8 +2,11 @@ package com.petmeeting.joy.admin.service;
 
 import java.util.List;
 
+import com.petmeeting.joy.admin.model.AdminMemberDto;
 import com.petmeeting.joy.admin.model.BoardReportDto;
 import com.petmeeting.joy.admin.model.FundMemberDto;
+import com.petmeeting.joy.admin.model.MemberSearchBean;
+import com.petmeeting.joy.admin.model.ReportDto;
 import com.petmeeting.joy.funding.model.DayBean;
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.FundingStaDto;
@@ -19,12 +22,17 @@ public interface AdminService {
 	
 	public void deletePlayboard(int seq);
 	
-	public List<BoardReportDto> getBoardReportReason(BoardReportDto reportDto);
+	public List<BoardReportDto> getBoardReportReason(ReportDto reportDto);
 	
-	public void deleteBoardReport(BoardReportDto reportDto);
+	public void deleteBoardReport(ReportDto reportDto);
 	public PlayboardDto getPlayboardDetail(int seq);
 	
+	public List<AdminMemberDto> getAllMemberList(MemberSearchBean memSearch);
+	public int getMemberTotalCount(MemberSearchBean memSearch);
 	
+	public AdminMemberDto getMemberDetail(String email);
+	
+	public void insertLeaveMember(List<ReportDto> leaveMemberList);
 	
 	public boolean addFunding(FundingDto dto, DayBean bean);
 	public List<FundingDto> getFundingList(fundingBean fbean);

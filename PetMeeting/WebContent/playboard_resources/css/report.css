@@ -1,7 +1,10 @@
 @charset "UTF-8";
-@font-face { font-family: 'Handon3gyeopsal300g'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/Handon3gyeopsal300g.woff') format('woff'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'NanumSquareRound'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff'); font-weight: normal; font-style: normal; }
 body{
-	font-family: 'Handon3gyeopsal300g';
+	font-family: 'NanumSquareRound';
+}
+button{
+	font-family: 'NanumSquareRound';
 }
 .conteiner{
 	/* border: 2px solid lime; */
@@ -22,6 +25,7 @@ body{
 	padding-top: 5px;
 	padding-bottom: 5px;
 	font-weight: bold;
+	text-align: center;
 }
 
 .content{
@@ -58,7 +62,6 @@ body{
 	width: 150px;
 	height: 40px;
 	font-size: 17px;
-	font-family: 'Handon3gyeopsal300g';
 	font-weight: bold;
 	color: #fff;
 	background-color: #B8413D;

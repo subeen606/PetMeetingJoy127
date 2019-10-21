@@ -344,6 +344,7 @@
 <div class="memberDropDown">
 	<ul>
 		<li><a>프로필 보기</a></li>
+		<li><a>팔로우 하기</a></li>
 		<li><a>쪽지 보내기</a></li>
 		<li><a id="reportMember">신고하기</a></li>
 	</ul>
@@ -439,12 +440,26 @@ $(function () {
 		if("${detail.email }" == "${login.email }"){
 			alert("본인 작성글은 신고가 불가합니다");
 		}else{
-			if(${checks.reportCheck } == true){
-				alert("신고는 한 번만 가능합니다");
-			}else if(${checks.reportCheck } == false){
-				var option = "width = 550, height = 500, top = 100, left = 300, location = no, resizeable = no";
-				window.open("boardReport.do?seq="+${detail.seq }, "report", option);
-			}	
+			
+			$.ajax({
+				url: 'reportCheck.do',
+				type: 'post',
+				data: {'seq': ${detail.seq }},
+				success: function ( data ) {
+				//	alert("성공");
+					if(data.trim() == "okay"){
+						var option = "width = 550, height = 500, top = 100, left = 300, location = no, resizeable = no";
+						window.open("boardReport.do?seq="+${detail.seq }, "report", option);
+					}else if(data.trim() == "no"){
+						alert("신고는 한 번만 가능합니다");
+					}
+				},
+				error: function () {
+					alert("에러");
+				}
+				
+			});
+			
 		}	
 	});
 	

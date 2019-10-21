@@ -68,8 +68,8 @@
 		WHERE SEQ=#{seq}
 	</select>
 
-	<!-- 신고 내용 불러오기 -->
-	<select id="getBoardReportReason" parameterType="com.petmeeting.joy.admin.model.BoardReportDto" resultType="com.petmeeting.joy.admin.model.BoardReportDto">
+	<!-- 게시글 신고 내용 불러오기 -->
+	<select id="getBoardReportReason" parameterType="com.petmeeting.joy.admin.model.ReportDto" resultType="com.petmeeting.joy.admin.model.ReportDto">
 		SELECT R.SEQ, R.BOARD_CODE, R.BOARD_SEQ, R.EMAIL, M.NICKNAME, R.REASON
 		FROM PM_BOARD_REPORT R JOIN PM_MEMBER M ON R.EMAIL = M.EMAIL
 		WHERE R.BOARD_CODE=#{board_code} AND R.BOARD_SEQ=#{board_seq}
@@ -77,14 +77,14 @@
 	</select>
 
 	<!-- 신고 삭제 -->
-	<delete id="deleteBoardReport" parameterType="com.petmeeting.joy.admin.model.BoardReportDto">
+	<delete id="deleteBoardReport" parameterType="com.petmeeting.joy.admin.model.ReportDto">
 		DELETE
 		FROM PM_BOARD_REPORT
 		WHERE SEQ=#{seq} AND BOARD_CODE=#{board_code} AND BOARD_SEQ=#{board_seq} 
 	</delete>
 	
 	<!-- 신고 카운트 감소 -->
-	<update id="minusReportCount" parameterType="com.petmeeting.joy.admin.model.BoardReportDto">
+	<update id="minusReportCount" parameterType="com.petmeeting.joy.admin.model.ReportDto">
 		UPDATE 
 		<if test="board_code == 'PLAY'">
 			PM_PLAYBOARD
@@ -95,7 +95,182 @@
 		SET REPORTCOUNT = REPORTCOUNT-1
 		WHERE SEQ=#{board_seq}
 	</update>
+<<<<<<< HEAD
 
+=======
+	
+	
+	<!-- 모든 회원 목록 불러오기 -->
+	<resultMap type="com.petmeeting.joy.admin.model.MyProfileDto" id="MyProfileDto">
+		<result column="EMAIL" property="email"/>
+		<result column="MYPROFILE_IMG" property="myprofile_img"/>
+		<result column="MYAGE" property="myage"/>
+		<result column="MYSEX" property="mysex"/>
+		<result column="MYINTRO" property="myintro"/>
+	</resultMap>
+	<resultMap type="com.petmeeting.joy.admin.model.PetProfileDto" id="PetProfileDto">
+		<result column="EMAIL" property="email"/>
+		<result column="PETPROFILE_IMG" property="petprofile_img"/>
+		<result column="PETNAME" property="petname"/>
+		<result column="PETAGE" property="petage"/>
+		<result column="PETTYPE" property="pettype"/>
+		<result column="PETDETAIL" property="petdetail"/>
+		<result column="PETWEIGHT" property="petweight"/>
+		<result column="PETSEX" property="petsex"/>
+		<result column="PETTNR" property="pettnr"/>
+		<result column="PETINTRO" property="petintro"/>
+	</resultMap>	
+	<resultMap type="com.petmeeting.joy.admin.model.AdminMemberDto" id="MemberInfo">
+		<result column="EMAIL" property="email"/>
+		<result column="PWD" property="pwd"/>
+		<result column="NAME" property="name"/>
+		<result column="NICKNAME" property="nickname"/>
+		<result column="POSTCODE" property="postcode"/>
+		<result column="ADDRESS" property="address"/>
+		<result column="ADDRESS_DETAIL" property="address_detail"/>
+		<result column="ADDRESS_REFER" property="address_refer"/>
+		<result column="PHONE" property="phone"/>
+		<result column="TOTALPOINT" property="totalpoint"/>
+		<result column="POINT" property="point"/>
+		<result column="S_POINT" property="s_point"/>
+		<result column="REPORTCOUNT" property="reportcount"/>
+		<result column="AUTH" property="auth"/>
+		<result column="GRADE_NAME" property="grade_name"/>
+		<collection property="myProfile" resultMap="MyProfileDto"/>	
+		<collection property="petProfile" resultMap="PetProfileDto"/>		
+	</resultMap>
+	<select id="getAllMemberList" parameterType="com.petmeeting.joy.admin.model.MemberSearchBean" resultMap="MemberInfo">		
+		SELECT *
+		FROM (
+			SELECT EMAIL, PWD, NAME, NICKNAME, POSTCODE, ADDRESS, ADDRESS_DETAIL, ADDRESS_REFER, PHONE, TOTALPOINT, POINT, S_POINT, REPORTCOUNT, AUTH, GRADE_NAME,
+					MYPROFILE_IMG, MYAGE, MYSEX, MYINTRO,
+					PETPROFILE_IMG, PETNAME, PETAGE, PETTYPE, PETDETAIL, PETWEIGHT, PETSEX, PETTNR, PETINTRO,					
+					ROW_NUMBER()OVER(ORDER BY EMAIL ASC) AS RNUM
+			FROM (
+				SELECT M.EMAIL, M.PWD, M.NAME, M.NICKNAME, M.POSTCODE, M.ADDRESS, M.ADDRESS_DETAIL, M.ADDRESS_REFER, M.PHONE, M.TOTALPOINT, M.POINT, M.S_POINT, M.REPORTCOUNT, M.AUTH,
+						(SELECT GRADE_NAME FROM PM_GRADE WHERE M.TOTALPOINT <![CDATA[>=]]> MIN_POINT AND TOTALPOINT <![CDATA[<=]]> MAX_POINT) AS GRADE_NAME,
+						P.MYPROFILE_IMG, P.MYAGE, P.MYSEX, P.MYINTRO,
+						F.PETPROFILE_IMG, F.PETNAME, F.PETAGE, F.PETTYPE, F.PETDETAIL, F.PETWEIGHT, F.PETSEX, F.PETTNR, F.PETINTRO					
+				FROM PM_MEMBER M FULL OUTER JOIN PM_MYPROFILE P ON M.EMAIL=P.EMAIL FULL OUTER JOIN PM_PETPROFILE F ON M.EMAIL=F.EMAIL 	
+				WHERE 1=1 
+				<if test="sortingType == '전체' and search_category != '선택'">
+					AND
+					<if test="search_category == '이메일'">
+						M.EMAIL LIKE '%'||#{search_txt}||'%'
+					</if>
+					<if test="search_category == '닉네임'">
+						M.NICKNAME LIKE '%'||#{search_txt}||'%'
+					</if>	
+				</if>
+				<if test="sortingType == '신고' and search_category == '선택'">
+					AND M.REPORTCOUNT <![CDATA[>]]> 0
+				</if>
+				<if test="sortingType == '신고' and search_category != '선택'">
+					AND M.REPORTCOUNT AND
+					<if test="search_category == '이메일'">
+						M.EMAIL LIKE '%'||#{search_txt}||'%'
+					</if>
+					<if test="search_category == '닉네임'">
+						M.NICKNAME LIKE '%'||#{search_txt}||'%'
+					</if>	
+				</if>			
+			) A 
+			WHERE  
+				<if test="grade == 'vip'">GRADE_NAME=#{grade}</if> 
+				<if test="grade != 'vip'">GRADE_NAME LIKE '%'||#{grade}||'%' </if> 				
+		)
+		WHERE RNUM <![CDATA[>=]]> #{start} AND RNUM <![CDATA[<=]]> #{end}				
+	</select>
+	
+	<!-- 회원 로우카운트 -->
+	<select id="getMemberTotalCount" parameterType="com.petmeeting.joy.admin.model.MemberSearchBean" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM (
+			SELECT EMAIL, PWD, NAME, NICKNAME, POSTCODE, ADDRESS, ADDRESS_DETAIL, ADDRESS_REFER, PHONE, TOTALPOINT, POINT, S_POINT, REPORTCOUNT, AUTH, GRADE_NAME,
+					MYPROFILE_IMG, MYAGE, MYSEX, MYINTRO,
+					PETPROFILE_IMG, PETNAME, PETAGE, PETTYPE, PETDETAIL, PETWEIGHT, PETSEX, PETTNR, PETINTRO,					
+					ROW_NUMBER()OVER(ORDER BY EMAIL ASC) AS RNUM
+			FROM (
+				SELECT M.EMAIL, M.PWD, M.NAME, M.NICKNAME, M.POSTCODE, M.ADDRESS, M.ADDRESS_DETAIL, M.ADDRESS_REFER, M.PHONE, M.TOTALPOINT, M.POINT, M.S_POINT, M.REPORTCOUNT, M.AUTH,
+						(SELECT GRADE_NAME FROM PM_GRADE WHERE M.TOTALPOINT <![CDATA[>=]]> MIN_POINT AND TOTALPOINT <![CDATA[<=]]> MAX_POINT) AS GRADE_NAME,
+						P.MYPROFILE_IMG, P.MYAGE, P.MYSEX, P.MYINTRO,
+						F.PETPROFILE_IMG, F.PETNAME, F.PETAGE, F.PETTYPE, F.PETDETAIL, F.PETWEIGHT, F.PETSEX, F.PETTNR, F.PETINTRO					
+				FROM PM_MEMBER M FULL OUTER JOIN PM_MYPROFILE P ON M.EMAIL=P.EMAIL FULL OUTER JOIN PM_PETPROFILE F ON M.EMAIL=F.EMAIL 	
+				WHERE 1=1 
+				<if test="sortingType == '전체' and search_category != '선택'">
+					AND
+					<if test="search_category == '이메일'">
+						M.EMAIL LIKE '%'||#{search_txt}||'%'
+					</if>
+					<if test="search_category == '닉네임'">
+						M.NICKNAME LIKE '%'||#{search_txt}||'%'
+					</if>	
+				</if>
+				<if test="sortingType == '신고' and search_category == '선택'">
+					AND M.REPORTCOUNT <![CDATA[>]]> 0
+				</if>
+				<if test="sortingType == '신고' and search_category != '선택'">
+					AND M.REPORTCOUNT AND
+					<if test="search_category == '이메일'">
+						M.EMAIL LIKE '%'||#{search_txt}||'%'
+					</if>
+					<if test="search_category == '닉네임'">
+						M.NICKNAME LIKE '%'||#{search_txt}||'%'
+					</if>	
+				</if>			
+			) A 
+			WHERE
+				 <if test="grade == 'vip'">GRADE_NAME=#{grade}</if> 
+				 <if test="grade != 'vip'">GRADE_NAME LIKE '%'||#{grade}||'%' </if> 
+		)
+	</select>
+	
+	<!-- 회원 한 명 정보 얻기 -->
+	<select id="getMemberDetail" parameterType="java.lang.String" resultMap="MemberInfo">
+		SELECT M.EMAIL, M.PWD, M.NAME, M.NICKNAME, M.POSTCODE, M.ADDRESS, M.ADDRESS_DETAIL, M.ADDRESS_REFER, M.PHONE, M.TOTALPOINT, M.POINT, M.S_POINT, M.REPORTCOUNT, M.AUTH,
+			(SELECT GRADE_NAME FROM PM_GRADE WHERE M.TOTALPOINT <![CDATA[>=]]> MIN_POINT AND TOTALPOINT <![CDATA[<=]]> MAX_POINT) AS GRADE_NAME,
+			P.MYPROFILE_IMG, P.MYAGE, P.MYSEX, P.MYINTRO,
+			F.PETPROFILE_IMG, F.PETNAME, F.PETAGE, F.PETTYPE, F.PETDETAIL, F.PETWEIGHT, F.PETSEX, F.PETTNR, F.PETINTRO
+		FROM PM_MEMBER M FULL OUTER JOIN PM_MYPROFILE P ON M.EMAIL=P.EMAIL FULL OUTER JOIN PM_PETPROFILE F ON M.EMAIL=F.EMAIL 
+		WHERE M.EMAIL=#{email}
+	</select>
+			
+	<!-- 회원 신고 내용 불러오기 -->
+	<select id="getMemberReportReason" parameterType="com.petmeeting.joy.admin.model.ReportDto" resultType="com.petmeeting.joy.admin.model.ReportDto">
+		SELECT R.SEQ, R.BOARD_CODE, R.BOARD_SEQ, R.EMAIL, M.NICKNAME, R.REASON
+		FROM PM_BOARD_REPORT R JOIN PM_MEMBER M ON R.EMAIL = M.EMAIL
+		WHERE R.BOARD_CODE=#{board_code} AND R.BOARD_SEQ=#{board_seq}
+		ORDER BY R.SEQ ASC
+	</select>
+	
+	<!-- 관리자에 의한 회원 활동중지 -->
+	<insert id="insertLeaveMember" parameterType="java.util.List">
+		INSERT INTO PM_LEAVEMEMBER(EMAIL, REASON)
+		<foreach collection="list" item="leaveMemberList" separator=", ">
+			VALUES(#{leaveMemberList.email}, #{leaveMemberList.reason})
+		</foreach>
+	</insert>
+	
+	<!-- leavemember테이블에 있는 회원인지 확인 -->
+	<select id="leaveMemberCheck" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM PM_LEAVEMEMBER
+		WHERE EMAIL=#{email}
+	</select>
+	
+	<!-- 회원 프로필 작성 체크 -->
+	<select id="memberProfileCheck" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM PM_MYPROFILE
+		WHERE EMAIL=#{email}
+	</select>
+	<!-- 펫 프로필 작성 체크 -->
+	<select id="petProfileCheck" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM PM_PETPROFILE
+		WHERE EMAIL=#{email}
+	</select>
+>>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
 
 	<!-- fundingList 추가 -->
 	<insert id="addFunding" parameterType="com.petmeeting.joy.funding.model.FundingDto">
@@ -165,6 +340,10 @@
 	</delete>
 	
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
 	<!-- funding 수정 -->
 	<update id="fundingUpdate" parameterType="com.petmeeting.joy.funding.model.FundingDto">
 		UPDATE PM_FUNDINGBOARD

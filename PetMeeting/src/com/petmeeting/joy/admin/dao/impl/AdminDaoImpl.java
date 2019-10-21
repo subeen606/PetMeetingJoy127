@@ -7,9 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.petmeeting.joy.admin.dao.AdminDao;
+import com.petmeeting.joy.admin.model.AdminMemberDto;
 import com.petmeeting.joy.admin.model.BoardReportDto;
 import com.petmeeting.joy.admin.model.FundMemberDto;
+<<<<<<< HEAD
 import com.petmeeting.joy.funding.model.FMsgDto;
+=======
+import com.petmeeting.joy.admin.model.MemberSearchBean;
+import com.petmeeting.joy.admin.model.ReportDto;
+>>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.FundingStaDto;
 import com.petmeeting.joy.funding.model.fundingBean;
@@ -57,26 +63,71 @@ public class AdminDaoImpl implements AdminDao {
 		return sqlSession.selectOne(namespace+"getPlayboardDetail", seq);
 	}
 
+<<<<<<< HEAD
 	
+=======
+
+
+>>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
 	@Override
-	public List<BoardReportDto> getBoardReportReason(BoardReportDto reportDto) {
+	public List<BoardReportDto> getBoardReportReason(ReportDto reportDto) {
 		return sqlSession.selectList(namespace+"getBoardReportReason", reportDto);
 	}
 		
 	@Override
-	public void deleteBoardReport(BoardReportDto reportDto) {
+	public void deleteBoardReport(ReportDto reportDto) {
 		sqlSession.delete(namespace+"deleteBoardReport", reportDto);
 		
 	}
 
 	@Override
-	public void minusReportCount(BoardReportDto reportDto) {
+	public void minusReportCount(ReportDto reportDto) {
 		sqlSession.update(namespace+"minusReportCount", reportDto);
 	}
 
 	
+<<<<<<< HEAD
 	/*funding*/
 
+=======
+	/* member */
+	@Override
+	public List<AdminMemberDto> getAllMemberList(MemberSearchBean memSearch) {
+		return sqlSession.selectList(namespace + "getAllMemberList", memSearch);
+	}
+		
+	@Override
+	public int getMemberTotalCount(MemberSearchBean memSearch) {
+		return sqlSession.selectOne(namespace + "getMemberTotalCount", memSearch);
+	}
+	
+	@Override
+	public AdminMemberDto getMemberDetail(String email) {
+		return sqlSession.selectOne(namespace+"getMemberDetail", email);
+	}
+	
+	@Override
+	public void insertLeaveMember(List<ReportDto> leaveMemberList) {
+		sqlSession.insert(namespace + "insertLeaveMember", leaveMemberList);
+	}
+
+	@Override
+	public int leaveMemberCheck(String email) {
+		return sqlSession.selectOne(namespace+"leaveMemberCheck", email);
+	}
+
+	@Override
+	public int memberProfileCheck(String email) {
+		return sqlSession.selectOne(namespace+"memberProfileCheck", email);
+	}
+
+	@Override
+	public int petProfileCheck(String email) {
+		return sqlSession.selectOne(namespace+"petProfileCheck", email);
+	}
+
+	/* funding */
+>>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
 	@Override
 	public boolean addFunding(FundingDto dto) {
 		int n = sqlSession.insert(namespace + "addFunding", dto);
@@ -133,6 +184,7 @@ public class AdminDaoImpl implements AdminDao {
 		return sqlSession.selectList(namespace + "whofundingMem", seq);
 	}
 
+<<<<<<< HEAD
 	@Override
 	public void fundingMemDel(int seq) {
 		sqlSession.delete(namespace + "fundingMemDel", seq);
@@ -147,4 +199,6 @@ public class AdminDaoImpl implements AdminDao {
 	public void revMsgFund(List<FMsgDto> msgList) {
 		sqlSession.insert(namespace + "revMsgFundMem" , msgList);
 	}
+=======
+>>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
 }

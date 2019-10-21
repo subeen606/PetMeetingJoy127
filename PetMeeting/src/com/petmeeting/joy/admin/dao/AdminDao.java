@@ -4,7 +4,13 @@ import java.util.List;
 
 import com.petmeeting.joy.admin.model.BoardReportDto;
 import com.petmeeting.joy.admin.model.FundMemberDto;
+<<<<<<< HEAD
 import com.petmeeting.joy.funding.model.FMsgDto;
+=======
+import com.petmeeting.joy.admin.model.MemberSearchBean;
+import com.petmeeting.joy.admin.model.ReportDto;
+import com.petmeeting.joy.admin.model.AdminMemberDto;
+>>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
 import com.petmeeting.joy.funding.model.FundingDto;
 import com.petmeeting.joy.funding.model.FundingStaDto;
 import com.petmeeting.joy.funding.model.fundingBean;
@@ -22,6 +28,7 @@ public interface AdminDao {
 	public void deletePlayboardQnA(int seq);
 	
 	public PlayboardDto getPlayboardDetail(int seq);
+<<<<<<< HEAD
 
 	public List<BoardReportDto> getBoardReportReason(BoardReportDto reportDto);
 	
@@ -29,7 +36,25 @@ public interface AdminDao {
 	public void minusReportCount(BoardReportDto reportDto);
 
 
+=======
+
+	public List<BoardReportDto> getBoardReportReason(ReportDto reportDto);
 	
+	public void deleteBoardReport(ReportDto reportDto);
+	public void minusReportCount(ReportDto reportDto);
+
+	/*member*/
+	public List<AdminMemberDto> getAllMemberList(MemberSearchBean memSearch);
+	public int getMemberTotalCount(MemberSearchBean memSearch);
+	
+	public AdminMemberDto getMemberDetail(String email);
+>>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
+	
+	public void insertLeaveMember(List<ReportDto> leaveMemberList);
+	
+	public int leaveMemberCheck(String email);
+	public int memberProfileCheck(String email);
+	public int petProfileCheck(String email);
 	
 
 	/*funding*/
@@ -47,8 +72,15 @@ public interface AdminDao {
 	public int fundingStacheck(int seq);
 	
 	public List<FundMemberDto> whofundingMem(int seq);
+<<<<<<< HEAD
 	
 	public void sendMsgFund(List<FMsgDto> msgList);
 	public void revMsgFund(List<FMsgDto> msgList);
 	
+=======
+
+
+
+
+>>>>>>> f670523549118f8fb9f4ece05a193fbf1f24d3ff
 }

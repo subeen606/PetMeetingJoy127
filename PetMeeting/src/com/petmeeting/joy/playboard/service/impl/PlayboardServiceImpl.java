@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.petmeeting.joy.admin.model.ReportDto;
 import com.petmeeting.joy.login.model.MemberDto;
 import com.petmeeting.joy.playboard.Util.DateUtil;
 import com.petmeeting.joy.playboard.dao.playboardDao;
@@ -17,7 +18,6 @@ import com.petmeeting.joy.playboard.model.PlayboardDto;
 import com.petmeeting.joy.playboard.model.PlayboardHashTagDto;
 import com.petmeeting.joy.playboard.model.PlayboardQnADto;
 import com.petmeeting.joy.playboard.model.PlayboardSearchBean;
-import com.petmeeting.joy.playboard.model.ReportDto;
 import com.petmeeting.joy.playboard.service.PlayboardService;
 
 @Service
@@ -145,6 +145,11 @@ public class PlayboardServiceImpl implements PlayboardService{
 	public void reportPlay(ReportDto rdto) {
 		pdao.insertPlayReport(rdto);
 		pdao.plusReportCount(rdto);
+	}
+
+	@Override
+	public int reportCheck(PlayboardDto pdto) {
+		return pdao.reportCheck(pdto);
 	}
 
 	@Override

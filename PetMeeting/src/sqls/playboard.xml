@@ -266,12 +266,12 @@
 	</update>
 	
 	<!-- 모임 신고  -->
-	<insert id="insertPlayReport" parameterType="com.petmeeting.joy.playboard.model.ReportDto">
+	<insert id="insertPlayReport" parameterType="com.petmeeting.joy.admin.model.ReportDto">
 		INSERT INTO PM_BOARD_REPORT(SEQ, BOARD_CODE, BOARD_SEQ, EMAIL, REASON)
 		VALUES(PM_BOARD_REPORT_SEQ.NEXTVAL, 'PLAY', #{board_seq}, #{email}, #{reason})
 	</insert>
 	<!-- 신고 수 증가 -->
-	<update id="plusReportCount" parameterType="com.petmeeting.joy.playboard.model.ReportDto">
+	<update id="plusReportCount" parameterType="com.petmeeting.joy.admin.model.ReportDto">
 		UPDATE PM_PLAYBOARD
 		SET REPORTCOUNT = REPORTCOUNT+1
 		WHERE SEQ=#{board_seq}
@@ -421,12 +421,12 @@
 	</select>
 	
 	<!-- 멤버 신고  -->
-	<insert id="insertMemberReport" parameterType="com.petmeeting.joy.playboard.model.ReportDto">
+	<insert id="insertMemberReport" parameterType="com.petmeeting.joy.admin.model.ReportDto">
 		INSERT INTO PM_MEMBER_REPORT(SEQ, BAD_EMAIL, EMAIL, REASON)
 		VALUES(PM_MEMBER_REPORT_SEQ.NEXTVAL, #{bad_email}, #{email}, #{reason})
 	</insert>
 	<!-- 멤버 신고 수 증가 -->
-	<update id="plusMemberReportCount" parameterType="com.petmeeting.joy.playboard.model.ReportDto">
+	<update id="plusMemberReportCount" parameterType="com.petmeeting.joy.admin.model.ReportDto">
 		UPDATE PM_MEMBER
 		SET REPORTCOUNT = REPORTCOUNT+1
 		WHERE EMAIL=#{bad_email}
